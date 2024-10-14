@@ -4,21 +4,20 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            @if (Auth::user()->role_id != 1)
-                <a href="{{ route('application.export') }}" class="btn btn-primary mb-3" ><i class="fas fa-file-excel"></i> Generate Excel</a>
-            @endif
-            @if (Auth::user()->role->alias == 'applicant')
-                <a class="btn btn-md btn-primary mb-4" href="{{ route('application.create') }}"><i class="fas fa-plus"></i>&nbsp; Buat Pengajuan Baru</a>
-            @endif
-            @if(Auth::user()->role->alias == 'admin' || Auth::user()->role->alias == 'wadir4')
-                <form method="GET" action="{{ route('application.index') }}">
-                    <select name="approve_status" class="form-control mb-3" onchange="this.form.submit()">
-                        <option value="1,2,3,4"{{ in_array(request('approve_status'), ['1','2','3','4']) ? 'selected' : '' }} >-- Filter Approval Status --</option>
-                        <option value="1,2" {{ in_array(request('approve_status'), ['1','2']) ? 'selected' : '' }}>Menunggu Review Admin</option>
-                        <option value="4" {{ request('approve_status') == 4 ? 'selected' : '' }}>Review Selesai</option>
-                    </select>
-                </form>
-            @endif
+        @if(Auth::user()->role->alias == 'admin' || Auth::user()->role->alias == 'wadir4')
+            <form method="GET" action="{{ route('application.index') }}">
+                <select name="approve_status" class="form-control mb-3" onchange="this.form.submit()">
+                    <!-- Opsi default tanpa in_array -->
+                    <option value="1,2,3,4" {{ request('approve_status') == '1,2,3,4' ? 'selected' : '' }}>-- Filter Approval Status --</option>
+                    
+                    <!-- Opsi untuk Menunggu Review Admin -->
+                    <option value="1,2" {{ request('approve_status') == '1,2' ? 'selected' : '' }}>Menunggu Review Admin</option>
+                    
+                    <!-- Opsi untuk Review Selesai -->
+                    <option value="4" {{ request('approve_status') == '4' ? 'selected' : '' }}>Review Selesai</option>
+                </select>
+            </form>
+        @endif
             <div class="table-responsive">
                 <table class="table table-striped w-100 table-bordered table-xs table-hover" id="datatable-ajax">
                     <thead>
