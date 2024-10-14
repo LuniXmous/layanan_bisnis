@@ -86,6 +86,9 @@ class ApplicationController extends Controller
             ->addColumn('category_name', function($row){
                 return $row->activity->category->name;
             })
+            ->addColumn('activity_name', function($row){ 
+                return $row->activity->name; 
+            })
             ->addColumn('status_applicant', function($row){
                 return '<span class="badge ' . $row->statusAlias()['class'] . '">' . $row->statusAlias()['status'] . '</span>';
             })
