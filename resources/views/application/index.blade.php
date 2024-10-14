@@ -12,10 +12,10 @@
             @endif
             @if(Auth::user()->role->alias == 'admin' || Auth::user()->role->alias == 'wadir4')
                 <form method="GET" action="{{ route('application.index') }}">
-                    <select id="approval-status-filter" name="approve_status" class="form-control mb-3" onchange="this.form.submit()">
-                        <option value=" ">-- Filter Approval Status --</option>
-                        <option value="1" {{ request('approve_status') == 1 ? 'selected' : '' }}>Menunggu Review</option>
-                        <option value="3" {{ request('approve_status') == 3 ? 'selected' : '' }}>Review Selesai</option>
+                    <select name="approve_status" class="form-control mb-3" onchange="this.form.submit()">
+                        <option value="">-- Filter Approval Status --</option>
+                        <option value="1,2,3" {{ in_array(request('approve_status'), ['1','2','3'])  ? 'selected' : '' }}>Menunggu Review</option>
+                        <option value="4" {{ request('approve_status') == 4 ? 'selected' : '' }}>Review Selesai</option>
                     </select>
                 </form>
             @endif
