@@ -1,0 +1,71 @@
+status
+
+sedang diajukan
+
+kategori:
+1.jasa
+2.pelatihan
+3.inovasi
+4.produk
+
+ext document
+
+doc = document (pdf,docx,dll)
+img = image (png,jpeg,dll)
+
+role
+0.admin
+1.applicant
+2.admin unit
+3.wakil direktur 2
+4.wakil direktur 4
+5.direktur
+
+application status
+0. perlu Perbaikan
+1. Menunggu Review
+2. Menunggu Review Pencairan Dana Operasional
+3. Menunggu Review Pencairan Dana Setelah Kegiatan / "Pengajuan Pemberitahuan Kegiatan Selesai Dilaksanakan"
+
+ applicant approve status
+ 0.admin unit
+ 1.admin
+ 2.wd4
+ 3.direktur
+ 4.selesai
+
+ ExtraApplication type
+ dana = pencairan dana
+ operasional = pencairan dana Operasional
+ kegiatan = pencairan dana setelah kegiatan / "pemberitahuan kegiatan selesai dilaksanakan"
+
+ //catatan yang perlu diupdate
+
+bedain application all dan yang perlu direview dan pengganti admin unit
+label
+tolak dana
+batesin max application
+
+
+ update blm : out of logic
+
+//pertanyaan
+pencairan dana diacc siapa?
+kalo admin banyak dikirim ke semua admin?
+approve perlu email?
+
+//email yang belum
+email tebusan wd 2
+email ditolak
+email disetujui
+email akun baru
+
+//catatan 08/03/2022
+catatan jadi sticky
+tombol ajukan sama tombol tolak terima
+filtering index application
+update application
+step application
+email
+swall
+header modal
