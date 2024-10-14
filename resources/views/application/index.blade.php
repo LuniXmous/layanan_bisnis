@@ -11,14 +11,15 @@
                 <a class="btn btn-md btn-primary mb-4" href="{{ route('application.create') }}"><i class="fas fa-plus"></i>&nbsp; Buat Pengajuan Baru</a>
             @endif
             @if(Auth::user()->role->alias == 'admin' || Auth::user()->role->alias == 'wadir4')
-                <select id="approval-status-filter" class="form-control mb-3">
-                    <option value="">-- Filter Approval Status --</option>
-                    @foreach ($waitingReviewApplications as $application)
-                        <option value="{{ $application->approve_status }}">{{ $application->title }}</option>
-                    @endforeach
-                    <option value="3">Review Selesai</option>
-                </select>
+                <form method="GET" action="{{ route('application.index') }}">
+                    <select id="approval-status-filter" name="approve_status" class="form-control mb-3" onchange="this.form.submit()">
+                        <option value=" ">-- Filter Approval Status --</option>
+                        <option value="1" {{ request('approve_status') == 1 ? 'selected' : '' }}>Menunggu Review</option>
+                        <option value="3" {{ request('approve_status') == 3 ? 'selected' : '' }}>Review Selesai</option>
+                    </select>
+                </form>
             @endif
+
             <div class="table-responsive">
                 <table class="table table-striped w-100 table-bordered table-xs table-hover" id="datatable-ajax">
                     <thead>
@@ -47,24 +48,50 @@
     <script src="{{ asset('assets/extensions/datatables.net-bs5/js/datatables.min.js') }}"></script>
     <script>
         $('#datatable-ajax').DataTable({
-            ajax: {
-                url: '{{ route("application.data") }}',
-                data: function(d) {
-                    d.approve_status = $('#approval-status-filter').val(); // Ambil nilai dari dropdown
-                }
-            }
+            ajax: '',
             serverSide: true,
             processing: true,
-            columns: [
-                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                { data: 'title' },
-                { data: 'applicant_name', name: 'applicant_name' },
-                { data: 'unit_name', name: 'unit_name' },
-                { data: 'category_name', name: 'category_name' },
-                { data: 'activity_name', name: 'activity_name' },
-                { data: 'status_applicant', name: 'status_applicant' },
-                { data: 'created_at' },
-                { data: 'updated_at' },
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'title'
+                },
+                {
+                    data: 'applicant_name',
+                    name: 'applicant_name'
+                },
+                {
+                    data: 'unit_name',
+                    name: 'unit_name'
+                },
+                {
+                    data: 'category_name',
+                    name: 'category_name'
+                },
+                {
+                    data: 'activity_name',
+                    name: 'activity_name'
+                },
+                {
+                    data: 'status_applicant',
+                    name: 'status_applicant'
+                },
+                {
+                    data: 'created_at',
+                },
+                {
+                    data: 'updated_at',
+                },
+                // {
+                //     data: 'action',
+                //     name: 'action',
+                //     orderable: false,
+                //     searchable: false
+                // }
             ],
             columnDefs: [{
                 render: function(data, type, full, meta) {

@@ -114,7 +114,7 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
         // Add the new route here
         Route::get('/{id}/submission-log', [App\Http\Controllers\ApplicationController::class, 'showSubmissionLog'])->name('submissionLog');
         Route::get('/{identifier}', [App\Http\Controllers\ApplicationController::class, 'show'])->name('detail');
-        Route::get('/data', action: [App\Http\Controllers\ApplicationController::class, 'getData'])->name('data');
+    Route::get('/data', [App\Http\Controllers\ApplicationController::class, 'getData'])->name('data');
     });
     // Grup route manajemen pengguna
         Route::group(['middleware' => ['isAdminOrWadir4']], function () {

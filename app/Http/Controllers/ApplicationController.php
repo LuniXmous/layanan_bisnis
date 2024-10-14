@@ -19,7 +19,6 @@ use Carbon\Carbon;
 use Exception;
 use Psy\Readline\Hoa\FileException;
 
-
 class ApplicationController extends Controller
 {
     private function comment($application): bool
@@ -56,40 +55,44 @@ class ApplicationController extends Controller
     }
 
     
+
     public function index(Request $request)
     {
         // Deklarasikan variabel untuk menampung aplikasi
-        $waitingReviewApplications = null; // Tambahkan ini
-
+        $waitingReviewApplications = null;
+    
+        // Jika permintaan AJAX
         if ($request->ajax()) {
             // Variabel untuk menyimpan aplikasi berdasarkan peran pengguna
             $applications = null;
-
+    
             // Mengambil aplikasi berdasarkan role pengguna
             if (Auth::user()->role->id == 0) {
-                $applications = Application::where("approve_status", 1)->orderBy('updated_at', 'desc')->get();
+                $applications = Application::query();
             } elseif (Auth::user()->role->id == 2) {
-                $applications = Application::where("status", 1)->where("approve_status", 0)->orderBy('updated_at', 'desc')->get();
+                $applications = Application::where("status", 1)->where("approve_status", 0);
             } elseif (Auth::user()->role->id == 4) {
                 $applications = Application::where("status", 1)
                     ->where("approve_status", 2)
                     ->orWhere("status", ">", 1)
-                    ->where("approve_status", 1)
-                    ->orderBy('updated_at', 'desc')->get();
+                    ->where("approve_status", 1);
             } elseif (Auth::user()->role->id == 3) {
                 $applications = Application::where("status", ">", 1)
-                    ->where("approve_status", 2)
-                    ->orderBy('updated_at', 'desc')->get();
+                    ->where("approve_status", 2);
             } elseif (Auth::user()->role->id == 5) {
                 $applications = Application::where("status", 1)
-                    ->where("approve_status", 3)
-                    ->orderBy('updated_at', 'desc')->get();
+                    ->where("approve_status", 3);
             } else {
-                $applications = Auth::user()->application;
+                $applications = Auth::user()->application();
             }
-
+    
+            // Filter berdasarkan status persetujuan
+            if ($request->has('approve_status') && $request->approve_status !== '') {
+                $applications = $applications->where('approve_status', $request->approve_status);
+            }
+    
             // Proses DataTables
-            $json = DataTables::collection($applications)
+            $json = DataTables::of($applications->orderBy('updated_at', 'desc')->get())
                 ->addIndexColumn()
                 ->addColumn('title', function ($row) {
                     return '<a href="' . route('application.detail', ['identifier' => $row->id]) . '">' . $row->title . '</a>';
@@ -115,65 +118,22 @@ class ApplicationController extends Controller
                     return $row->activity->name;
                 })
                 ->addColumn('status_applicant', function ($row) {
-                    return '<span class="badge ' . $row->statusAlias()['class'] . '"> ' . $row->statusAlias()['status'] . ' </span>';
+                    return '<span class="badge ' . $row->statusAlias()['class'] . '">' . $row->statusAlias()['status'] . '</span>';
                 })
                 ->rawColumns(['title', 'applicant_name', 'unit_name', 'category_name', 'status_applicant', 'activity_name'])
-                ->toJson();
-
+                ->make(true);
+    
             return $json;
         }
-
+    
         // Jika bukan AJAX, ambil aplikasi menunggu review
         $waitingReviewApplications = Application::where('approve_status', 1)->orderBy('updated_at', 'desc')->get();
-
+    
         // Tampilkan tampilan jika bukan permintaan AJAX
         return view('application.index', [
-            'waitingReviewApplications' => $waitingReviewApplications, // Pass variabel ke view
+            'waitingReviewApplications' => $waitingReviewApplications,
         ]);
     }
-    
-
-    public function getData(Request $request)
-{
-    $applications = Application::query();
-
-    // Jika ada filter approve_status dari dropdown
-    if ($request->has('approve_status') && $request->approve_status != '') {
-        $applications->where('approve_status', $request->approve_status);
-    }
-
-    // Menangani data untuk DataTable
-    return DataTables::of($applications)
-        ->addIndexColumn()
-        ->addColumn('title', function ($row) {
-            return '<a href="' . route('application.detail', ['identifier' => $row->id]) . '">' . $row->title . '</a>';
-        })
-        ->addColumn('updated_at', function ($row) {
-            return Carbon::parse($row->updated_at)->translatedFormat('d F Y, H:i');
-        })
-        ->addColumn('created_at', function ($row) {
-            return Carbon::parse($row->created_at)->translatedFormat('d F Y, H:i');
-        })
-        ->addColumn('applicant_name', function ($row) {
-            return Auth::user()->role_id == 0
-                ? $row->user->name . ' (' . $row->user->email . ')'
-                : $row->user->name;
-        })
-        ->addColumn('unit_name', function ($row) {
-            return $row->activity->unit->name;
-        })
-        ->addColumn('category_name', function ($row) {
-            return $row->activity->category->name;
-        })
-        ->addColumn('activity_name', function ($row) {
-            return $row->activity->name;
-        })
-        ->addColumn('status_applicant', function ($row) {
-            return '<span class="badge ' . $row->statusAlias()['class'] . '">' . $row->statusAlias()['status'] . '</span>';
-        })
-        ->rawColumns(['title', 'applicant_name', 'unit_name', 'category_name', 'status_applicant', 'activity_name'])
-        ->make(true);
-}
     
 
     // public function updateStatus(Request $request, $id)
