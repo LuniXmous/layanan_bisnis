@@ -64,9 +64,11 @@ class ApplicationController extends Controller
         // Jika ada approve_status, lakukan filter
         if ($request->has('approve_status') && $request->approve_status !== '') {
             // Periksa apakah approve_status adalah gabungan beberapa status
-            if ($request->approve_status === '1,2,3') {
-                $applications->whereIn('approve_status', [1, 2, 3]); // Filter untuk status 1, 2, dan 3
-            } else {
+            if ($request->approve_status === '1,2,3,4') {
+                $applications->whereIn('approve_status', [1, 2, 3, 4]); // Filter untuk status 1, 2, dan 3
+            }elseif($request->approve_status === '1,2') {
+                $applications->whereIn('approve_status', [1, 2]); // Filter untuk status 1, 2, dan 3
+            }else{
                 $applications->where('approve_status', $request->approve_status);
             }
         }

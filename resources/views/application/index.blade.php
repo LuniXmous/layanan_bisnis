@@ -13,13 +13,12 @@
             @if(Auth::user()->role->alias == 'admin' || Auth::user()->role->alias == 'wadir4')
                 <form method="GET" action="{{ route('application.index') }}">
                     <select name="approve_status" class="form-control mb-3" onchange="this.form.submit()">
-                        <option value="">-- Filter Approval Status --</option>
-                        <option value="1,2,3" {{ in_array(request('approve_status'), ['1','2','3'])  ? 'selected' : '' }}>Menunggu Review</option>
+                        <option value="1,2,3,4"{{ in_array(request('approve_status'), ['1','2','3','4']) ? 'selected' : '' }} >-- Filter Approval Status --</option>
+                        <option value="1,2" {{ in_array(request('approve_status'), ['1','2']) ? 'selected' : '' }}>Menunggu Review Admin</option>
                         <option value="4" {{ request('approve_status') == 4 ? 'selected' : '' }}>Review Selesai</option>
                     </select>
                 </form>
             @endif
-
             <div class="table-responsive">
                 <table class="table table-striped w-100 table-bordered table-xs table-hover" id="datatable-ajax">
                     <thead>
