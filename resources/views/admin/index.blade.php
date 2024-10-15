@@ -21,7 +21,7 @@
                 <div class="card-body text-center">
                 <h3>{{ $jumlahSelesai }}</h3>
                     <p>JUMLAH SELESAI</p>
-                    <a href="{{ route('application.index') }}" class="btn btn-primary btn-sm">Lihat Detail >></a>
+                    <a href="{{ route('application.index', ['approve_status' => '4']) }}" class="btn btn-primary btn-sm">Lihat Detail >></a>
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
                 <div class="card-body text-center">
                 <h3>{{ $jumlahOnProgress }}</h3>
                     <p>JUMLAH ON PROGRESS</p>
-                    <a href="{{ route('application.index') }}" class="btn btn-primary btn-sm">Lihat Detail >></a>
+                    <a href="{{ route('application.index', ['approve_status' => '1,2']) }}" class="btn btn-primary btn-sm">Lihat Detail >></a>
                 </div>
             </div>
         </div>

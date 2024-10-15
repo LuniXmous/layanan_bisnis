@@ -76,28 +76,46 @@
                         @endif
                         @if (Auth::user()->role->alias == 'admin' || env('GOD_MODE'))
                             <li class="sidebar-item 
-                            {{ Request::route()->action['as'] == 'dashboard' ? 'active' : null }}">
+                                {{ Request::route()->action['as'] == 'dashboard' ? 'active' : null }}">
                                 <a href="{{ route('dashboard') }}" class="sidebar-link">
                                     <i class="fas fa-th-large"></i>
                                     <span>Dashboard</span>
                                 </a>
                             </li>
-                            <li class="sidebar-item
-                            {{ Request::route()->action['as'] == 'application.index' ? 'active' : null }}">
-                                <a href="{{ route('application.index') }}" class="sidebar-link">
+                            <li class="sidebar-item dropdown 
+                                {{ Request::route()->action['as'] == 'application.index' ? 'active' : null }}">
+                                <a href="#" class="sidebar-link dropdown-toggle" id="pengajuanDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fas fa-file-alt"></i>
                                     <span>Pengajuan</span>
                                 </a>
+                                <ul class="dropdown-menu" aria-labelledby="pengajuanDropdown">
+                                <li>
+                                        <a href="{{ route('application.index') }}" class="dropdown-item">
+                                            Semua Pengajuan
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('application.index', ['approve_status' => '1,2']) }}" class="dropdown-item">
+                                            Menunggu Review Admin
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('application.index', ['approve_status' => '4']) }}" class="dropdown-item">
+                                            Review Selesai
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
-                            <li class="sidebar-item
-                            {{ Request::route()->action['as'] == 'unit.index' ? 'active' : null }}">
+
+                            <li class="sidebar-item 
+                                {{ Request::route()->action['as'] == 'unit.index' ? 'active' : null }}">
                                 <a href="{{ route('unit.index') }}" class="sidebar-link">
                                     <i class="fas fa-th"></i>
                                     <span>Unit</span>
                                 </a>
                             </li>
-                            <li class="sidebar-item
-                            {{ Request::route()->action['as'] == 'user.index' ? 'active' : null }}">
+                            <li class="sidebar-item 
+                                {{ Request::route()->action['as'] == 'user.index' ? 'active' : null }}">
                                 <a href="{{ route('user.index') }}" class="sidebar-link">
                                     <i class="fas fa-users"></i>
                                     <span>Pengguna</span>

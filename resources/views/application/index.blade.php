@@ -7,16 +7,11 @@
         @if(Auth::user()->role->alias == 'admin' || Auth::user()->role->alias == 'wadir4')
             <form method="GET" action="{{ route('application.index') }}">
                 <select name="approve_status" class="form-control mb-3" onchange="this.form.submit()">
-                    <!-- Opsi default tanpa in_array -->
-                    <option value="1,2,3,4" {{ request('approve_status') == '1,2,3,4' ? 'selected' : '' }}>-- Filter Approval Status --</option>
-                    
-                    <!-- Opsi untuk Menunggu Review Admin -->
-                    <option value="1,2" {{ request('approve_status') == '1,2' ? 'selected' : '' }}>Menunggu Review Admin</option>
-                    
-                    <!-- Opsi untuk Review Selesai -->
+                    <option value="1,2,3,4" {{ request('approve_status') == '1,2,3,4' ? 'selected' : '' }}>-- Filter Approval Status --</option>                    
+                    <option value="1,2" {{ request('approve_status') == '1,2' ? 'selected' : '' }}>Menunggu Review</option>
                     <option value="4" {{ request('approve_status') == '4' ? 'selected' : '' }}>Review Selesai</option>
                 </select>
-            </form>
+            </form> 
         @endif
             <div class="table-responsive">
                 <table class="table table-striped w-100 table-bordered table-xs table-hover" id="datatable-ajax">
