@@ -63,22 +63,13 @@ class ApplicationController extends Controller
 
         // Jika ada approve_status, lakukan filter
         if ($request->has('approve_status') && $request->approve_status !== '') {
-            // Jika approve_status berisi '1,2,3,4', maka tampilkan semua status
             if ($request->approve_status === '1,2,3,4') {
-                // Tidak perlu menambahkan filter apa pun, karena ini menampilkan semua status
             } elseif ($request->approve_status === '1,2') {
-                // Filter untuk status Menunggu Review Admin (status 1 dan 2)
                 $applications->whereIn('approve_status', [1, 2]);
             } else {
-                // Filter untuk status tertentu
                 $applications->where('approve_status', $request->approve_status);
             }
         }
-
-        // Jika approve_status kosong, tampilkan semua status
-        // Tanpa kondisi di sini, semua data akan dimuat.
-
-        // Kembalikan data ke DataTables
         return DataTables::of($applications->get())
             ->addIndexColumn()
             ->addColumn('title', function($row){
@@ -105,8 +96,6 @@ class ApplicationController extends Controller
             ->rawColumns(['title', 'status_applicant'])
             ->make(true);
     }
-
-    // Jika bukan AJAX, kembalikan tampilan
     return view('application.index');
 }
 

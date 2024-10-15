@@ -32,8 +32,8 @@ class HomeController extends Controller
     public function dashboard()
     {
             $jumlahPengajuan = Application::count();
-            $jumlahSelesai = Application::where('status', 4)->count(); // Jika 1 artinya selesai????
-            $jumlahOnProgress = Application::where('status', 1)->count(); // Jika 0 artinya on progress???
+            $jumlahSelesai = Application::where('approve_status', 4)->count();
+            $jumlahOnProgress = Application::whereIn('approve_status', [1, 2])->count();
             $jumlahPengguna = User::count();
             if (Auth::User()->role->alias == 'admin') {
                 return view('admin.index', compact('jumlahPengajuan', 'jumlahSelesai', 'jumlahOnProgress', 'jumlahPengguna'));
