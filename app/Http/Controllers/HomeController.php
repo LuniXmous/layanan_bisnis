@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Models\Application; // Pastikan import model Application
-use App\Models\User; // Jika User juga digunakan untuk menghitung jumlah pengguna
+use App\Models\User; 
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;// Jika User juga digunakan untuk menghitung jumlah pengguna
 
 class HomeController extends Controller
 {
@@ -16,7 +17,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -26,7 +27,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
+        } else {
+            return view('home');
+        }  
     }
 
     public function dashboard()

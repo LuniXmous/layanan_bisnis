@@ -10,7 +10,7 @@
             @if (Auth::user()->role->alias == 'applicant')
                 <a class="btn btn-md btn-primary mb-4" href="{{ route('application.create') }}"><i class="fas fa-plus"></i>&nbsp; Buat Pengajuan Baru</a>
             @endif
-        @if(Auth::user()->role->alias == 'admin' || Auth::user()->role->alias == 'wadir4')
+        <!-- @if(Auth::user()->role->alias == 'admin' || Auth::user()->role->alias == 'wadir4')
             <form method="GET" action="{{ route('application.index') }}">
                 <select name="approve_status" class="form-control mb-3" onchange="this.form.submit()">
                     <option value="1,2,3,4" {{ request('approve_status') == '1,2,3,4' ? 'selected' : '' }}>-- Filter Approval Status --</option>                    
@@ -18,7 +18,7 @@
                     <option value="4" {{ request('approve_status') == '4' ? 'selected' : '' }}>Review Selesai</option>
                 </select> 
             </form> 
-        @endif
+        @endif -->
             <div class="table-responsive">
                 <table class="table table-striped w-100 table-bordered table-xs table-hover" id="datatable-ajax">
                     <thead>

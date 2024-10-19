@@ -17,7 +17,6 @@ use DataTables;
 use Auth;
 use Carbon\Carbon;
 use Exception;
-use Psy\Readline\Hoa\FileException;
 
 class ApplicationController extends Controller
 {
@@ -100,8 +99,6 @@ class ApplicationController extends Controller
 }
 
 
-    
-
     // public function updateStatus(Request $request, $id)
     // {
     //     $application = Application::findOrFail($id);
@@ -124,41 +121,41 @@ class ApplicationController extends Controller
     // }
     
 
-        public function generateStatusTimeline($submissionLogs, $application)
-    {
-        $html = '<div style="display: flex; justify-content: flex-start; align-items: flex-start; position: relative; margin: 20px auto; padding: 0; width: 100%; max-width: 900px;">';
+    //     public function generateStatusTimeline($submissionLogs, $application)
+    // {
+    //     $html = '<div style="display: flex; justify-content: flex-start; align-items: flex-start; position: relative; margin: 20px auto; padding: 0; width: 100%; max-width: 900px;">';
 
-        foreach ($submissionLogs as $log) {
-            $statusText = '';
+    //     foreach ($submissionLogs as $log) {
+    //         $statusText = '';
 
-            // Tentukan status text berdasarkan status log
-            if ($log->status == 1) {
-                $statusText = 'Setelah Direview Admin';
-            } elseif ($log->status == 2) {
-                $statusText = 'Telah di res';
-            } elseif ($log->status == 3) {
-                $statusText = 'Direview Oleh ' . $log->user->name;
-            } elseif ($log->status == 4) {
-                $statusText = 'Telah di review Wakil Direktur 4';
-            } elseif ($log->status == 5) {
-                $statusText = 'Telah di review blalalalal';
-            }
+    //         // Tentukan status text berdasarkan status log
+    //         if ($log->status == 1) {
+    //             $statusText = 'Setelah Direview Admin';
+    //         } elseif ($log->status == 2) {
+    //             $statusText = 'Telah di res';
+    //         } elseif ($log->status == 3) {
+    //             $statusText = 'Direview Oleh ' . $log->user->name;
+    //         } elseif ($log->status == 4) {
+    //             $statusText = 'Telah di review Wakil Direktur 4';
+    //         } elseif ($log->status == 5) {
+    //             $statusText = 'Telah di review blalalalal';
+    //         }
 
-            // Append HTML untuk setiap status
-            $html .= '
-                <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
-                    <div style="width: 30px; height: 30px; border-radius: 50%; background-color: #4caf50; margin-bottom: 10px;"></div>
-                    <p style="font-size: 14px; text-align: center;">' . $statusText . '</p>
-                </div>';
-        }
+    //         // Append HTML untuk setiap status
+    //         $html .= '
+    //             <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+    //                 <div style="width: 30px; height: 30px; border-radius: 50%; background-color: #4caf50; margin-bottom: 10px;"></div>
+    //                 <p style="font-size: 14px; text-align: center;">' . $statusText . '</p>
+    //             </div>';
+    //     }
 
-        // Tambahkan waktu update dari aplikasi
-        $html .= '<p style="font-size: 14px; text-align: center;">' . $application->updated_at . '</p>';
+    //     // Tambahkan waktu update dari aplikasi
+    //     $html .= '<p style="font-size: 14px; text-align: center;">' . $application->updated_at . '</p>';
 
-        $html .= '</div>';
+    //     $html .= '</div>';
 
-        return $html;
-    }
+    //     return $html;
+    // }
 
 
     public function showSubmissionLog($id)
@@ -166,11 +163,7 @@ class ApplicationController extends Controller
         $application = Application::findOrFail($id);
         $submissionLogs = ApplicationStatusLog::where('application_id', $id)
                                 ->orderBy('created_at', 'desc')
-                                ->get();
-    
-        // Generate HTML untuk status timeline
-        $statusTimelineHtml = $this->generateStatusTimeline($submissionLogs, $application);
-    
+                                ->get();    
         // Kembalikan ke view dengan status timeline HTML
         return view('application.detail', compact('application', 'submissionLogs', 'statusTimelineHtml'));
     }
@@ -297,7 +290,7 @@ class ApplicationController extends Controller
         ->orderBy('created_at', 'desc')->get();
 
     // Generate HTML for status timeline
-    $statusTimelineHtml = $this->generateStatusTimeline($submissionLogs, $application);
+    // $statusTimelineHtml = $this->generateStatusTimeline($submissionLogs, $application);
 
     // Return view with all necessary data
     return view('application.detail', [
@@ -306,7 +299,7 @@ class ApplicationController extends Controller
         "extraType" => $extraType,
         "extraApp" => $extraApp,
         "comment" => $comment,
-        "statusTimelineHtml" => $statusTimelineHtml,
+        // "statusTimelineHtml" => $statusTimelineHtml,
     ]);
     }
 
@@ -536,9 +529,10 @@ class ApplicationController extends Controller
         ]);
 
         // Simpan log perubahan status
+        dd($application->id, $application->approve_status, Auth::User()->id);
         ApplicationStatusLog::create([
             'application_id' => $application->id,
-            'status' => $status,
+            'approve_status' => $application->approve_status,
             'user_id'=> Auth::User()->id,
             'role_id'=> Auth::User()->role_id,
         ]);
@@ -651,7 +645,7 @@ class ApplicationController extends Controller
         }
 
         foreach ($users as $user) {
-            \Mail::to($user->email)->send(new \App\Mail\reviewMail($application));
+            \Mail::to(users: $user->email)->send(new \App\Mail\reviewMail($application));
         }
         if ($users2) {
             foreach ($users2 as $user) {

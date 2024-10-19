@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('page-title', 'Pengajuan Kegiatan')
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
 @section('content')
     <div class="row">
         <div class="col-12">
@@ -17,33 +17,59 @@
         <div class="col-12" style="text-align: center; position: relative;">
             <div class="card shadow-sm border mb-3">
                 <div class="card-body">
-                    </div>
-                        <div style="display: flex; justify-content: flex-start; align-items: flex-start; position: relative; margin: 10px auto; padding: 0; width: 100%; max-width: 900px;">
-                            <div style="display: flex; flex-direction: column; align-items: center; margin-right: 20px;">
-                                <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #4caf50; margin-bottom: 10px;"></div>
-                                @foreach($submissionLogs as $log)
-                                <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
-                                    @if ($log->status == 1)
-                                        <p style="font-size: 14px; text-align: center;">Setelah Direview Admin</p>
-                                    @elseif ($log->status == 2)
-                                        <p style="font-size: 14px; text-align: center;">Telah di res</p>
-                                    @elseif ($log->status == 3)
-                                        <p style="font-size: 14px; text-align: center;">Direview Oleh {{$log->user->name}}</p>
-                                    @elseif ($log->status == 4)
-                                        <p style="font-size: 14px; text-align: center;">Telah di review Wakil Direktur 4</p>
-                                    @elseif ($log->status == 5)
-                                        <p style="font-size: 14px; text-align: center;">Telah di review blalalalal</p>
-                                    @endif
-                                </div>
-                            @endforeach
-                            <p style="font-size: 14px; text-align: center;">{{ $application->updated_at }}</p>
+                    <!-- Flexbox parent div -->
+                    <div style="display: flex; justify-content: center; align-items: flex-start; position: relative; margin: 10px auto; padding: 0; width: 100%; max-width: 900px;">
+                        <!-- First block -->
+                        <div style="display: flex; flex-direction: column; align-items: center; margin-right: 20px;">
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797 ; margin-bottom: 10px;"></i><i class="fa-solid fa-user" style="color: #ffffff;font-size: 30px; margin: 10px;"></i></div>
+                            <p>Review Admin Layanan Bisnis</p>
+                            @if($application->approve_status == '1')
+                                <p style="font-size: 14px; text-align: center;">{{ $application->statusAlias()['status'] }}</p>
+                                <p style="font-size: 14px; text-align: center;">{{ $application->updated_at }}</p>
+                            @else
+                                <p style="font-size: 14px; text-align: center;">Telah Direview Admin</p>
+                                <p style="font-size: 14px; text-align: center;">{{ $application->updated_at }}</p>
+                            @endif
+                        </div>
+                        <hr style="flex: 1; border: none; border-top: 2px solid #018797; margin: 20px 10px;">
+                        <!-- Second block -->
+                        <div style="display: flex; flex-direction: column; align-items: center; margin-right: 20px;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797 ; margin-bottom: 10px;"><i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i></div>
+                            <p>Review Wakil Direktur 4</p>
+                            @if($application->approve_status == '2')
+                                <p style="font-size: 14px; text-align: center;">{{ $application->statusAlias()['status'] }}</p>
+                                <p style="font-size: 14px; text-align: center;">{{ $application->updated_at }}</p>
+                            @elseif($application->approve_status == '1')
+                                <p style="font-size: 14px; text-align: center; display: none;">Telah Direview Wakil Direktur 4</p>
+                                <p style="font-size: 14px; text-align: center; display: none;">{{ $application->updated_at }}</p>
+                            @else
+                                <p style="font-size: 14px; text-align: center;">Telah Direview Wakil Direktur 4</p>
+                                <p style="font-size: 14px; text-align: center;">{{ $application->updated_at }}</p>
+                            @endif
+                        </div>
+                        <hr style="flex: 1; border: none; border-top: 2px solid #018797; margin: 20px 10px;">
+                        <!-- Third block -->
+                        <div style="display: flex; flex-direction: column; align-items: center; margin-right: 20px;">
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797 ; margin-bottom: 10px;"><i class="fa-solid fa-user-check" style="color: #ffffff; font-size: 30px; margin: 10px;"></i></div>
+                            <p>Sukses Di Review</p>
+                            @if($application->approve_status == '3')
+                                <p style="font-size: 14px; text-align: center;">{{ $application->statusAlias()['status'] }}</p>
+                                <p style="font-size: 14px; text-align: center;">{{ $application->updated_at }}</p>
+                            @elseif($application->approve_status == '2')
+                                <p style="font-size: 14px; text-align: center; display: none;">Telah Direview Wakil Direktur 4</p>
+                                <p style="font-size: 14px; text-align: center; display: none;">{{ $application->updated_at }}</p>
+                            @elseif($application->approve_status == '1')
+                                <p style="font-size: 14px; text-align: center; display: none;">Telah Direview Wakil Direktur 4</p>
+                                <p style="font-size: 14px; text-align: center; display: none;">{{ $application->updated_at }}</p>
+                             @else
+                                <p style="font-size: 14px; text-align: center;">Sukses Direview</p>
+                                <p style="font-size: 14px; text-align: center;">{{ $application->updated_at }}</p>
+                            @endif
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
-
         <div class="col-xxl-8">
             <div class="card shadow-sm border mb-4">
                 @if ($application->note)
@@ -97,7 +123,8 @@
                                         class="ms-2 text-capitalize fw-bold text-primary"
                                         data-file="{{ asset('dokumen_bisnis/' . $file->file) }}"
                                         data-type="{{ $file->ext }}"><i class="fas fa-file-pdf"></i>&nbsp; Dokumen
-                                        {{ $file->title }} </span>
+                                        {{ $file->title }} 
+                                    </span>
                                 </div>
                             @endforeach
                         </div>
@@ -110,7 +137,8 @@
                                             class="ms-2 text-capitalize fw-bold text-primary"
                                             data-type="{{ $file->ext }}"
                                             data-file="{{ asset('dokumen_bisnis/' . $file->file) }}"><i
-                                                class="fas fa-file-pdf"></i>&nbsp; Dokumen {{ $file->title }} </span>
+                                            class="fas fa-file-pdf"></i>&nbsp; Dokumen {{ $file->title }} 
+                                        </span>
                                     </div>
                                 @endforeach
                             </div>

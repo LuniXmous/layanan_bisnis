@@ -21,10 +21,9 @@
         }
     </style>
 </head>
-
 <body>
-
     <div id="app">
+    @if(Auth::check())
         <div id="sidebar" class="{{ Route::is('application.create') || Route::is('application.edit') ? '' : 'active' }}">
             <div class="sidebar-wrapper active">
                 <div class="sidebar-header position-relative pb-0">
@@ -61,7 +60,7 @@
                             </li>
                             <li class="sidebar-item
                             {{ Request::route()->action['as'] == 'application.index' ? 'active' : null }}">
-                                <a href="{{ route('application.index') }}" class="sidebar-link">
+                                <a href="{{ route('application.index', ['approve_status' => '2']) }}" class="sidebar-link">
                                     <i class="fas fa-file-alt"></i>
                                     <span>Pengajuan</span>
                                 </a>
@@ -96,7 +95,7 @@
                                     </li>
                                     <li>
                                         <a href="{{ route('application.index', ['approve_status' => '1,2']) }}" class="dropdown-item">
-                                            Menunggu Review Admin
+                                            Menunggu Review
                                         </a>
                                     </li>
                                     <li>
@@ -122,6 +121,7 @@
                                 </a>
                             </li>
                         @endif
+
                         <hr>
                         <li class="sidebar-item
                             {{ Request::route()->action['as'] == 'profile' ? 'active' : null }}">
@@ -162,31 +162,36 @@
                 </div>
                 <section class="content mt-3 ">
                     @if (session('error'))
-                        <div class="alert alert-danger">
-                            <p>{{ session('error') }}</p>
-                        </div>
+                    <div class="alert alert-danger">
+                        <p>{{ session('error') }}</p>
+                    </div>
                     @endif
                     @if (session('success'))
-                        <div class="alert alert-success">
-                            <p>{{ session('success') }}</p>
-                        </div>
+                    <div class="alert alert-success">
+                        <p>{{ session('success') }}</p>
+                    </div>
                     @endif
                     @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul class="mb-0">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                     @endif
-
+                    
                     @yield('content')
                 </section>
             </div>
         </div>
-    </div>
+        @else
+        <section>
+            @yield('content')
+        </section>
 
+        @endif
+    </div>
     @yield('modal')
     <script src="{{ asset('assets/js/bootstrap.js') }}"></script>
     <script src="{{ asset('assets/js/app.js') }}"></script>
@@ -194,5 +199,4 @@
     @yield('script')
     @yield('scripts')
 </body>
-
 </html>
