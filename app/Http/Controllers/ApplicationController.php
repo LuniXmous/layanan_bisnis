@@ -157,7 +157,6 @@ class ApplicationController extends Controller
     //     return $html;
     // }
 
-
     public function showSubmissionLog($id)
     {
         $application = Application::findOrFail($id);
@@ -165,11 +164,9 @@ class ApplicationController extends Controller
                                 ->orderBy('created_at', 'desc')
                                 ->get();    
         // Kembalikan ke view dengan status timeline HTML
-        return view('application.detail', compact('application', 'submissionLogs', 'statusTimelineHtml'));
+        return view('application.detail', compact('application', 'submissionLogs'));
     }
     
-
-
 //     public function reviewAdmin(Request $request)
 // {
 //     if ($request->ajax()) {
@@ -528,11 +525,11 @@ class ApplicationController extends Controller
             "note" => null,
         ]);
 
-        // Simpan log perubahan status
-        dd($application->id, $application->approve_status, Auth::User()->id);
+        // // Simpan log perubahan status
+        // sdd($status);
         ApplicationStatusLog::create([
             'application_id' => $application->id,
-            'approve_status' => $application->approve_status,
+            'approve_status' => $status + 1,
             'user_id'=> Auth::User()->id,
             'role_id'=> Auth::User()->role_id,
         ]);
