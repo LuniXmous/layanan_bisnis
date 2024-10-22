@@ -1,9 +1,13 @@
 @extends('layouts.app-auth')
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
 @section('content')
+
     <div class="row h-100">
         <div class="col-lg-5 col-12">
             <div id="auth-left">
+            <a href="{{ route('home') }}" class="back">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
                 <div class="auth-logo">
                     <img src="{{ asset('assets/images/logo.webp') }}" alt="Logo">
                 </div>
@@ -31,10 +35,10 @@
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="form-group position-relative has-icon-left mb-4">
-                        <input type="email" id="email" name="email" class="form-control form-control-xl"
+                        <input type="email" id="email" name="email" class="form-control form-control-xl" 
                             placeholder="Email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                         <div class="form-control-icon">
-                            <i class="bi bi-person"></i>
+                            <i class="fa-solid fa-envelope" style="margin-top:5px;"></i>
                         </div>
                         @error('email')
                             <span class="invalid-feedback" role="alert">
@@ -46,7 +50,7 @@
                         <input type="password" id="password" class="form-control form-control-xl" placeholder="Password"
                             name="password" required autocomplete="current-password">
                         <div class="form-control-icon">
-                            <i class="bi bi-shield-lock"></i>
+                            <i class="fa-solid fa-lock" style="margin-top:5px;"></i>
                         </div>
                         @error('password')
                             <span class="invalid-feedback" role="alert">

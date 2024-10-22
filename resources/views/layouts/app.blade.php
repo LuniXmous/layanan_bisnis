@@ -36,7 +36,7 @@
                         @if (Auth::user()->role->alias != 'admin' && Auth::user()->role->alias != 'wadir4')
                             <li class="sidebar-item
                             {{ Request::route()->action['as'] == 'application.index' ? 'active' : null }}">
-                                <a href="{{ route('application.index') }}" class="sidebar-link">
+                                <a href="{{ route('application.index', ['approve_status' => '1']) }}" class="sidebar-link">
                                     <i class="fas fa-file-alt"></i>
                                     <span>Pengajuan</span>
                                 </a>
@@ -60,7 +60,7 @@
                             </li>
                             <li class="sidebar-item
                             {{ Request::route()->action['as'] == 'application.index' ? 'active' : null }}">
-                                <a href="{{ route('application.index', ['approve_status' => '2']) }}" class="sidebar-link">
+                                <a href="{{ route('application.index', ['approve_status' => '1,2']) }}" class="sidebar-link">
                                     <i class="fas fa-file-alt"></i>
                                     <span>Pengajuan</span>
                                 </a>
@@ -88,7 +88,7 @@
                                     <span>Pengajuan</span>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="pengajuanDropdown">
-                                <li>
+                                    <li>
                                         <a href="{{ route('application.index') }}" class="dropdown-item">
                                             Semua Pengajuan
                                         </a>
@@ -105,7 +105,6 @@
                                     </li>
                                 </ul>
                             </li>
-
                             <li class="sidebar-item 
                                 {{ Request::route()->action['as'] == 'unit.index' ? 'active' : null }}">
                                 <a href="{{ route('unit.index') }}" class="sidebar-link">
@@ -121,7 +120,6 @@
                                 </a>
                             </li>
                         @endif
-
                         <hr>
                         <li class="sidebar-item
                             {{ Request::route()->action['as'] == 'profile' ? 'active' : null }}">

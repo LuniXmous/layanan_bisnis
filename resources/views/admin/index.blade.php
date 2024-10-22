@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
 @section('content')
 <div class="container">
     <div class="row mt-3">
@@ -10,7 +10,7 @@
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body text-center">
-                <h3>{{ $jumlahPengajuan }}</h3>
+                <h3><i class="fa-solid fa-file"></i> {{ $jumlahPengajuan }}</h3>
                     <p>JUMLAH PENGAJUAN</p>
                     <a href="{{ route('application.index') }}" class="btn btn-primary btn-sm">Lihat Detail >></a>
                 </div>
@@ -19,7 +19,7 @@
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body text-center">
-                <h3>{{ $jumlahSelesai }}</h3>
+                <h3><i class="fa-solid fa-square-check"></i> {{ $jumlahSelesai }}</h3>
                     <p>JUMLAH SELESAI</p>
                     <a href="{{ route('application.index', ['approve_status' => '4']) }}" class="btn btn-primary btn-sm">Lihat Detail >></a>
                 </div>
@@ -28,7 +28,7 @@
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body text-center">
-                <h3>{{ $jumlahOnProgress }}</h3>
+                <h3><i class="fa-solid fa-bars-progress"></i> {{ $jumlahOnProgress }}</h3>
                     <p>JUMLAH ON PROGRESS</p>
                     <a href="{{ route('application.index', ['approve_status' => '1,2']) }}" class="btn btn-primary btn-sm">Lihat Detail >></a>
                 </div>
@@ -37,7 +37,7 @@
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body text-center">
-                <h3>{{ $jumlahPengguna }}</h3>
+                <h3><i class="fa-solid fa-users"></i> {{ $jumlahPengguna }}</h3>
                     <p>JUMLAH PENGGUNA</p>
                     <a href="{{ route('user.index') }}" class="btn btn-primary btn-sm">Lihat Detail >></a>
                 </div>

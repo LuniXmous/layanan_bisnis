@@ -52,7 +52,6 @@ class ApplicationController extends Controller
             return redirect()->back();
         }
     }
-
     
 
     public function index(Request $request)
@@ -60,102 +59,83 @@ class ApplicationController extends Controller
     if ($request->ajax()) {
         $applications = Application::query();
 
-        // Jika ada approve_status, lakukan filter
+        // Filter berdasarkan role
+        if (Auth::user()->role->id == 0) {
+            // Admin bisa melihat semua aplikasi
+            $applications->orderBy('updated_at', 'desc');
+        } else if (Auth::user()->role->id == 2) {
+            // Admin Unit: status = 1, approve_status = 0
+            $applications->where("status", 1)->where("approve_status", 0)->orderBy('updated_at', 'desc');
+        } else if (Auth::user()->role->id == 4) {
+            // Wakil Direktur 4: status = 1, approve_status = 2 atau status > 1, approve_status = 1
+            $applications->where(function($query) {
+                $query->where("status", 1)->where("approve_status", 2)
+                      ->orWhere("status", ">", 1)->where("approve_status", 1);
+            })->orderBy('updated_at', 'desc');
+        } else if (Auth::user()->role->id == 3) {
+            // Wakil Direktur 2: status > 1, approve_status = 2
+            $applications->where("status", ">", 1)->where("approve_status", 2)->orderBy('updated_at', 'desc');
+        } else if (Auth::user()->role->id == 5) {
+            // Direktur: status = 1, approve_status = 3
+            $applications->where("status", 1)->where("approve_status", 3)->orderBy('updated_at', 'desc');
+        } else {
+            // Applicant: hanya aplikasi milik user sendiri
+            $applications = Auth::user()->application();
+        }
+
+        // Filter berdasarkan approve_status (tambahan filter jika diperlukan)
         if ($request->has('approve_status') && $request->approve_status !== '') {
             if ($request->approve_status === '1,2,3,4') {
+                // Tidak ada filter, tampilkan semua
             } elseif ($request->approve_status === '1,2') {
+                // Filter untuk approve_status 1 atau 2
                 $applications->whereIn('approve_status', [1, 2]);
             } else {
+                // Filter untuk approve_status tertentu
                 $applications->where('approve_status', $request->approve_status);
             }
         }
-        return DataTables::of($applications->get())
+
+        // Menghasilkan JSON untuk DataTable
+        $json = DataTables::collection($applications->get())
             ->addIndexColumn()
-            ->addColumn('title', function($row){
-                return '<a href="' . route('application.detail', ['identifier' => $row->id]) . '">' . $row->title . '</a>';
+            ->addColumn('title', function ($row) {
+                return '<a href="' . route('application.detail', ['identifier' => $row->id]) . '"> ' . $row->title . ' </a>';
             })
-            ->addColumn('applicant_name', function($row){
-                return $row->user->name;
+            ->addColumn('updated_at', function ($row) {
+                return Carbon::parse($row->updated_at)->translatedFormat('d F Y, H:i');
             })
-            ->addColumn('unit_name', function($row){
+            ->addColumn('created_at', function ($row) {
+                return Carbon::parse($row->created_at)->translatedFormat('d F Y, H:i');
+            })
+            ->addColumn('applicant_name', function ($row) {
+                if (Auth::user()->role_id == 0) {
+                    return $row->user->name . ' (' . $row->user->email . ')';
+                } else {
+                    return $row->user->name;
+                }
+            })
+            ->addColumn('unit_name', function ($row) {
                 return $row->activity->unit->name;
             })
-            ->addColumn('category_name', function($row){
+            ->addColumn('category_name', function ($row) {
                 return $row->activity->category->name;
             })
-            ->addColumn('activity_name', function($row){ 
-                return $row->activity->name; 
+            ->addColumn('activity_name', function ($row) {
+                return $row->activity->name;
             })
-            ->addColumn('status_applicant', function($row){
-                return '<span class="badge ' . $row->statusAlias()['class'] . '">' . $row->statusAlias()['status'] . '</span>';
+            ->addColumn('status_applicant', function ($row) {
+                return '<span class="badge ' . $row->statusAlias()['class'] . '"> ' . $row->statusAlias()['status'] . ' </span>';
             })
-            ->addColumn('created_at', function($row){
-                return Carbon::parse($row->created_at)->format('d-m-Y H:i');
-            })
-            ->rawColumns(['title', 'status_applicant'])
-            ->make(true);
+            ->rawColumns(['title', 'applicant_name', 'unit_name', 'category_name', 'status_applicant', 'activity_name'])
+            ->toJson();
+        return $json;
     }
+
     return view('application.index');
 }
 
 
-    // public function updateStatus(Request $request, $id)
-    // {
-    //     $application = Application::findOrFail($id);
-        
-    //     $oldStatus = $application->status; // Ambil status lama
-    //     $newStatus = $request->input('status'); // Ambil status baru dari request
-    
-    //     // Update status aplikasi
-    //     $application->status = $newStatus;
-    //     $application->save();
-    
-    //     // Simpan log status
-    //     ApplicationStatusLog::create([
-    //         'application_id' => $application->id,
-    //         'old_status' => $oldStatus,
-    //         'new_status' => $newStatus,
-    //     ]);
-    
-    //     return redirect()->back()->with('success', 'Status updated successfully.');
-    // }
-    
-
-    //     public function generateStatusTimeline($submissionLogs, $application)
-    // {
-    //     $html = '<div style="display: flex; justify-content: flex-start; align-items: flex-start; position: relative; margin: 20px auto; padding: 0; width: 100%; max-width: 900px;">';
-
-    //     foreach ($submissionLogs as $log) {
-    //         $statusText = '';
-
-    //         // Tentukan status text berdasarkan status log
-    //         if ($log->status == 1) {
-    //             $statusText = 'Setelah Direview Admin';
-    //         } elseif ($log->status == 2) {
-    //             $statusText = 'Telah di res';
-    //         } elseif ($log->status == 3) {
-    //             $statusText = 'Direview Oleh ' . $log->user->name;
-    //         } elseif ($log->status == 4) {
-    //             $statusText = 'Telah di review Wakil Direktur 4';
-    //         } elseif ($log->status == 5) {
-    //             $statusText = 'Telah di review blalalalal';
-    //         }
-
-    //         // Append HTML untuk setiap status
-    //         $html .= '
-    //             <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
-    //                 <div style="width: 30px; height: 30px; border-radius: 50%; background-color: #4caf50; margin-bottom: 10px;"></div>
-    //                 <p style="font-size: 14px; text-align: center;">' . $statusText . '</p>
-    //             </div>';
-    //     }
-
-    //     // Tambahkan waktu update dari aplikasi
-    //     $html .= '<p style="font-size: 14px; text-align: center;">' . $application->updated_at . '</p>';
-
-    //     $html .= '</div>';
-
-    //     return $html;
-    // }
 
     public function showSubmissionLog($id)
     {
@@ -167,39 +147,6 @@ class ApplicationController extends Controller
         return view('application.detail', compact('application', 'submissionLogs'));
     }
     
-//     public function reviewAdmin(Request $request)
-// {
-//     if ($request->ajax()) {
-//         $data = Application::where('status', 'Menunggu Review Admin')->get();
-//         $json = DataTables::collection($data)
-//             ->addIndexColumn()
-//             ->addColumn('action', function($row){
-//                 // action buttons
-//                 return '<a href="'.route('application.show', $row->id).'" class="btn btn-sm btn-info">Detail</a>';
-//             })
-//             ->toJson();
-//         return $json;
-//     }
-//     return view('application.index');
-// }
-
-// public function reviewWadir4(Request $request)
-// {
-//     if ($request->ajax()) {
-//         $data = Application::where('status', 'Menunggu Review Wakil Direktur 4')->get();
-//         $json = DataTables::collection($data)
-//             ->addIndexColumn()
-//             ->addColumn('action', function($row){
-//                 // action buttons
-//                 return '<a href="'.route('application.show', $row->id).'" class="btn btn-sm btn-info">Detail</a>';
-//             })
-//             ->toJson();
-//         return $json;
-//     }
-//     return view('application.index');
-// }
-
-
 
     public function indexTebusan(Request $request)
     {
@@ -266,7 +213,6 @@ class ApplicationController extends Controller
 
         //checking logic
         $comment = $this->comment($application);
-
         $extraType = "";
         if ($application->status > 1 && $application->status != 4) {
             $extraType = ExtraApplication::where("application_id", $application->id)->latest()->first()?->typeAlias();
@@ -517,7 +463,7 @@ class ApplicationController extends Controller
         ]);
 
         // Simpan status lama sebelum diperbarui
-        $status = $application->approve_status;
+        $status = $application->approve_status;  
 
         // Update status persetujuan
         $application->update([
@@ -525,15 +471,8 @@ class ApplicationController extends Controller
             "note" => null,
         ]);
 
-        // // Simpan log perubahan status
-        // sdd($status);
-        ApplicationStatusLog::create([
-            'application_id' => $application->id,
-            'approve_status' => $status + 1,
-            'user_id'=> Auth::User()->id,
-            'role_id'=> Auth::User()->role_id,
-        ]);
-
+        // dd($status);
+        
         $extraApp = "";
         if ($application->activity->category_id == 1) {
             if ($application->status == 2) {
@@ -546,7 +485,7 @@ class ApplicationController extends Controller
                 $extraApp = "Pengajuan Pemberitahuan Kegiatan Selesai Dilaksanakan";
             }
         }
-
+        
         //kirim email
         $users = [];
         //kirim email tebusan
@@ -569,7 +508,7 @@ class ApplicationController extends Controller
                 \Mail::to($application->user->email)->send(new \App\Mail\approveExtraApplicationMail($application, ExtraApplication::where("application_id", $application->id)->latest("created_at")->first()));
             }
         }
-
+        
         foreach ($users as $user) {
             \Mail::to($user->email)->send(new \App\Mail\reviewMail($application, $extraApp));
         }
@@ -578,6 +517,13 @@ class ApplicationController extends Controller
                 \Mail::to($user->email)->send(new \App\Mail\tebusanMail($application));
             }
         }
+ 
+        ApplicationStatusLog::create([
+            'application_id' => $application->id,
+            'approve_status' => $status,
+            'user_id'=> Auth::User()->id,
+            'role_id'=> Auth::User()->role_id,
+        ]);
 
         return redirect()->route('application.index')->with(["success" => "Permintaan telah disetujui"]);
     }
@@ -649,6 +595,14 @@ class ApplicationController extends Controller
                 \Mail::to($user->email)->send(new \App\Mail\tebusanMail($application));
             }
         }
+        $status = $application->approve_status;  
+        
+            ApplicationStatusLog::create([
+                'application_id' => $application->id,
+                'approve_status' => $status,
+                'user_id'=> Auth::User()->id,
+                'role_id'=> Auth::User()->role_id,
+            ]);
 
         return redirect()->route('application.index')->with(["success" => "Permintaan telah disetujui"]);
     }
