@@ -7,12 +7,12 @@
         <h3 class="mb-4">Selamat Datang {{ Auth::user()->name }}!</h3>
     @endif
         <!-- Statistik Panel -->
-        <div class="col-md-3">
+        <div class="col-md-13">
             <div class="card">
                 <div class="card-body text-center">
-                <h3><i class="fa-solid fa-file"></i> {{ $jumlahPengajuan }}</h3>
-                    <p>JUMLAH PENGAJUAN</p>
-                    <a href="{{ route('application.index') }}" class="btn btn-primary btn-sm">Lihat Detail >></a>
+                <h1>Dana Masuk Tahun {{ $year }}</h1>
+                    <h5>Total Nominal: Rp. {{ number_format($totalNominal, 2, ',', '.') }}</h5><br>
+                    <a href="{{ route('application.report') }}" class="btn btn-primary btn-sm">Lihat Detail >></a>
                 </div>
             </div>
         </div>
@@ -20,8 +20,8 @@
             <div class="card">
                 <div class="card-body text-center">
                 <h3><i class="fa-solid fa-file"></i> {{ $jumlahPengajuan }}</h3>
-                    <p>LAPORAANNnn</p>
-                    <a href="{{ route('application.report') }}" class="btn btn-primary btn-sm">Lihat Detail >></a>
+                    <p>JUMLAH PENGAJUAN</p>
+                    <a href="{{ route('application.index') }}" class="btn btn-primary btn-sm">Lihat Detail >></a>
                 </div>
             </div>
         </div>
@@ -56,21 +56,20 @@
 
     <!-- Chart Section -->
     <div class="row mt-2">
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-body">
-                <h5 for="jurusan">Jurusan :</h5>
-                <select id="jurusan" class="form-control mb-3">
-                    <option value="TIK">Teknik Informatika</option>
-                    <option value="Mesin">Teknik Mesin</option>
-                    <option value="Elektro">Teknik Elektro</option>
-                    <option value="Sipil">Teknik Sipil</option>
-                </select>
-                <canvas id="barChart"></canvas>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 for="jurusan">Jurusan :</h5>
+                    <select id="jurusan" class="form-control mb-3">
+                        <option value="TIK">Teknik Informatika</option>
+                        <option value="Mesin">Teknik Mesin</option>
+                        <option value="Elektro">Teknik Elektro</option>
+                        <option value="Sipil">Teknik Sipil</option>
+                    </select>
+                    <canvas id="barChart"></canvas>
+                </div>
             </div>
         </div>
-    </div>
-
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
