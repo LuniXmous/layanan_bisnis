@@ -233,7 +233,8 @@ class ApplicationController extends Controller
         ->orderBy('created_at', 'desc')->get();
 
         // Ambil data rekap dana terkait dengan application
-        $rekapDana = RekapDana::where('extra_application_id', $application->id)->get();
+        // dd(RekapDana::where('application_id', $application->id)->get());
+        $rekapDana = RekapDana::where('application_id',$application->id)->get();
 
     // Return view with all necessary data
     return view('application.detail', [
@@ -298,7 +299,6 @@ class ApplicationController extends Controller
     public function applyExtra(Request $request, $id)
     {
         $application = Application::findOrFail($id);
-
         // Validasi untuk input nominal
         $request->validate([
             "title" => "required",
@@ -307,6 +307,7 @@ class ApplicationController extends Controller
             "nominal" => "required|numeric|min:0", // Validasi untuk nominal
         ]);
 
+        
         if ($request->has('extra_application_id')) {
             $extraApplication = ExtraApplication::find($request->extra_application_id);
             if ($extraApplication) {
@@ -320,6 +321,10 @@ class ApplicationController extends Controller
                 "title" => "required",
                 "description" => "required",
                 "lampiran.transfer" => "required",
+            ]);
+            RekapDana::create([
+                'application_id' => $request->id,
+                'nominal' => $request->nominal
             ]);
             $extraApplication = ExtraApplication::create(
                 [
@@ -340,6 +345,7 @@ class ApplicationController extends Controller
                     'ext' => "img",
                     'file' => $name,
                 ]);
+        
                 $application->update([
                     "status" => $application->status + 1,
                     "approve_status" => 1,
@@ -455,6 +461,7 @@ class ApplicationController extends Controller
                 $extraApp = "Pengajuan Pemberitahuan Kegiatan Selesai Dilaksanakan";
             }
         }
+
 
         $users = User::where("role_id", 4)->get();
         foreach ($users as $user) {
@@ -617,7 +624,6 @@ class ApplicationController extends Controller
 
         ApplicationStatusLog::create([
             'application_id' => $application->id,
-            'status' => $status,  // Masukkan nilai status
             'approve_status' => $approve_status,  // Masukkan nilai approve_status
             'user_id' => Auth::user()->id,
             'role_id' => Auth::user()->role_id,
