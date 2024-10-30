@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row mt-3">
-    @if (Auth::user()->role->alias == 'admin' || Auth::user()->role->alias == 'wadir4')
+    @if (Auth::user()->role->alias == 'admin')
         <h3 class="mb-4">Selamat Datang {{ Auth::user()->name }}!</h3>
     @endif
         <!-- Statistik Panel -->
@@ -75,75 +75,90 @@
 @endsection
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-@section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // Data for each department
-    const dataByJurusan = {
-        TIK: [4, 3, 2, 1],     // Data untuk Teknik Informatika
-        Mesin: [3, 2, 4, 2],   // Data untuk Teknik Mesin
-        Elektro: [1, 2, 3, 2], // Data untuk Teknik Elektro
-        Sipil: [2, 3, 1, 4]    // Data untuk Teknik Sipil
-    };
-
-    // Initialize the chart
-    var ctxBar = document.getElementById('barChart').getContext('2d');
-    var barChart = new Chart(ctxBar, {
-        type: 'bar',
-        data: {
-            labels: ['Jasa', 'Pelatihan', 'Inovasi', 'Produk'],
-            datasets: [{
-                label: 'Jumlah',
-                data: dataByJurusan['TIK'], // default data for Teknik Informatika
-                backgroundColor: ['rgba(54, 162, 235, 0.6)'],
-                borderColor: ['rgba(54, 162, 235, 1)'],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        stepSize: 1
+@section('script')
+    <script src="{{ asset('assets/extensions/datatables.net-bs5/js/datatables.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Initialize pie and bar charts
+        var ctxBar = document.getElementById('barChart').getContext('2d');
+        var ctxPie = document.getElementById('pieChart').getContext('2d');
+        
+        var barChart = new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['Jasa', 'Pelatihan', 'Inovasi', 'Produk'],  // Static labels, adjust as needed
+                datasets: [{
+                    label: 'Jumlah',
+                    data: [],  // Data to be dynamically updated
+                    backgroundColor: ['rgba(54, 162, 235, 0.6)'],
+                    borderColor: ['rgba(54, 162, 235, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
                     }
                 }
             }
+        });
+        var pieChart = new Chart(ctxPie, {
+            type: 'pie',
+            data: {
+                labels: [],  // Unit names
+                datasets: [{
+                    label: 'Jumlah Unit',
+                    data: [],  // Activity counts for each unit
+                    backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#9966ff'], // Adjust colors as needed
+                    hoverOffset: 4
+                }]
+            }
+        });
+        // Fetch data from server and update the charts
+        function loadChartData() {
+            $.ajax({
+                url: '{{ route("unit.index", ["for" => "charts"]) }}',  // Fetch chart data
+                method: 'GET',
+                success: function(response) {
+                    var chartData = response.chartData;
+
+                    // Update pie chart (unit names and activity counts)
+                    pieChart.data.labels = chartData.units;
+                    pieChart.data.datasets[0].data = chartData.activityCounts;
+                    pieChart.update();
+
+                    // Update bar chart (activity breakdown by unit)
+                    barChart.data.datasets[0].data = chartData.activityBreakdown.map(function(item) {
+                        return item.categories.reduce(function(a, b) { return a + b; }, 0); // Sum of all categories for each unit
+                    });
+                    barChart.update();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Failed to load chart data:', error);
+                }
+            });
         }
-    });
-
-    // Update the chart based on selected jurusan
-    document.getElementById('jurusan').addEventListener('change', function() {
-        const selectedJurusan = this.value;
-        barChart.data.datasets[0].data = dataByJurusan[selectedJurusan];
-        barChart.update();
-    });
-
-    // Update the chart based on selected jurusan
-    document.getElementById('jurusan').addEventListener('change', function() {
-        const selectedJurusan = this.value;
-        barChart.data.datasets[0].data = dataByJurusan[selectedJurusan];
-        barChart.update();
-    });
-
-    // Pie chart configuration
-    var ctxPie = document.getElementById('pieChart').getContext('2d');
-    var pieChart = new Chart(ctxPie, {
-        type: 'pie',
-        data: {
-            labels: ['TIK', 'Teknik Mesin', 'Teknik Elektro', 'Teknik Sipil'],
-            datasets: [{
-                label: 'Jumlah Unit',
-                data: [10, 16, 11, 14],
-                backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#9966ff'],
-                hoverOffset: 4
-            }]
-        }
-    });
-</script>
+        // Initialize DataTable
+        var table = $('#datatable').DataTable({
+            ajax: '{{ route("unit.index") }}',  // DataTables AJAX without chart query parameter
+            serverSide: true,
+            processing: true,
+            columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                {data: 'name'},
+                {data: 'activities', name: 'activities'},
+                {data: 'action', name: 'action', orderable: false, searchable: false}
+            ]
+        });
+        // Call the function to load chart data
+        loadChartData();
+    </script>
 @endsection
+
 
 
 

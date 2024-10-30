@@ -10,6 +10,7 @@ class ApplicationStatusLog extends Model
 
     protected $fillable = [
         'application_id',
+        'status',
         'approve_status',
         'role_id',
         'user_id',

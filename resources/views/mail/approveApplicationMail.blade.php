@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    
+                                                          
     <p>permintaan layanan bisnis anda telah diterima, dengan detail :</p>
     <table>
         <tr>

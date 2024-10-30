@@ -130,6 +130,4 @@
           <img src="{{ asset('assets/images/background pnj.jpeg') }}" alt="Enterprise" style="width: 350px; height: auto; border-radius: 10%;">
         </div>
       </div>
-      
-
 @endsection

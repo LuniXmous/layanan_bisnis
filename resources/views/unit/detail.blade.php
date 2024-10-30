@@ -4,7 +4,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <div class="card-title fw-bold h4">Layanan Unit</div>
+            <div class="card-title fw-bold h4"></div>
         </div>
         <div class="card-body">
             <button onclick="newActivity()" class="btn btn-primary mb-3"><i class="fas fa-plus-circle"></i>&nbsp; Tambah</button>

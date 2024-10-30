@@ -36,12 +36,13 @@
                         @if (Auth::user()->role->alias != 'admin' && Auth::user()->role->alias != 'wadir4')
                             <li class="sidebar-item
                             {{ Request::route()->action['as'] == 'application.index' ? 'active' : null }}">
-                                <a href="{{ route('application.index', ['approve_status' => '1']) }}" class="sidebar-link">
+                                    <a href="{{ route('application.index') }}" class="sidebar-link">
                                     <i class="fas fa-file-alt"></i>
                                     <span>Pengajuan</span>
                                 </a>
                             </li>
                         @endif
+                        <!-- sidebar wadir 2 -->
                         @if (Auth::user()->role->alias == 'wadir2' || env('GOD_MODE'))
                             <li class="sidebar-item">
                                 <a href="{{ route('application.tebusan') }}" class="sidebar-link">
@@ -50,14 +51,8 @@
                                 </a>
                             </li>
                         @endif
+                        <!-- sidebar wadir 4 -->
                         @if (Auth::user()->role->alias == 'wadir4' || env('GOD_MODE'))
-                            <li class="sidebar-item 
-                                {{ Request::route()->action['as'] == 'dashboard' ? 'active' : null }}">
-                                <a href="{{ route('dashboard') }}" class="sidebar-link">
-                                    <i class="fas fa-th-large"></i>
-                                    <span>Dashboard</span>
-                                </a>
-                            </li>
                             <li class="sidebar-item
                             {{ Request::route()->action['as'] == 'application.index' ? 'active' : null }}">
                                 <a href="{{ route('application.index', ['approve_status' => '1,2']) }}" class="sidebar-link">
@@ -65,14 +60,8 @@
                                     <span>Pengajuan</span>
                                 </a>
                             </li>
-                            <li class="sidebar-item
-                            {{ Request::route()->action['as'] == 'user.index' ? 'active' : null }}">
-                                <a href="{{ route('user.index') }}" class="sidebar-link">
-                                    <i class="fas fa-users"></i>
-                                    <span>Pengguna</span>
-                                </a>
-                            </li>    
                         @endif
+                        <!-- sidebar admin -->
                         @if (Auth::user()->role->alias == 'admin' || env('GOD_MODE'))
                             <li class="sidebar-item 
                                 {{ Request::route()->action['as'] == 'dashboard' ? 'active' : null }}">

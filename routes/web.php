@@ -96,9 +96,9 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
             // Route::post('/{id}/edit/extra', [App\Http\Controllers\ApplicationController::class, 'updateExtra'])->name('extra.update');
             Route::get('/{id}/done', [App\Http\Controllers\ApplicationController::class, 'done'])->name('done');
             Route::post('/{id}/applys', [App\Http\Controllers\ApplicationController::class, 'applyExtra'])->name('applyExtra');
-    
-        });
+            Route::post('/rekap-dana', [App\Http\Controllers\RekapDanaController::class, 'store'])->name('rekapDana.store');
 
+        });
         // ? MIDDLEWARE ROLE ADMIN, WADIR 4, DIREKTUR, ADMIN UNIT
         // Route::group(['middleware' => 'isAdmin', 'isAdminUnit', 'isWadir4', 'isDirektur'], function () {
         Route::get('/{id}/approve', [App\Http\Controllers\ApplicationController::class, 'approve'])->name('approve');
@@ -112,17 +112,6 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
         // Add the new route here
         Route::get('/{id}/submission-log', [App\Http\Controllers\ApplicationController::class, 'showSubmissionLog'])->name('submissionLog');
         Route::get('/{identifier}', [App\Http\Controllers\ApplicationController::class, 'show'])->name('detail');
-    Route::get('/data', [App\Http\Controllers\ApplicationController::class, 'getData'])->name('data');
-    });
-    // Grup route manajemen pengguna
-        Route::group(['middleware' => ['isAdminOrWadir4']], function () {
-            Route::prefix('pengguna')->name('user.')->group(function () {
-                Route::get('', [App\Http\Controllers\UserController::class, 'index'])->name('index');
-                Route::get('create', [App\Http\Controllers\UserController::class, 'create'])->name('create');
-                Route::post('create', [App\Http\Controllers\UserController::class, 'store'])->name('store');
-                Route::get('{id}/delete', [App\Http\Controllers\UserController::class, 'deleteUser'])->name('delete');
-            });
-    });
-    Route::get('application/adminData', [App\Http\Controllers\ApplicationController::class, 'adminData'])->name('application.adminData');
-    Route::get('application/wadir4Data', [App\Http\Controllers\ApplicationController::class, 'wadir4Data'])->name('application.wadir4Data');    
+        Route::get('/data', [App\Http\Controllers\ApplicationController::class, 'getData'])->name('data');
+    }); 
 });

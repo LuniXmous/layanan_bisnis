@@ -50,7 +50,6 @@
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}">
 @endsection
-
 @section('script')
     <script src="{{ asset('assets/extensions/datatables.net-bs5/js/datatables.min.js') }}"></script>
     <script>
@@ -59,9 +58,9 @@
             serverSide: true,
             processing: true,
             columns: [
-                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                 {data: 'name'},
-                {data: 'activities', name: 'activities'},
+                {data: 'activities', name: 'activities'},   
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });

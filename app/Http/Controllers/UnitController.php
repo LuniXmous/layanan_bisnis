@@ -11,15 +11,58 @@ use Illuminate\Support\Facades\Auth;
 
 class UnitController extends Controller
 {
-
     public function index(Request $request)
-    {
-        if ($request->ajax()) {
+{
+    if ($request->ajax()) {
+        // Check if this request is for DataTables or chart data
+        if ($request->has('for') && $request->get('for') == 'charts') {
+            // Handle the chart data request
+
+            // Fetch all units along with their activities
+            $data = Unit::with('activity')->get();
+
+            // Prepare data for the pie and bar charts
+            $chartData = [
+                'units' => [],
+                'activityCounts' => [],
+                'activityBreakdown' => [],
+            ];
+
+            foreach ($data as $unit) {
+                // Add unit name for the pie chart
+                $chartData['units'][] = $unit->name;
+
+                // Total activities for each unit (for pie chart)
+                $chartData['activityCounts'][] = $unit->activity->count();
+
+                // Breakdown by category (for bar chart)
+                $categories = Category::all();
+                $categoryCounts = [];
+
+                foreach ($categories as $category) {
+                    $count = $unit->activity->where('category_id', $category->id)->count();
+                    $categoryCounts[] = $count;
+                }
+                $chartData['activityBreakdown'][] = [
+                    'unit' => $unit->name,
+                    'categories' => $categoryCounts
+                ];
+            }
+
+            // Return only chart data for this request
+            return response()->json([
+                'chartData' => $chartData
+            ]);
+        } else {
+            // Handle DataTables data
+
+            // Fetch units for DataTables
             $data = Unit::all();
+
             $json = DataTables::collection($data)
                 ->addIndexColumn()
                 ->addColumn('activities', function ($row) {
-                    return $row->activity->count();
+                    return $row->activity->count(); // Count the activities for DataTable
                 })
                 ->addColumn('action', function ($row) {
                     $html = '
@@ -36,10 +79,14 @@ class UnitController extends Controller
                 })
                 ->rawColumns(['activities', 'action'])
                 ->toJson();
+
             return $json;
         }
-        return view('unit.index');
     }
+
+    return view('unit.index');
+}
+
 
     public function show(Request $request, $id)
     {

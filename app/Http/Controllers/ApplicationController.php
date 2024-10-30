@@ -11,6 +11,7 @@ use App\Models\Document;
 use App\Models\ExtraApplication;
 use App\Models\ExtraApplicationDocument;
 use App\Models\ApplicationStatusLog;
+use App\Models\RekapDana;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Unit;
 use DataTables;
@@ -63,9 +64,9 @@ class ApplicationController extends Controller
         if (Auth::user()->role->id == 0) {
             // Admin bisa melihat semua aplikasi
             $applications->orderBy('updated_at', 'desc');
-        } else if (Auth::user()->role->id == 2) {
+        } else if (Auth::user()->role->id == 1) {
             // Admin Unit: status = 1, approve_status = 0
-            $applications->where("status", 1)->where("approve_status", 0)->orderBy('updated_at', 'desc');
+            $applications->orderBy('updated_at', 'desc');
         } else if (Auth::user()->role->id == 4) {
             // Wakil Direktur 4: status = 1, approve_status = 2 atau status > 1, approve_status = 1
             $applications->where(function($query) {
@@ -134,7 +135,6 @@ class ApplicationController extends Controller
 
     return view('application.index');
 }
-
 
 
     public function showSubmissionLog($id)
@@ -232,8 +232,8 @@ class ApplicationController extends Controller
         $submissionLogs = ApplicationStatusLog::where('application_id', $application->id)
         ->orderBy('created_at', 'desc')->get();
 
-    // Generate HTML for status timeline
-    // $statusTimelineHtml = $this->generateStatusTimeline($submissionLogs, $application);
+        // Ambil data rekap dana terkait dengan application
+        $rekapDana = RekapDana::where('extra_application_id', $application->id)->get();
 
     // Return view with all necessary data
     return view('application.detail', [
@@ -242,7 +242,7 @@ class ApplicationController extends Controller
         "extraType" => $extraType,
         "extraApp" => $extraApp,
         "comment" => $comment,
-        // "statusTimelineHtml" => $statusTimelineHtml,
+        "rekapDana" => $rekapDana,
     ]);
     }
 
@@ -298,6 +298,22 @@ class ApplicationController extends Controller
     public function applyExtra(Request $request, $id)
     {
         $application = Application::findOrFail($id);
+
+        // Validasi untuk input nominal
+        $request->validate([
+            "title" => "required",
+            "description" => "required",
+            "lampiran.transfer" => "required",
+            "nominal" => "required|numeric|min:0", // Validasi untuk nominal
+        ]);
+
+        if ($request->has('extra_application_id')) {
+            $extraApplication = ExtraApplication::find($request->extra_application_id);
+            if ($extraApplication) {
+                $extraApplication->nominal = $request->input('nominal');
+                $extraApplication->save();
+            }
+        }
         //check if exist?
         if ($application->activity->category_id == 1) {
             $request->validate([
@@ -595,14 +611,17 @@ class ApplicationController extends Controller
                 \Mail::to($user->email)->send(new \App\Mail\tebusanMail($application));
             }
         }
-        $status = $application->approve_status;  
-        
-            ApplicationStatusLog::create([
-                'application_id' => $application->id,
-                'approve_status' => $status,
-                'user_id'=> Auth::User()->id,
-                'role_id'=> Auth::User()->role_id,
-            ]);
+        $status = $application->status ?? 1;  // Gunakan nilai default jika null, misal 1
+         // Ambil nilai untuk kolom 'status'
+        $approve_status = $application->approve_status;  // Ambil nilai untuk kolom 'approve_status'
+
+        ApplicationStatusLog::create([
+            'application_id' => $application->id,
+            'status' => $status,  // Masukkan nilai status
+            'approve_status' => $approve_status,  // Masukkan nilai approve_status
+            'user_id' => Auth::user()->id,
+            'role_id' => Auth::user()->role_id,
+        ]);
 
         return redirect()->route('application.index')->with(["success" => "Permintaan telah disetujui"]);
     }

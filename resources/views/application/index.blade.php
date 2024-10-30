@@ -10,7 +10,6 @@
             @if (Auth::user()->role->alias == 'applicant')
                 <a class="btn btn-md btn-primary mb-4" href="{{ route('application.create') }}"><i class="fas fa-plus"></i>&nbsp; Buat Pengajuan Baru</a>
             @endif
-
             <div class="table-responsive">
                 <table class="table table-striped w-100 table-bordered table-xs table-hover" id="datatable-ajax">
                     <thead>
@@ -36,43 +35,55 @@
     <link rel="stylesheet" href="{{ asset('assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}">
 @endsection
 @section('script')
-    <script src="{{ asset('assets/extensions/datatables.net-bs5/js/datatables.min.js') }}"></script>
+<script src="{{ asset('assets/extensions/datatables.net-bs5/js/datatables.min.js') }}"></script>
     <script>
         $('#datatable-ajax').DataTable({
-    ajax: '',
-    serverSide: true,
-    processing: true,   
-    order: [[8, 'desc']],
-    columns: [
-        { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-        { data: 'title' },
-        { data: 'applicant_name', name: 'applicant_name' },
-        { data: 'unit_name', name: 'unit_name' },
-        { data: 'category_name', name: 'category_name' },
-        { data: 'activity_name', name: 'activity_name' },
-        { data: 'status_applicant', name: 'status_applicant' },
-        { data: 'created_at' },
-        {
-            data: 'updated_at',
-            render: function(data, type, full, meta) {
-                // Memformat tanggal menggunakan JavaScript
-                var date = new Date(data);
-                return date.toLocaleDateString('id-ID', {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-            }
-        }
-    ],
-    columnDefs: [{
-        render: function(data, type, full, meta) {
-            return "<div class='text-nowrap'>" + data + "</div>";
-        },
-        targets: [1, 2, 3, 4, 5, 6, 7]
-    }]
-});
+            ajax: '',
+            serverSide: true,
+            processing: true,
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'title'
+                },
+                {
+                    data: 'applicant_name',
+                    name: 'applicant_name'
+                },
+                {
+                    data: 'unit_name',
+                    name: 'unit_name'
+                },
+                {
+                    data: 'category_name',
+                    name: 'category_name'
+                },
+                {
+                    data: 'activity_name',
+                    name: 'activity_name'
+                },
+                {
+                    data: 'status_applicant',
+                    name: 'status_applicant'
+                },
+                {
+                    data: 'created_at',
+                },
+                {
+                    data: 'updated_at',
+                },
+            ],
+            columnDefs: [{
+                render: function(data, type, full, meta) {
+                    return "<div class='text-nowrap'>" + data + "</div>";
+                },
+                targets: [1, 2, 3, 4, 5, 6, 7]
+            }]
+        });
     </script>
+</script>
 @endsection

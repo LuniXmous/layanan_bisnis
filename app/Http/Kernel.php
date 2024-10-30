@@ -70,6 +70,5 @@ class Kernel extends HttpKernel
         'isWadir2' => \App\Http\Middleware\isWadir2::class,
         'isWadir4' => \App\Http\Middleware\isWadir4::class,
         'isApplicant' => \App\Http\Middleware\isApplicant::class,
-        'isAdminOrWadir4' => IsAdminOrWadir4::class,
     ];
 }

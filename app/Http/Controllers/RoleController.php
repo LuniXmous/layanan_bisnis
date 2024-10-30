@@ -14,12 +14,19 @@ class RoleController extends Controller
     }
 
     public function checkRole()
-    {
-        if (Auth::user()->status == 1) {
+{
+    $user = Auth::user();
+    // Check if the user's account is active
+    if ($user->status == 1) {
+
+        if ($user->role_id == '0') {
             return redirect(route('dashboard'));
         } else {
-            Auth::logout();
-            return redirect('/login')->with(["error" => "Akun anda belum aktif"]);
+            return redirect('/application');
         }
+    } else {
+        Auth::logout();
+        return redirect('/login')->with(["error" => "Akun anda belum aktif"]);
     }
+}
 }

@@ -91,7 +91,7 @@
             <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
             <div style="margin:0px auto;max-width:600px;">
                 <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
-                    <tbody>
+                    <tbody> 
                         <tr>
                             <td style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;">
                                 <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
@@ -104,7 +104,7 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td style="width:100px;">
-                                                                    <img height="auto" src="{{ asset('assets/images/logo-pnj.png') }}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="100" />
+                                                                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjxyOpHOHhcfVA_n992rBlA2BtMUnyD6ZRxy_3S9SbJhdchhFSX4clAqgX7qZMGgzmZmfY4F1PVvLU7I-S2XbOYtQlHsSiXjmB7rZt-KupLXb1y5VzIGJIjAAvFXNzxwYIik0SMYWv-4E8/s1600/PNJ.png" alt="Logo PNJ" style="height: 100px; width: auto;" />
                                                                 </td>
                                                             </tr>
                                                         </tbody>
