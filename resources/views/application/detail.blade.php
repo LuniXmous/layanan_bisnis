@@ -218,13 +218,17 @@
                         </div>
                         </div>
                         <div class="row border-top pt-4">
-                            <div class="col-xxl-4 col-xl-6">
-                              
-                                @foreach ($rekapDana as $rekap)
-                                    Total Transfer :{{ $rekap->nominal }}
-                                    
-                                @endforeach
+                            <div class="col-xxl-4" style="margin-left:20px;">
                                 <div class="fw-bold h5">Lampiran </div>
+                                <div class="mb-3">
+                                    <span class="fw-bold h6">Total Transfer: </span> &nbsp; <br>
+                                    @foreach ($rekapDana as $rekap)
+                                        Rp.{{ number_format($rekap->nominal, 0, ',', '.') }}
+                                    @endforeach
+                                </div>
+                                <!-- @foreach ($rekapDana as $rekap)
+                                    Total Transfer :{{ $rekap->nominal }}
+                                @endforeach -->
                                 @foreach ($extra->document->whereNotIn('type', ['lainnya', 'extra']) as $file)
                                     <div class="mb-2">
                                         <span role="button" id="document-lampiran" data-type="{{ $file->ext }}"
@@ -235,6 +239,7 @@
                                     </div>
                                 @endforeach
                             </div>
+                            <br/>
                         </div>
                     </div>
                 </div>
@@ -370,7 +375,7 @@
         </div>
     </div>
 @endsection
-
+<!-- modalll -->
 @section('modal')
     @if ($comment)
         <div class="modal fade" id="rejectModal" tabindex="-1">
@@ -414,11 +419,14 @@
                             </div>
                             {{-- disini banyak casenya --}}
                             @if ($application->activity->category->id == 1)
-                                <div class="form-group">
-                                    <label class="mb-2 fw-bold text-capitalize" for="nominal">Nominal Jumlah Uang <span class="text-danger">*</span></label>
-                                    <input type="hidden" name="extra_application_id" value="{{ $application->id }}">
-                                    <input type="number" placeholder="Masukkan Nominal" name="nominal" class="form-control" required>
+                            <div class="form-group">
+                                <label class="mb-2 fw-bold text-capitalize" for="nominal">Nominal Jumlah Uang <span class="text-danger">*</span></label>
+                                <input type="hidden" name="extra_application_id" value="{{ $application->id }}">
+                                <div class="input-group">
+                                    <input type="number" id="nominal" placeholder="Masukkan Nominal" name="nominal" class="form-control" required oninput="updateFormattedValue(this)">
                                 </div>
+                                <div id="formattedValue" class="mt-2" style="font-weight: bold;"></div> <!-- Untuk menampilkan nilai format -->
+                            </div>
                                 <div class="form-group">
                                     <label class="mb-2 fw-bold" for="role_id">Bukti Transfer Mitra (File berupa Gambar/Screenshot)<span
                                             class="text-danger">*</span></label>
@@ -452,8 +460,8 @@
                                     <div class="form-group">
                                         <label class="mb-2 fw-bold text-capitalize" for="nominal">Nominal Jumlah Uang <span class="text-danger">*</span></label>
                                         <input type="hidden" name="extra_application_id" value="{{ $application->id }}">
-                                        <input type="number" placeholder="Masukkan Nominal" name="nominal" class="form-control" required>
-                                    </div>
+                                        <input type="number" placeholder="Masukkan Nominal" name="nominal" class="form-control" required onblur="this.value = this.value.replace(/Rp.|\\.|/g, '').trim();">
+                                        </div>
                                     <div class="form-group">
                                         <label class="mb-2 fw-bold" for="role_id">Bukti Transfer Mitra (File berupa Gambar/Screenshot)<span
                                                 class="text-danger">*</span></label>
@@ -476,8 +484,8 @@
                                     <div class="form-group">
                                         <label class="mb-2 fw-bold text-capitalize" for="nominal">Nominal Jumlah Uang <span class="text-danger">*</span></label>
                                         <input type="hidden" name="extra_application_id" value="{{ $application->id }}">
-                                        <input type="number" placeholder="Masukkan Nominal" name="nominal" class="form-control" required>
-                                    </div>
+                                        <input type="number" placeholder="Masukkan Nominal" name="nominal" class="form-control" required onblur="this.value = this.value.replace(/Rp.|\\.|/g, '').trim();">
+                                        </div>
                                     <div class="form-group">
                                         <label class="mb-2 fw-bold" for="role_id">Bukti Transfer Mitra (File berupa Gambar/Screenshot)<span
                                                 class="text-danger">*</span></label>
@@ -631,5 +639,23 @@
             }
 
         });
+
+        function updateFormattedValue(input) {
+    // Mengambil nilai dari input dan menghilangkan semua karakter non-digit
+    let value = input.value.replace(/[^0-9]/g, '');
+    
+    // Menambahkan titik pemisah ribuan
+    let formattedValue = '';
+    if (value) {
+        formattedValue = 'Rp. ' + parseInt(value).toLocaleString('id-ID'); // Format sebagai ID
+    }
+    
+    // Menampilkan nilai format di elemen lain
+    document.getElementById('formattedValue').innerText = formattedValue;
+    
+    // Menyimpan nilai bersih untuk dikirim ke server
+    input.value = value; // Mengupdate input value dengan nilai numerik
+}
+
     </script>
 @endsection

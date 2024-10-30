@@ -19,6 +19,15 @@
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body text-center">
+                <h3><i class="fa-solid fa-file"></i> {{ $jumlahPengajuan }}</h3>
+                    <p>LAPORAANNnn</p>
+                    <a href="{{ route('application.report') }}" class="btn btn-primary btn-sm">Lihat Detail >></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
                 <h3><i class="fa-solid fa-square-check"></i> {{ $jumlahSelesai }}</h3>
                     <p>JUMLAH SELESAI</p>
                     <a href="{{ route('application.index', ['approve_status' => '4']) }}" class="btn btn-primary btn-sm">Lihat Detail >></a>

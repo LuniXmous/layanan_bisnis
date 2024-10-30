@@ -96,8 +96,6 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
             // Route::post('/{id}/edit/extra', [App\Http\Controllers\ApplicationController::class, 'updateExtra'])->name('extra.update');
             Route::get('/{id}/done', [App\Http\Controllers\ApplicationController::class, 'done'])->name('done');
             Route::post('/{id}/applys', [App\Http\Controllers\ApplicationController::class, 'applyExtra'])->name('applyExtra');
-            Route::post('/rekap-dana', [App\Http\Controllers\RekapDanaController::class, 'store'])->name('rekapDana.store');
-
         });
         // ? MIDDLEWARE ROLE ADMIN, WADIR 4, DIREKTUR, ADMIN UNIT
         // Route::group(['middleware' => 'isAdmin', 'isAdminUnit', 'isWadir4', 'isDirektur'], function () {
@@ -105,6 +103,8 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
         Route::post('/{id}/approve', [App\Http\Controllers\ApplicationController::class, 'approveWithFile'])->name('approveWithFile');
         Route::post('/{id}/reject', [App\Http\Controllers\ApplicationController::class, 'reject'])->name('reject');
         Route::get('/export', [App\Http\Controllers\ApplicationController::class, 'export'])->name('export');
+        Route::get('/report', [App\Http\Controllers\ApplicationController::class, 'report'])->name('report');
+
         // });
         // ? MIDDLEWARE AUTH LOGGED IN, WHATEVER ROLE
         Route::get('', [App\Http\Controllers\ApplicationController::class, 'index'])->name('index');

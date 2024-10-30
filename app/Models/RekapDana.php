@@ -11,8 +11,12 @@ class RekapDana extends Model
     // Atur kolom yang boleh diisi
     protected $fillable = ['application_id', 'nominal'];
 
-    public function Application(){
-        $this->belongsTo('App\Models\Application');
+    // App\Models\RekapDana.php
+    public function application()
+    {
+        return $this->belongsTo(Application::class, 'application_id');
     }
+
+
 }
 

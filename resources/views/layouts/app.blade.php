@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Apps') }}</title>
     <link rel="shortcut icon" href="{{ asset('assets/images/logo.webp') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/extensions/@fortawesome/fontawesome-free/css/all.min.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css/main/app.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/extensions/sweetalert2/sweetalert2.min.css') }}" />
     @yield('css')
@@ -66,7 +66,7 @@
                             <li class="sidebar-item 
                                 {{ Request::route()->action['as'] == 'dashboard' ? 'active' : null }}">
                                 <a href="{{ route('dashboard') }}" class="sidebar-link">
-                                    <i class="fas fa-th-large"></i>
+                                <i class="fa-solid fa-house"></i>
                                     <span>Dashboard</span>
                                 </a>
                             </li>
@@ -79,20 +79,30 @@
                                 <ul class="dropdown-menu" aria-labelledby="pengajuanDropdown">
                                     <li>
                                         <a href="{{ route('application.index') }}" class="dropdown-item">
+                                        <i class="fa-solid fa-border-all"></i>
                                             Semua Pengajuan
                                         </a>
                                     </li>
                                     <li>
                                         <a href="{{ route('application.index', ['approve_status' => '1,2']) }}" class="dropdown-item">
+                                        <i class="fa-solid fa-clock"></i>
                                             Menunggu Review
                                         </a>
                                     </li>
                                     <li>
                                         <a href="{{ route('application.index', ['approve_status' => '4']) }}" class="dropdown-item">
+                                        <i class="fa-solid fa-circle-check"></i>
                                             Review Selesai
                                         </a>
                                     </li>
                                 </ul>
+                            </li>
+                            <li class="sidebar-item 
+                                {{ Request::route()->action['as'] == 'application.report' ? 'active' : null }}">
+                                <a href="{{ route('application.report') }}" class="sidebar-link">
+                                <i class="fa-solid fa-money-bill-wave"></i>
+                                    <span>Laporan Dana</span>
+                                </a>
                             </li>
                             <li class="sidebar-item 
                                 {{ Request::route()->action['as'] == 'unit.index' ? 'active' : null }}">

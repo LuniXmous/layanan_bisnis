@@ -233,7 +233,6 @@ class ApplicationController extends Controller
         ->orderBy('created_at', 'desc')->get();
 
         // Ambil data rekap dana terkait dengan application
-        // dd(RekapDana::where('application_id', $application->id)->get());
         $rekapDana = RekapDana::where('application_id',$application->id)->get();
 
     // Return view with all necessary data
@@ -295,6 +294,19 @@ class ApplicationController extends Controller
         ]);
         return redirect()->back()->with(["success" => "Status Pengajuan Berhasil Diubah"]);
     }
+
+
+    public function report(Request $request)
+{
+    $year = $request->input('year', date('Y')); // Ambil tahun dari input, default ke tahun ini
+    $rekapDana = RekapDana::whereYear('created_at', $year)->get();
+
+    // Hitung total nominal
+    $totalNominal = $rekapDana->sum('nominal');
+
+    return view('application.report', compact('rekapDana', 'totalNominal', 'year'));
+}
+
 
     public function applyExtra(Request $request, $id)
     {
