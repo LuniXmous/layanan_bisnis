@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('rekap_danas', function (Blueprint $table) {
             $table->id();
-            $table->uuid('extra_application_id');  // Ubah menjadi uuid
+            $table->uuid('application_id');  // Ubah menjadi uuid
             $table->decimal('nominal', 15, 2);
             $table->timestamps();
         
             // Tambahkan foreign key
-            $table->foreign('extra_application_id')->references('id')->on('extra_applications');
+            $table->foreign('application_id')->references('id')->on('applications');
         });
         
     }

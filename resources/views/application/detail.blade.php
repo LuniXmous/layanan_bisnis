@@ -219,6 +219,11 @@
                         </div>
                         <div class="row border-top pt-4">
                             <div class="col-xxl-4 col-xl-6">
+                              
+                                @foreach ($rekapDana as $rekap)
+                                    Total Transfer :{{ $rekap->nominal }}
+                                    
+                                @endforeach
                                 <div class="fw-bold h5">Lampiran </div>
                                 @foreach ($extra->document->whereNotIn('type', ['lainnya', 'extra']) as $file)
                                     <div class="mb-2">
