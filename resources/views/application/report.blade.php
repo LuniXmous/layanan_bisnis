@@ -12,6 +12,10 @@
                 </form>
                 
                 <h2>Total Nominal: Rp. {{ number_format($totalNominal, 2, ',', '.') }}</h2>
+                <br/>
+                @if (Auth::user()->role_id != 1)
+                    <a href="{{ route('application.exportDana') }}" class="btn btn-primary mb-3" ><i class="fas fa-file-excel"></i> Generate Excel</a>
+                @endif<br/>
                 <div class="table-responsive mt-4">
                     <table class="table table-striped w-100 table-bordered table-xs table-hover" id="datatable-rekap">
                         <thead>

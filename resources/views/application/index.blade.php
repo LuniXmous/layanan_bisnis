@@ -4,7 +4,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-        @if (Auth::user()->role_id != 1)
+            @if (Auth::user()->role_id != 1)
                 <a href="{{ route('application.export') }}" class="btn btn-primary mb-3" ><i class="fas fa-file-excel"></i> Generate Excel</a>
             @endif
             @if (Auth::user()->role->alias == 'applicant')

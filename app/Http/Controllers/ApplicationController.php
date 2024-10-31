@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\rekapDanaExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ApplicationExport;
 use Illuminate\Http\Request;
@@ -54,6 +55,14 @@ class ApplicationController extends Controller
         }
     }
     
+    public function exportDana(Request $request)
+    {
+        if (Auth::user()->role_id == 0) {
+            return Excel::download(new rekapDanaExport(), 'dana.xlsx');
+        } else {
+            return redirect()->back();
+        }
+    }
 
     public function index(Request $request)
 {
@@ -297,7 +306,7 @@ class ApplicationController extends Controller
 
 
     public function report(Request $request)
-{
+    {
     $year = $request->input('year', date('Y')); // Ambil tahun dari input, default ke tahun ini
     $rekapDana = RekapDana::whereYear('created_at', $year)->get();
 
@@ -305,7 +314,7 @@ class ApplicationController extends Controller
     $totalNominal = $rekapDana->sum('nominal');
 
     return view('application.report', compact('rekapDana', 'totalNominal', 'year'));
-}
+    }
 
 
     public function applyExtra(Request $request, $id)
@@ -357,7 +366,6 @@ class ApplicationController extends Controller
                     'ext' => "img",
                     'file' => $name,
                 ]);
-        
                 $application->update([
                     "status" => $application->status + 1,
                     "approve_status" => 1,
@@ -371,7 +379,10 @@ class ApplicationController extends Controller
                     "title" => "required",
                     "lampiran.transfer" => "required",
                 ]);
-
+                RekapDana::create([
+                    'application_id' => $request->id,
+                    'nominal' => $request->nominal
+                ]);
                 $extraApplication = ExtraApplication::create(
                     [
                         'application_id' => $application->id,
@@ -391,7 +402,7 @@ class ApplicationController extends Controller
                         'ext' => "img",
                         'file' => $name,
                     ]);
-                    if (isset($request->lampiran["pks"])) {
+                    if (isset($request->lampiran["pks"])) { 
                         $lampiran = $request->lampiran["pks"];
                         $name = time() . "_" . $lampiran->getClientOriginalName();
                         Storage::disk('dokumen_bisnis')->put($name, file_get_contents($lampiran));
@@ -415,7 +426,10 @@ class ApplicationController extends Controller
                     "title" => "required",
                     "lampiran.transfer" => "required",
                 ]);
-
+                RekapDana::create([
+                    'application_id' => $request->id,
+                    'nominal' => $request->nominal
+                ]);
                 $extraApplication = ExtraApplication::create(
                     [
                         'application_id' => $application->id,
@@ -473,8 +487,6 @@ class ApplicationController extends Controller
                 $extraApp = "Pengajuan Pemberitahuan Kegiatan Selesai Dilaksanakan";
             }
         }
-
-
         $users = User::where("role_id", 4)->get();
         foreach ($users as $user) {
             \Mail::to($user->email)->send(new \App\Mail\reviewMail($application, $extraApp));
@@ -492,11 +504,6 @@ class ApplicationController extends Controller
         if (!$comment) {
             return redirect()->back()->with(["error" => "invalid action"]);
         }
-        $application->update([
-            "approve_status" => $application->approve_status + 1,
-            "note" => null,
-        ]);
-
         // Simpan status lama sebelum diperbarui
         $status = $application->approve_status;  
 

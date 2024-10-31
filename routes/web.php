@@ -103,6 +103,7 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
         Route::post('/{id}/approve', [App\Http\Controllers\ApplicationController::class, 'approveWithFile'])->name('approveWithFile');
         Route::post('/{id}/reject', [App\Http\Controllers\ApplicationController::class, 'reject'])->name('reject');
         Route::get('/export', [App\Http\Controllers\ApplicationController::class, 'export'])->name('export');
+        Route::get('/exportDana', [App\Http\Controllers\ApplicationController::class, 'exportDana'])->name('exportDana');
         Route::get('/report', [App\Http\Controllers\ApplicationController::class, 'report'])->name('report');
 
         // });

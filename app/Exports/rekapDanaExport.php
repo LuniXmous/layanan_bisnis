@@ -2,6 +2,8 @@
 
 namespace App\Exports;
 
+use App\Models\RekapDana;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Carbon\Carbon;
 use App\Models\Application;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -10,12 +12,11 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use PhpOffice\PhpSpreadsheet\Cell\Hyperlink;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Illuminate\Support\Facades\Auth;
 
-class ApplicationExport implements FromArray, WithHeadings, ShouldAutoSize, WithEvents
+class rekapDanaExport implements FromArray, WithHeadings, ShouldAutoSize, WithEvents
 {
-
+    
     public function __construct()
     {
         // $this->request = $request;
@@ -27,33 +28,14 @@ class ApplicationExport implements FromArray, WithHeadings, ShouldAutoSize, With
     {
         $x = 0;
         $arr = array();
-        // $kerjasama = Kerjasama::all();
-        if (Auth::user()->role->id == 0) {
-            $applications = Application::orderBy('updated_at', 'desc')->get();
-        } else if (Auth::user()->role->id == 2) {
-            $applications = Application::where("status", 1)->where("approve_status", 0)->orderBy('updated_at', 'desc')->get();
-        } else if (Auth::user()->role->id == 4) {
-            $applications = Application::where("status", 1)->where("approve_status", 2)->orWhere("status", ">", 1)->where("approve_status", 1)->orderBy('updated_at', 'desc')->get();
-        } else if (Auth::user()->role->id == 3) {
-            $applications = Application::where("status", ">", 1)->where("approve_status", 2)->orderBy('updated_at', 'desc')->get();
-        } else if (Auth::user()->role->id == 5) {
-            $applications = Application::where("status", 1)->where("approve_status", 3)->orderBy('updated_at', 'desc')->get();
-        } else {
-            $applications = Auth::user()->application;
-        }
+        $rekapdana = RekapDana::all(); ;
 
-        foreach ($applications as $data) {
-            $jurusan = "";
+        foreach ($rekapdana as $data) {
             $temp = [
                 $x + 1,
-                $data->title,
-                $data->user->name,
-                $data->activity->unit->name,
-                $data->activity->category->name,
-                $data->activity->name,
-                $data->statusAlias()['status'],
-                Carbon::parse($data->created_at)->translatedFormat('d F Y, H:i'),
-                Carbon::parse($data->updated_at)->translatedFormat('d F Y, H:i'),
+                $data->application->title,
+                $data->created_at,
+                $data->nominal,
             ];
             $arr[$x] = $temp;
             $x++;
@@ -63,7 +45,7 @@ class ApplicationExport implements FromArray, WithHeadings, ShouldAutoSize, With
     }
     public function headings(): array
     {
-        return ["No.",  "Judul Permohonan", "Nama Pemohon", "Unit/Jurusan yang Diajukan", "Kategori", "Kegiatan", "Status", "Dibuat Pada", "Terakhir Diperbarui"];
+        return ["No.",  "Judul Permohonan", "Tanggal", "Nominal"];
     }
     public function styles(Worksheet $sheet)
     {
@@ -76,7 +58,7 @@ class ApplicationExport implements FromArray, WithHeadings, ShouldAutoSize, With
     {
         return [
             AfterSheet::class    => function (AfterSheet $event) {
-                foreach ($event->sheet->getColumnIterator('I') as $row) {
+                foreach ($event->sheet->getColumnIterator('D') as $row) {
                     foreach ($row->getCellIterator() as $cell) {
                         if (str_contains($cell->getValue(), '://')) {
                             $cell->setHyperlink(new Hyperlink($cell->getValue(), 'Click here to access file'));

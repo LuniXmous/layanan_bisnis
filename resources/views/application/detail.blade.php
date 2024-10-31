@@ -14,111 +14,101 @@
                 </div>
             </div>
         </div>
-        <div class="col-12" style="text-align: center; position: relative;">
-            <div class="card shadow-sm border mb-3">
-                <div class="card-body">
-                    <!-- Flexbox parent div -->
-                    <div style="display: flex; justify-content: center; align-items: flex-start; position: relative; margin: 10px auto; padding: 0; width: 100%; max-width: 900px;">
-                        @if($application->status == '1')
-                            <!-- First block -->
-                            <div style="display: flex; flex-direction: column; align-items: center; margin-right: 20px;">
-                                @if($application->approve_status == '1')   
-                                <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #ffc107 ; margin-bottom: 10px;">
-                                    <i class="fa-solid fa-user" style="color: #ffffff;font-size: 30px; margin: 10px;"></i>
-                                </div>
-                                @else($application->approve_status != '1')
-                                <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797  ; margin-bottom: 10px;">
-                                    <i class="fa-solid fa-user" style="color: #ffffff;font-size: 30px; margin: 10px;"></i>
-                                </div>
-                                @endif
-                                <h6>Review Admin Layanan Bisnis</h6>
-                                @if($application->approve_status == '1')    
-                                    <p style="font-size: 17px; text-align: center;">{{ $application->statusAlias()['status'] }}</p>
-                                    <p style="font-size: 15px; text-align: center;">{{ $application->updated_at }}</p>
-                                @else($application->approve_status != '1')
-                                    <p style="font-size: 17px; text-align: center;">Telah Direview Admin</p>
-                                    @foreach ($submissionLogs as $log )
-                                        {{ $log->created_at }}
-                                        &nbsp;
-                                    @endforeach 
-                                @endif
+        <div class="col-12" style="text-align: center; position: relative; margin-bottom:10px;">
+            <div class="card shadow-sm border mb-3" style="width: 100%; max-width: 100%; margin: auto;">
+                <div class="card-body" style="margin-bottom:30px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; text-align: center;">
+                    @if($application->status == '1')
+                        <!-- Icon 1: Review Admin Layanan Bisnis -->
+                        <div>
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '1' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                <i class="fa-solid fa-user" style="color: #ffffff; font-size: 24px;"></i>
                             </div>
-                            <hr style="flex: 1; border: none; border-top: 2px solid #018797; margin: 20px 10px;">
-                            
-                            <!-- Second block -->
-                            <div style="display: flex; flex-direction: column; align-items: center; margin-right: 20px;">
-                                @if($application->approve_status == '2')   
-                                <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #ffc107 ; margin-bottom: 10px;">
-                                    <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
-                                </div>
-                                @else($application->approve_status != '2')
-                                <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797  ; margin-bottom: 10px;">
-                                    <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
-                                </div>
-                                @endif
-                                <h6>Review Wakil Direktur 4</h6>
-                                @if($application->approve_status == '2')
-                                    <p style="font-size: 17px; text-align: center;">{{ $application->statusAlias()['status'] }}</p>
-                                    <p style="font-size: 15px; text-align: center;">{{ $application->updated_at }}</p>
-                                @elseif($application->approve_status == '4')
-                                    <p style="font-size: 17px; text-align: center;">    
-                                    @foreach ($submissionLogs as $log )
-                                        Telah Direview  {{ $log->user->name }} <br>
-                                        {{ $log->created_at }}
-                                        &nbsp;
-                                    @endforeach
-                                    </p>
-                                @else($application->approve_status == '1')
-                                    <p style="display: none;"></p>          
-                                @endif
-                            </div>
-                            <hr style="flex: 1; border: none; border-top: 2px solid #018797; margin: 20px 10px;">
+                            <p style="font-size: 14px; margin-top: 8px;">Review Admin</p>
+                            @if($application->approve_status == '1')
+                                <p style="font-size: 13px; color: #555;">{{ $application->statusAlias()['status'] }}</p>
+                                <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                            @endif
+                        </div>
 
-                            <!-- Third block -->
-                            <div style="display: flex; flex-direction: column; align-items: center; margin-right: 20px;">
-                                @if($application->approve_status == '4')   
-                                <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #198754 ; margin-bottom: 10px;">
-                                    <i class="fa-solid fa-user-check" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
-                                </div>
-                                @else($application->approve_status != '4')
-                                <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797  ; margin-bottom: 10px;">
-                                    <i class="fa-solid fa-user-check" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
-                                </div>
-                                @endif
-                                <h6>Selesai Di Review</h6>
-                                @if($application->approve_status == '4')
-                                    <p style="font-size: 17px; text-align: center;">Telah Selesai Di Review</p>
-                                    <p style="font-size: 14px; text-align: center;">{{ $application->updated_at }}</p>
-                                @else($application->approve_status != '4')
-                                    <p style="font-size: 14px; text-align: center; display: none;">Telah Selesai Di Review</p>
-                                @endif
+                        <!-- Garis Horizontal -->
+                        <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 20px 10px;"></div>
+
+                        <!-- Icon 2: Review Wakil Direktur 4 -->
+                        <div>
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '2' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 24px;"></i>
                             </div>
-                        @else {{-- jika status != 1 --}}
-                            <div style="display: flex; flex-direction: column; align-items: center; margin-right: 20px;">
-                                <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797  ; margin-bottom: 10px;">
-                                    <i class="fa-solid fa-user" style="color: #ffffff;font-size: 30px; margin: 10px;"></i>
-                                </div>
-                                <h6>Review Admin Layanan Bisnis</h6>
+                            <p style="font-size: 14px; margin-top: 8px;">Review Wakil Direktur 4</p>
+                            @if($application->approve_status == '2')
+                                <p style="font-size: 13px; color: #555;">{{ $application->statusAlias()['status'] }}</p>
+                                <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                            @endif
+                        </div>
+
+                        <!-- Garis Horizontal -->
+                        <div style="flex-grow: 1; height: 1px; background-color: #018797; margin:10px; margin-bottom: 20px;"></div>
+
+                        <!-- Icon 3: Review Direktur -->
+                        <div>
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '3' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                <i class="fa-solid fa-user-check" style="color: #ffffff; font-size: 24px;"></i>
                             </div>
-                                <hr style="flex: 1; border: none; border-top: 2px solid #018797; margin: 20px 10px;">
-                            <div style="display: flex; flex-direction: column; align-items: center; margin-right: 20px;">
-                                <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797  ; margin-bottom: 10px;">
-                                    <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
-                                </div>
-                                <h6>Review Admin Layanan Bisnis</h6>
+                            <p style="font-size: 14px; margin-top: 8px;">Review Direktur</p>
+                            @if($application->approve_status == '3')
+                                <p style="font-size: 13px; color: #555;">Telah Selesai Di Review</p>
+                                <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                            @endif
+                        </div>
+
+                        <!-- Garis Horizontal -->
+                        <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 20px 10px;"></div>
+
+                        <!-- Icon 4: Selesai Di Review -->
+                        <div>
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '4' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                <i class="fa-solid fa-flag-checkered" style="color: #ffffff; font-size: 24px;"></i>
                             </div>
-                                <hr style="flex: 1; border: none; border-top: 2px solid #018797; margin: 20px 10px;">
-                            <div style="display: flex; flex-direction: column; align-items: center; margin-right: 20px;">
-                                <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #198754 ; margin-bottom: 10px;">
-                                    <i class="fa-solid fa-user-check" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
-                                </div>
-                                <h6>Review Admin Layanan Bisnis</h6>
+                            <p style="font-size: 14px; margin-top: 8px;">Selesai Di Review</p>
+                            @if($application->approve_status == '4')
+                                <p style="font-size: 13px; color: #555;">Telah Selesai Di Review</p>
+                                <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                            @endif
+                        </div>
+                    @else {{-- jika status != 1 --}}
+                        <div>
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                <i class="fa-solid fa-user" style="color: #ffffff;font-size: 30px; margin: 10px;"></i>
                             </div>
-                        @endif
+                            <h6>Review Admin Layanan Bisnis</h6>
+                        </div>
+                            <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                        <div>
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
+                            </div>
+                            <h6>Review Wakil Direktur 4</h6>
+                        </div>
+                            <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                        <div>
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
+                            </div>
+                            <h6>Review Direktur</h6>
+                        </div>
+                            <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                        <div>
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                <i class="fa-solid fa-user-check" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
+                            </div>
+                            <h6>Review Selesai</h6>
+                        </div>
+                    @endif
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="col-xxl-8">
             <div class="card shadow-sm border mb-4">
                 @if ($application->note)
@@ -196,7 +186,7 @@
                 </div>
             </div>
         </div>
-        @if ($application->extra->where('type', 'dana')->first())
+         @if ($application->extra->where('type', 'dana')->first())
             <div class="col-xxl-8">
                 @php
                     $extra = $application->extra->where('type', 'dana')->first();
@@ -206,6 +196,94 @@
                         <div class="card-title h5 mb-0">Permohonan Pencairan Dana</div>
                     </div>
                     <div class="card-header border-bottom">
+                        <div style="display: flex; align-items: center; justify-content: space-between; text-align: center;">
+                            @if($application->status == '2')
+                                <!-- Icon 1: Review Admin Layanan Bisnis -->
+                                <div>
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '1' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                        <i class="fa-solid fa-user" style="color: #ffffff; font-size: 24px;"></i>
+                                    </div>
+                                    <p style="font-size: 14px; margin-top: 8px;">Review Admin</p>
+                                    @if($application->approve_status == '1')
+                                        <p style="font-size: 13px; color: #555;">{{ $application->statusAlias()['status'] }}</p>
+                                        <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                                    @endif
+                                </div>
+
+                                <!-- Garis Horizontal -->
+                                <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 20px 10px;"></div>
+
+                                <!-- Icon 2: Review Wakil Direktur 4 -->
+                                <div>
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '2' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                        <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 24px;"></i>
+                                    </div>
+                                    <p style="font-size: 14px; margin-top: 8px;">Review Wakil Direktur 4</p>
+                                    @if($application->approve_status == '2')
+                                        <p style="font-size: 13px; color: #555;">{{ $application->statusAlias()['status'] }}</p>
+                                        <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                                    @endif
+                                </div>
+
+                                <!-- Garis Horizontal -->
+                                <div style="flex-grow: 1; height: 1px; background-color: #018797; margin:10px; margin-bottom: 20px;"></div>
+
+                                <!-- Icon 3: Review Direktur -->
+                                <div>
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '3' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                        <i class="fa-solid fa-user-check" style="color: #ffffff; font-size: 24px;"></i>
+                                    </div>
+                                    <p style="font-size: 14px; margin-top: 8px;">Review Direktur</p>
+                                    @if($application->approve_status == '3')
+                                        <p style="font-size: 13px; color: #555;">Telah Selesai Di Review</p>
+                                        <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                                    @endif
+                                </div>
+
+                                <!-- Garis Horizontal -->
+                                <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 20px 10px;"></div>
+
+                                <!-- Icon 4: Selesai Di Review -->
+                                <div>
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '4' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                        <i class="fa-solid fa-flag-checkered" style="color: #ffffff; font-size: 24px;"></i>
+                                    </div>
+                                    <p style="font-size: 14px; margin-top: 8px;">Selesai Di Review</p>
+                                    @if($application->approve_status == '4')
+                                        <p style="font-size: 13px; color: #555;">Telah Selesai Di Review</p>
+                                        <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                                    @endif
+                                </div>
+                            @else {{-- jika status != 1 --}}
+                                <div>
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                        <i class="fa-solid fa-user" style="color: #ffffff;font-size: 30px; margin: 10px;"></i>
+                                    </div>
+                                    <h6>Review Admin Layanan Bisnis</h6>
+                                </div>
+                                    <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                                <div>
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                        <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
+                                    </div>
+                                    <h6>Review Wakil Direktur 4</h6>
+                                </div>
+                                    <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                                <div>
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                        <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
+                                    </div>
+                                    <h6>Review Direktur</h6>
+                                </div>
+                                    <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                                <div>
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                        <i class="fa-solid fa-user-check" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
+                                    </div>
+                                    <h6>Review Selesai</h6>
+                                </div>
+                            @endif
+                        </div>
                     </div>
                     <div class="card-body pt-4 fs-6">
                         <div class="mb-3">
@@ -226,16 +304,13 @@
                                         Rp.{{ number_format($rekap->nominal, 0, ',', '.') }}
                                     @endforeach
                                 </div>
-                                <!-- @foreach ($rekapDana as $rekap)
-                                    Total Transfer :{{ $rekap->nominal }}
-                                @endforeach -->
                                 @foreach ($extra->document->whereNotIn('type', ['lainnya', 'extra']) as $file)
                                     <div class="mb-2">
                                         <span role="button" id="document-lampiran" data-type="{{ $file->ext }}"
                                             class="ms-2 text-capitalize fw-bold text-primary"
                                             data-file="{{ asset('dokumen_bisnis/' . $file->file) }}"><i
                                             class="fas fa-file"></i>&nbsp; Dokumen {{ $file->title }} 
-                                        </span>
+                                        </span> 
                                     </div>
                                 @endforeach
                             </div>
@@ -254,7 +329,89 @@
                     <div class="card-header border-bottom">
                         <div class="card-title h5 mb-0">Permohonan Pencairan Dana Operasional</div>
                     </div>
+                    <div class="card-header border-bottom" style="padding-left: 7%; padding-right: 8%;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; text-align: center;">
+                            @if($application->status == '2')
+                                <!-- Icon 1: Review Admin Layanan Bisnis -->
+                                <div>
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '1' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                        <i class="fa-solid fa-user" style="color: #ffffff; font-size: 24px;"></i>
+                                    </div>
+                                    <p style="font-size: 14px; margin-top: 8px;">Review Admin</p>
+                                    @if($application->approve_status == '1')
+                                        <p style="font-size: 13px; color: #555;">{{ $application->statusAlias()['status'] }}</p>
+                                        <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                                    @endif
+                                </div>
 
+                                <!-- Garis Horizontal -->
+                                <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 20px 10px;"></div>
+
+                                <!-- Icon 2: Review Wakil Direktur 4 -->
+                                <div>
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '2' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                        <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 24px;"></i>
+                                    </div>
+                                    <p style="font-size: 14px; margin-top: 8px;">Review Wakil Direktur 4</p>
+                                    @if($application->approve_status == '2')
+                                        <p style="font-size: 13px; color: #555;">{{ $application->statusAlias()['status'] }}</p>
+                                        <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                                    @endif
+                                </div>
+
+                                <!-- Garis Horizontal -->
+                                <div style="flex-grow: 1; height: 1px; background-color: #018797; margin:10px; margin-bottom: 20px;"></div>
+
+                                <!-- Icon 3: Review Direktur -->
+                                <div>
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '3' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                        <i class="fa-solid fa-user-check" style="color: #ffffff; font-size: 24px;"></i>
+                                    </div>
+                                    <p style="font-size: 14px; margin-top: 8px;">Review Direktur</p>
+                                    @if($application->approve_status == '3')
+                                        <p style="font-size: 13px; color: #555;">Telah Selesai Di Review</p>
+                                        <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                                    @endif
+                                </div>
+
+                                <!-- Garis Horizontal -->
+                                <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 20px 10px;"></div>
+
+                                <!-- Icon 4: Selesai Di Review -->
+                                <div>
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '4' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                        <i class="fa-solid fa-flag-checkered" style="color: #ffffff; font-size: 24px;"></i>
+                                    </div>
+                                    <p style="font-size: 14px; margin-top: 8px;">Selesai Di Review</p>
+                                    @if($application->approve_status == '4')
+                                        <p style="font-size: 13px; color: #555;">Telah Selesai Di Review</p>
+                                        <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                                    @endif
+                                </div>
+                            @else {{-- jika status != 1 --}}
+                                <div>
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                        <i class="fa-solid fa-user" style="color: #ffffff;font-size: 30px; margin: 10px;"></i>
+                                    </div>
+                                    <h6>Review Wakil Direktur 4</h6>
+                                </div>
+                                    <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                                <div>
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                        <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
+                                    </div>
+                                    <h6>Review Wakil Direktur 2</h6>
+                                </div>
+                                    <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                                <div>
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                        <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
+                                    </div>
+                                    <h6>Review Selesai</h6>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
                     <div class="card-body pt-4 fs-6">
                         <div class="mb-3">
                             <span class="fw-bold h6">Judul Permohonan: </span> &nbsp; <br>
@@ -267,6 +424,12 @@
                         <div class="row border-top pt-4">
                             <div class="col-xl-4">
                                 <div class="fw-bold h5">Lampiran </div>
+                                <div class="mb-3">
+                                    <span class="fw-bold h6">Total Transfer: </span> &nbsp; <br>
+                                    @foreach ($rekapDana as $rekap)
+                                        Rp.{{ number_format($rekap->nominal, 0, ',', '.') }}
+                                    @endforeach
+                                </div>
                                 @foreach ($extra->document->whereNotIn('type', ['lainnya', 'extra']) as $file)
                                     <div class="mb-2">
                                         <span role="button" id="document-lampiran"
@@ -306,6 +469,12 @@
                         <div class="row border-top pt-4">
                             <div class="col-xl-4">
                                 <div class="fw-bold h5">Lampiran </div>
+                                <div class="mb-3">
+                                    <span class="fw-bold h6">Total Transfer: </span> &nbsp; <br>
+                                    @foreach ($rekapDana as $rekap)
+                                        Rp.{{ number_format($rekap->nominal, 0, ',', '.') }}
+                                    @endforeach
+                                </div>
                                 @foreach ($extra->document->whereNotIn('type', '!=', 'lainnya') as $file)
                                     <div class="mb-2">
                                         <span role="button" id="document-lampiran"
@@ -460,8 +629,11 @@
                                     <div class="form-group">
                                         <label class="mb-2 fw-bold text-capitalize" for="nominal">Nominal Jumlah Uang <span class="text-danger">*</span></label>
                                         <input type="hidden" name="extra_application_id" value="{{ $application->id }}">
-                                        <input type="number" placeholder="Masukkan Nominal" name="nominal" class="form-control" required onblur="this.value = this.value.replace(/Rp.|\\.|/g, '').trim();">
+                                        <div class="input-group">
+                                            <input type="number" id="nominal" placeholder="Masukkan Nominal" name="nominal" class="form-control" required oninput="updateFormattedValue(this)">
                                         </div>
+                                        <div id="formattedValue" class="mt-2" style="font-weight: bold;"></div> <!-- Untuk menampilkan nilai format -->
+                                    </div>
                                     <div class="form-group">
                                         <label class="mb-2 fw-bold" for="role_id">Bukti Transfer Mitra (File berupa Gambar/Screenshot)<span
                                                 class="text-danger">*</span></label>
@@ -484,8 +656,11 @@
                                     <div class="form-group">
                                         <label class="mb-2 fw-bold text-capitalize" for="nominal">Nominal Jumlah Uang <span class="text-danger">*</span></label>
                                         <input type="hidden" name="extra_application_id" value="{{ $application->id }}">
-                                        <input type="number" placeholder="Masukkan Nominal" name="nominal" class="form-control" required onblur="this.value = this.value.replace(/Rp.|\\.|/g, '').trim();">
+                                        <div class="input-group">
+                                            <input type="number" id="nominal" placeholder="Masukkan Nominal" name="nominal" class="form-control" required oninput="updateFormattedValue(this)">
                                         </div>
+                                        <div id="formattedValue" class="mt-2" style="font-weight: bold;"></div> <!-- Untuk menampilkan nilai format -->
+                                    </div>
                                     <div class="form-group">
                                         <label class="mb-2 fw-bold" for="role_id">Bukti Transfer Mitra (File berupa Gambar/Screenshot)<span
                                                 class="text-danger">*</span></label>
