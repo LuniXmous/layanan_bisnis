@@ -15,7 +15,7 @@ class CreateApplicationStatusLogsTable extends Migration
     Schema::create('application_status_logs', function (Blueprint $table) {
         $table->id();
         $table->foreignUuid('application_id');
-        $table->integer('status')->default(1);
+        $table->integer('status');
         $table->integer('approve_status');
         $table->foreignUuid('user_id');
         $table->foreignId('role_id');
