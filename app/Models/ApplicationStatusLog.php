@@ -16,6 +16,31 @@ class ApplicationStatusLog extends Model
         'user_id',
     ];
 
+    public function typeAlias()
+    {
+        if ($this) {
+            if ($this->type == "dana") {
+                return "Pencairan Dana";
+            } else if ($this->type == "operasional") {
+                return "Pencairan Dana Operasional";
+            } else if ($this->type == "kegiatan") {
+                return "Pemberitahuan Kegiatan Selesai Dilaksanakan";
+                // } else if ($this->type == "kegiatan") {
+                //     return "Pencairan Dana Setelah Kegiatan";
+            } else {
+                return '';
+            }
+        }
+        return '';
+    }
+    public function extra()
+    {
+        return $this->hasMany('App\Models\ExtraApplication');
+    }
+    public function latestExtra()
+    {
+        return $this->hasMany('App\Models\ExtraApplication')->orderBy('created_at', 'desc');
+    }
     public function statusAlias()
     {
         if ($this->status == 0) {
@@ -31,28 +56,24 @@ class ApplicationStatusLog extends Model
                 return ['status' => 'Telah Di Review Direktur ', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 5)->get(), 'must_role' => [5, 0, 3]];
             } 
         } else if ($this->status == 2) {
-            $latestExtraType = $this->extra()->orderBy('created_at', 'desc')->first()?->typeAlias();
             if ($this->approve_status == 0) {
-                return ['status' => "Pengajuan $latestExtraType Telah Ditolak", 'class' => 'bg-danger', 'users' => [$this->user], 'must_role' => [0, 3]];
-            } else if ($this->approve_status == 1) {
-                return ['status' => 'Selesai Di Review Wakil Direktur 4: Permohonan Pencairan Dana Operasional', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 4)->get(), 'must_role' => [4, 0, 3]];
+                return ['status' => "Pengajuan Telah Ditolak", 'class' => 'bg-danger', 'users' => [$this->user], 'must_role' => [0, 3]];
             } else if ($this->approve_status == 2) {
-                return ['status' => 'Selesai Di Review Wakil Direktur 2: Permohonan Pencairan Dana Operasional', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 3)->get(), 'must_role' => [3, 0, 3]];
+                return ['status' => 'Selesai Di Review Wakil Direktur 4 Permohonan Pencairan Dana Operasional', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 4)->get(), 'must_role' => [4, 0, 3]];
             } else if ($this->approve_status == 3) {
-                return ['status' => "Pengajuan $latestExtraType Telah Disetujui", 'class' => 'bg-success', 'users' => [$this->user], 'must_role' => [0, 3]];
+                return ['status' => 'Selesai Di Review Wakil Direktur 2 Permohonan Pencairan Dana Operasional', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 3)->get(), 'must_role' => [3, 0, 3]];
             } else {
                 return ['status' => '', 'class' => '', 'users' => null, 'must_role' => []];
             }
         } else if ($this->status == 3) {
-            $latestExtraType = $this->extra()->orderBy('created_at', 'desc')->first()?->typeAlias();
             if ($this->approve_status == 0) {
-                return ['status' => "Pengajuan $latestExtraType Telah Ditolak", 'class' => 'bg-danger', 'users' => [$this->user], 'must_role' => [0, 3]];
+                return ['status' => "Pengajuan Telah Ditolak", 'class' => 'bg-danger', 'users' => [$this->user], 'must_role' => [0, 3]];
             } else if ($this->approve_status == 1) {
-                return ['status' => 'Selesai Di Review Wakil Direktur 4: Pemberitahuan Kegiatan Selesai Dilaksanakan', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 4)->get(), 'must_role' => [4, 0, 3]];
+                return ['status' => 'Selesai Di Review Wakil Direktur 4 Pemberitahuan Kegiatan Selesai Dilaksanakan', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 4)->get(), 'must_role' => [4, 0, 3]];
             } else if ($this->approve_status == 2) {
-                return ['status' => 'Selesai Di Review Wakil Direktur 2: Pemberitahuan Kegiatan Selesai Dilaksanakan', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 3)->get(), 'must_role' => [3, 0, 3]];
+                return ['status' => 'Selesai Di Review Wakil Direktur 2 Pemberitahuan Kegiatan Selesai Dilaksanakan', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 3)->get(), 'must_role' => [3, 0, 3]];
             } else if ($this->approve_status == 3) {
-                return ['status' => "Pengajuan $latestExtraType Telah Disetujui", 'class' => 'bg-success', 'users' => [$this->user], 'must_role' => [0, 3]];
+                return ['status' => "Pengajuan Telah Disetujui", 'class' => 'bg-success', 'users' => [$this->user], 'must_role' => [0, 3]];
             } else {
                 return ['status' => '', 'class' => '', 'users' => null, 'must_role' => []];
             }
@@ -70,15 +91,9 @@ class ApplicationStatusLog extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public function status ()
-    {
-        return $this->belongsTo(Status::class);
-    }
-
     public function role ()
     {
         return $this->belongsTo(role::class);
     }
-
+    
 }

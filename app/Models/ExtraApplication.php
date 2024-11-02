@@ -59,4 +59,9 @@ class ExtraApplication extends Model
         }
         return '';
     }
+    public function statusLogs()
+    {
+        return $this->hasMany(ApplicationStatusLog::class);
+    }
+
 }
