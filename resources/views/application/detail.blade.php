@@ -16,7 +16,7 @@
         </div>
         <div class="col-12" style="text-align: center; position: relative; margin-bottom:10px;">
             <div class="card shadow-sm border mb-3" style="width: 100%; max-width: 100%; margin: auto;">
-                <div class="card-body" style="margin-bottom:30px;">
+                <div class="card-body">
                     <div style="display: flex; align-items: center; justify-content: space-between; text-align: center;">
                     @if($application->status == '1')
                         <!-- Icon 1: Review Admin Layanan Bisnis -->
@@ -24,55 +24,79 @@
                             <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '1' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
                                 <i class="fa-solid fa-user" style="color: #ffffff; font-size: 24px;"></i>
                             </div>
-                            <p style="font-size: 14px; margin-top: 8px;">Review Admin</p>
+                            <h6 style="margin-top: 8px;">Admin Layanan Bisnis</h6>
                             @if($application->approve_status == '1')
-                                <p style="font-size: 13px; color: #555;">{{ $application->statusAlias()['status'] }}</p>
-                                <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                                {{ $application->statusAlias()['status'] }}<br>
+                                {{ $application->updated_at }}
+                            @else($application->approve_status != '1')
+                                @foreach ($submissionLogs as $log)
+                                    @if ($log->status == 1 && $log->approve_status == 2)
+                                        {{ $log->StatusAlias()['status'] }} <br>
+                                        {{ $log->created_at }}
+                                        &nbsp;
+                                    @endif
+                                @endforeach
                             @endif
                         </div>
 
                         <!-- Garis Horizontal -->
-                        <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 20px 10px;"></div>
+                        <div style="flex-grow: 1; height: 1px; background-color: #018797; margin-bottom: 10%;"></div>
 
                         <!-- Icon 2: Review Wakil Direktur 4 -->
                         <div>
                             <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '2' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
                                 <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 24px;"></i>
                             </div>
-                            <p style="font-size: 14px; margin-top: 8px;">Review Wakil Direktur 4</p>
+                            <h6 style="margin-top: 8px;">Wakil Direktur 4</h6>
                             @if($application->approve_status == '2')
-                                <p style="font-size: 13px; color: #555;">{{ $application->statusAlias()['status'] }}</p>
-                                <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                                {{ $application->statusAlias()['status'] }}<br>
+                                {{ $application->updated_at }}
+                            @else($application->approve_status != '2')
+                                @foreach ($submissionLogs as $log)
+                                    @if ($log->status == 1 && $log->approve_status == 3)
+                                        {{ $log->StatusAlias()['status'] }} <br>
+                                        {{ $log->created_at }}
+                                        &nbsp;
+                                    @endif
+                                @endforeach
                             @endif
                         </div>
 
                         <!-- Garis Horizontal -->
-                        <div style="flex-grow: 1; height: 1px; background-color: #018797; margin:10px; margin-bottom: 20px;"></div>
+                        <div style="flex-grow: 1; height: 1px; background-color: #018797; margin-bottom: 10%;"></div>
 
                         <!-- Icon 3: Review Direktur -->
                         <div>
                             <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '3' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
                                 <i class="fa-solid fa-user-check" style="color: #ffffff; font-size: 24px;"></i>
                             </div>
-                            <p style="font-size: 14px; margin-top: 8px;">Review Direktur</p>
+                            <h6 style="margin-top: 8px;"> Direktur</h6>
                             @if($application->approve_status == '3')
-                                <p style="font-size: 13px; color: #555;">Telah Selesai Di Review</p>
-                                <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                                {{ $application->statusAlias()['status'] }}<br>
+                                {{ $application->updated_at }}
+                            @else($application->approve_status != '3')
+                                @foreach ($submissionLogs as $log)
+                                    @if ($log->status == 1 && $log->approve_status == 4)
+                                        {{ $log->StatusAlias()['status'] }} <br>
+                                        {{ $log->created_at }}
+                                        &nbsp;
+                                    @endif
+                                @endforeach
                             @endif
                         </div>
 
                         <!-- Garis Horizontal -->
-                        <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 20px 10px;"></div>
+                        <div style="flex-grow: 1; height: 1px; background-color: #018797; margin-bottom: 10%;"></div>
 
                         <!-- Icon 4: Selesai Di Review -->
                         <div>
                             <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '4' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
                                 <i class="fa-solid fa-flag-checkered" style="color: #ffffff; font-size: 24px;"></i>
                             </div>
-                            <p style="font-size: 14px; margin-top: 8px;">Selesai Di Review</p>
+                            <h6 style="margin-top: 8px;">Selesai Review</h6>
                             @if($application->approve_status == '4')
-                                <p style="font-size: 13px; color: #555;">Telah Selesai Di Review</p>
-                                <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                                {{ $application->statusAlias()['status'] }}<br>
+                                {{ $application->updated_at }}
                             @endif
                         </div>
                     @else {{-- jika status != 1 --}}
@@ -186,6 +210,7 @@
                 </div>
             </div>
         </div>
+
          @if ($application->extra->where('type', 'dana')->first())
             <div class="col-xxl-8">
                 @php
@@ -203,65 +228,63 @@
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '1' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
                                         <i class="fa-solid fa-user" style="color: #ffffff; font-size: 24px;"></i>
                                     </div>
-                                    <p style="font-size: 14px; margin-top: 8px;">Review Admin</p>
+                                    <h6>Review Wakil Direktur 4</h6>
                                     @if($application->approve_status == '1')
-                                        <p style="font-size: 13px; color: #555;">{{ $application->statusAlias()['status'] }}</p>
-                                        <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                                        {{ $application->statusAlias()['status'] }}<br>
+                                        {{ $application->updated_at }}
+                                    @else($application->approve_status != '1')
+                                        @foreach ($submissionLogs as $log)
+                                            @if ($log->status == 2 && $log->approve_status == 1)
+                                                {{ $log->StatusAlias()['status'] }} <br>
+                                                {{ $log->created_at }}
+                                                &nbsp;
+                                            @endif
+                                        @endforeach
                                     @endif
                                 </div>
 
                                 <!-- Garis Horizontal -->
-                                <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 20px 10px;"></div>
+                                <div style="flex-grow: 1; height: 1px; background-color: #018797; margin-bottom: 10%;"></div>
 
                                 <!-- Icon 2: Review Wakil Direktur 4 -->
                                 <div>
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '2' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
                                         <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 24px;"></i>
                                     </div>
-                                    <p style="font-size: 14px; margin-top: 8px;">Review Wakil Direktur 4</p>
+                                    <h6>Review Wakil Direktur 2</h6>
                                     @if($application->approve_status == '2')
                                         <p style="font-size: 13px; color: #555;">{{ $application->statusAlias()['status'] }}</p>
                                         <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                                    @else($application->approve_status != '2')
+                                        <p style="font-size: 17px; text-align: center;">Telah Direview Wakil Direktur 2</p>
+                                        @foreach ($submissionLogs as $log )
+                                            {{ $log->created_at }}
+                                            &nbsp;
+                                        @endforeach 
                                     @endif
                                 </div>
 
                                 <!-- Garis Horizontal -->
-                                <div style="flex-grow: 1; height: 1px; background-color: #018797; margin:10px; margin-bottom: 20px;"></div>
+                                <div style="flex-grow: 1; height: 1px; background-color: #018797; margin-bottom: 10%;"></div>
 
-                                <!-- Icon 3: Review Direktur -->
+                                <!-- Icon 3: Selesai Di Review -->
                                 <div>
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '3' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                        <i class="fa-solid fa-user-check" style="color: #ffffff; font-size: 24px;"></i>
-                                    </div>
-                                    <p style="font-size: 14px; margin-top: 8px;">Review Direktur</p>
-                                    @if($application->approve_status == '3')
-                                        <p style="font-size: 13px; color: #555;">Telah Selesai Di Review</p>
-                                        <p style="font-size: 11px;">{{ $application->updated_at }}</p>
-                                    @endif
-                                </div>
-
-                                <!-- Garis Horizontal -->
-                                <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 20px 10px;"></div>
-
-                                <!-- Icon 4: Selesai Di Review -->
-                                <div>
-                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '4' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
                                         <i class="fa-solid fa-flag-checkered" style="color: #ffffff; font-size: 24px;"></i>
                                     </div>
-                                    <p style="font-size: 14px; margin-top: 8px;">Selesai Di Review</p>
-                                    @if($application->approve_status == '4')
-                                        <p style="font-size: 13px; color: #555;">Telah Selesai Di Review</p>
-                                        <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                                    <h6>Selesai Review</h6>
+                                    @if($application->approve_status == '3')
+                                        <p style="font-size: 17px; color: #555;">Telah Selesai Di Review</p>
+                                        <p style="font-size: 17px;">{{ $application->updated_at }}</p>
+                                    @else($application->approve_status != '3')
+                                        <p style="font-size: 17px; text-align: center;">Selesai Direview</p>
+                                        @foreach ($submissionLogs as $log )
+                                            {{ $log->created_at }}
+                                            &nbsp;
+                                        @endforeach 
                                     @endif
                                 </div>
-                            @else {{-- jika status != 1 --}}
-                                <div>
-                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                        <i class="fa-solid fa-user" style="color: #ffffff;font-size: 30px; margin: 10px;"></i>
-                                    </div>
-                                    <h6>Review Admin Layanan Bisnis</h6>
-                                </div>
-                                    <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                            @else ($application->status != '2')
                                 <div>
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
                                         <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
@@ -273,12 +296,12 @@
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
                                         <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
                                     </div>
-                                    <h6>Review Direktur</h6>
+                                    <h6>Review Wakil Direktur 2</h6>
                                 </div>
                                     <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
                                 <div>
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                        <i class="fa-solid fa-user-check" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
+                                        <i class="fa-solid fa-user-check" style="color: #ffffff; font-size: 27px; margin: 10px;"></i>
                                     </div>
                                     <h6>Review Selesai</h6>
                                 </div>
@@ -320,6 +343,7 @@
                 </div>
             </div>
         @endif
+
         @if ($application->extra->where('type', 'operasional')->first())
             <div class="col-xxl-8">
                 @php
@@ -341,6 +365,12 @@
                                     @if($application->approve_status == '1')
                                         <p style="font-size: 13px; color: #555;">{{ $application->statusAlias()['status'] }}</p>
                                         <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                                    @else($application->approve_status != '1')
+                                        <p style="font-size: 17px; text-align: center;">Telah Direview Review Wakil Direktur 4</p>
+                                        @foreach ($submissionLogs as $log )
+                                            {{ $log->created_at }}
+                                            &nbsp;
+                                        @endforeach 
                                     @endif
                                 </div>
 
@@ -356,21 +386,12 @@
                                     @if($application->approve_status == '2')
                                         <p style="font-size: 13px; color: #555;">{{ $application->statusAlias()['status'] }}</p>
                                         <p style="font-size: 11px;">{{ $application->updated_at }}</p>
-                                    @endif
-                                </div>
-
-                                <!-- Garis Horizontal -->
-                                <div style="flex-grow: 1; height: 1px; background-color: #018797; margin:10px; margin-bottom: 20px;"></div>
-
-                                <!-- Icon 3: Review Direktur -->
-                                <div>
-                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '3' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                        <i class="fa-solid fa-user-check" style="color: #ffffff; font-size: 24px;"></i>
-                                    </div>
-                                    <p style="font-size: 14px; margin-top: 8px;">Review Direktur</p>
-                                    @if($application->approve_status == '3')
-                                        <p style="font-size: 13px; color: #555;">Telah Selesai Di Review</p>
-                                        <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                                    @else($application->approve_status != '2')
+                                        <p style="font-size: 17px; text-align: center;">Telah Direview Review Wakil Direktur 4</p>
+                                        @foreach ($submissionLogs as $log )
+                                            {{ $log->created_at }}
+                                            &nbsp;
+                                        @endforeach 
                                     @endif
                                 </div>
 
@@ -379,16 +400,22 @@
 
                                 <!-- Icon 4: Selesai Di Review -->
                                 <div>
-                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '4' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '3' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
                                         <i class="fa-solid fa-flag-checkered" style="color: #ffffff; font-size: 24px;"></i>
                                     </div>
                                     <p style="font-size: 14px; margin-top: 8px;">Selesai Di Review</p>
-                                    @if($application->approve_status == '4')
+                                    @if($application->approve_status == '3')
                                         <p style="font-size: 13px; color: #555;">Telah Selesai Di Review</p>
                                         <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                                    @else($application->approve_status != '3')
+                                        <p style="font-size: 17px; text-align: center;">Telah Direview Review Wakil Direktur 4</p>
+                                        @foreach ($submissionLogs as $log )
+                                            {{ $log->created_at }}
+                                            &nbsp;
+                                        @endforeach 
                                     @endif
                                 </div>
-                            @else {{-- jika status != 1 --}}
+                            @else ($application->status == '3')  {{-- jika status != 1 --}}
                                 <div>
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
                                         <i class="fa-solid fa-user" style="color: #ffffff;font-size: 30px; margin: 10px;"></i>
@@ -405,7 +432,7 @@
                                     <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
                                 <div>
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                        <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
+                                        <i class="fa-solid fa-user-check" style="color: #ffffff; font-size: 27px; margin: 10px;"></i>
                                     </div>
                                     <h6>Review Selesai</h6>
                                 </div>
@@ -446,6 +473,7 @@
                 </div>
             </div>
         @endif
+
         @if ($application->extra->where('type', 'kegiatan')->first())
             <div class="col-xxl-8">
                 @php
@@ -455,6 +483,70 @@
                     <div class="card-header border-bottom">
                         <div class="card-title h5 mb-0">
                             Pengajuan Pemberitahuan Kegiatan Selesai Dilaksanakan
+                        </div>
+                    </div>
+                    <div class="card-header border-bottom" style="padding-left: 7%; padding-right: 8%;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; text-align: center;">
+                            @if($application->status == '3')
+                                <!-- Icon 1: Review WD4 -->
+                                <div>
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '1' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                        <i class="fa-solid fa-user" style="color: #ffffff; font-size: 24px;"></i>
+                                    </div>
+                                    <p style="font-size: 14px; margin-top: 8px;">Review Wakil Direktur 4</p>
+                                    @if($application->approve_status == '1')
+                                        <p style="font-size: 13px; color: #555;">{{ $application->statusAlias()['status'] }}</p>
+                                        <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                                    @else($application->approve_status != '1')
+                                        <p style="font-size: 17px; text-align: center;">Telah Direview Review Wakil Direktur 4</p>
+                                        @foreach ($submissionLogs as $log )
+                                            {{ $log->statusAlias()['status'] }}
+                                            {{ $log->created_at }}
+                                            &nbsp;
+                                        @endforeach 
+                                    @endif
+                                </div>
+
+                                <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 20px 10px;"></div>
+
+                                <!-- Icon 2: Review Wakil Direktur2-->
+                                <div>
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '2' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                        <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 24px;"></i>
+                                    </div>
+                                    <p style="font-size: 14px; margin-top: 8px;">Review Wakil Direktur 4</p>
+                                    @if($application->approve_status == '2')
+                                        <p style="font-size: 13px; color: #555;">{{ $application->statusAlias()['status'] }}</p>
+                                        <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                                    @else($application->approve_status != '2')
+                                        <p style="font-size: 17px; text-align: center;">Telah Direview Review Wakil Direktur 4</p>
+                                        @foreach ($submissionLogs as $log )
+                                            {{ $log->created_at }}
+                                            &nbsp;
+                                        @endforeach 
+                                    @endif
+                                </div>
+
+                                <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 20px 10px;"></div>
+
+                                <!-- Icon 3: Selesai Di Review -->  
+                                <div>
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '3' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                        <i class="fa-solid fa-flag-checkered" style="color: #ffffff; font-size: 24px;"></i>
+                                    </div>
+                                    <p style="font-size: 14px; margin-top: 8px;">Selesai Di Review</p>
+                                    @if($application->approve_status == '3')
+                                        <p style="font-size: 13px; color: #555;">Telah Selesai Di Review</p>
+                                        <p style="font-size: 11px;">{{ $application->updated_at }}</p>
+                                    @else($application->approve_status != '3')
+                                        <p style="font-size: 17px; text-align: center;">Telah Direview Review Wakil Direktur 4</p>
+                                        @foreach ($submissionLogs as $log )
+                                            {{ $log->created_at }}
+                                            &nbsp;
+                                        @endforeach 
+                                    @endif
+                                </div>
+                            @endif
                         </div>
                     </div>
                     <div class="card-body pt-4 fs-6">
@@ -491,6 +583,7 @@
                 </div>
             </div>
         @endif
+
         @if ($application->document->where('type', 'extra')->count() != 0)
             <div class="col-xxl-8">
                 <div class="card shadow-sm border mb-4">

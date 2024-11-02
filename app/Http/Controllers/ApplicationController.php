@@ -92,7 +92,6 @@ class ApplicationController extends Controller
             // Applicant: hanya aplikasi milik user sendiri
             $applications = Auth::user()->application();
         }
-
         // Filter berdasarkan approve_status (tambahan filter jika diperlukan)
         if ($request->has('approve_status') && $request->approve_status !== '') {
             if ($request->approve_status === '1,2,3,4') {
@@ -105,7 +104,6 @@ class ApplicationController extends Controller
                 $applications->where('approve_status', $request->approve_status);
             }
         }
-
         // Menghasilkan JSON untuk DataTable
         $json = DataTables::collection($applications->get())
             ->addIndexColumn()
@@ -151,7 +149,7 @@ class ApplicationController extends Controller
         $application = Application::findOrFail($id);
         $submissionLogs = ApplicationStatusLog::where('application_id', $id)
                                 ->orderBy('created_at', 'desc')
-                                ->get();    
+                                ->get();     
         // Kembalikan ke view dengan status timeline HTML
         return view('application.detail', compact('application', 'submissionLogs'));
     }
@@ -168,8 +166,7 @@ class ApplicationController extends Controller
                 ->addIndexColumn()
                 ->addColumn('title', function ($row) {
                     $html = '
-                        <a href="' . route('application.detail', ['identifier' => $row->id]) . '"> ' . $row->title . ' </a>
-                    ';
+                        <a href="' . route('application.detail', ['identifier' => $row->id]) . '"> ' . $row->title . ' </a>';
                     return $html;
                 })
                 ->addColumn('updated_at', function ($row) {
