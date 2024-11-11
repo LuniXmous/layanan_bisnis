@@ -46,7 +46,13 @@ class HomeController extends Controller
     public function dashboard(Request $request)
     {
             $jumlahPengajuan = Application::count();
-            $jumlahSelesai = Application::where('approve_status', 4)->count();
+            $jumlahSelesai = Application::where(function($query) {
+                $query->where('status', 1)
+                      ->where('approve_status', 4);
+            })->orWhere(function($query) {
+                $query->whereIn('status', [2, 3])
+                      ->where('approve_status', 3);
+            })->count();            
             $jumlahOnProgress = Application::whereIn('approve_status', [1, 2])->count();
             $jumlahPengguna = User::count();
 

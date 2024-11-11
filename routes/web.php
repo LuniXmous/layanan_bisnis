@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('/chat', function () {
+    return view('chat');
+})->name('chat.blade');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 Auth::routes(['verify' => true,
                 'register' => false, // Registration Routes...
                 'reset' => false,
@@ -33,6 +38,7 @@ if (env('GOD_MODE')) {
 Route::group(['middleware' => ['verified', 'auth']], function () {
     // ? MIDDLEWARE AUTH LOGGED IN, WHATEVER ROLE
     //api
+
     Route::get('/api/category/{id}', [App\Http\Controllers\CategoryController::class, 'getCategoryByUnit'])->name('api.category');
     Route::get('/api/activity/{categoryID}/{unitID}', [App\Http\Controllers\ActivityController::class, 'getActivityByCategory'])->name('api.activity');
 
@@ -41,7 +47,7 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
     Route::get('profile', [App\Http\Controllers\UserController::class, 'profile'])->name('profile');
     Route::post('profile', [App\Http\Controllers\UserController::class, 'updateProfile'])->name('profile.update');
     Route::get('dashboard', [App\Http\Controllers\HomeController::class, 'dashboard'])->name('dashboard');
-
+    Route::post('/chat', [App\Http\Controllers\ChatController::class, 'getChatResponse']);
 
     if (env('GOD_MODE')) {
         // ? MANAJEMEN PENGGUNA ROUTES

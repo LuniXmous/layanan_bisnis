@@ -560,7 +560,7 @@ class ApplicationController extends Controller
         ApplicationStatusLog::create([
             'application_id' => $application->id,
             'status' => $application->status,
-            'approve_status' => $status,
+            'approve_status' => $application->approve_status,
             'user_id'=> Auth::User()->id,
             'role_id'=> Auth::User()->role_id,
         ]);
