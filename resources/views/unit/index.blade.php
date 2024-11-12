@@ -69,29 +69,47 @@
             $('#unitModal').modal("toggle")
         })
 
-    </script>
-    <script>
         $(document).on('click', '.delete-unit', function(e) {
             e.preventDefault();
             let unitId = $(this).data('id');
 
-            if (confirm("Apakah Anda yakin ingin menghapus unit ini?")) {
-                $.ajax({
-                    url: `/unit/${unitId}`,
-                    type: 'DELETE',
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                    },
-                    success: function(response) {
-                        alert(response.success);
-                        $('#dataTable').DataTable().ajax.reload(); // Reload datatable
-                    },
-                    error: function(xhr) {
-                        alert(xhr.responseJSON.error || "Terjadi kesalahan saat menghapus unit.");
-                    }
-                });
-            }
+            Swal.fire({
+                title: 'Apakah anda yakin ingin menghapus unit ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `unit/delete/${unitId}`,
+                        type: 'get',
+                        data: {
+                            id: unitId,
+                            _token: "{{ csrf_token() }}",
+                        },
+                        success: function(response) {
+                            Swal.fire(
+                                'Berhasil',
+                                response.success,
+                                'success'
+                            ).then(() => {
+                                $('#datatable').DataTable().ajax.reload(); // Reload datatable setelah penghapusan berhasil
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire(
+                                'Gagal',
+                                xhr.responseJSON.error || "Terjadi kesalahan saat menghapus unit.",
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
         });
+
     </script>
 
 @endsection
