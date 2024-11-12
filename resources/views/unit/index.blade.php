@@ -70,4 +70,28 @@
         })
 
     </script>
+    <script>
+        $(document).on('click', '.delete-unit', function(e) {
+            e.preventDefault();
+            let unitId = $(this).data('id');
+
+            if (confirm("Apakah Anda yakin ingin menghapus unit ini?")) {
+                $.ajax({
+                    url: `/unit/${unitId}`,
+                    type: 'DELETE',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                    },
+                    success: function(response) {
+                        alert(response.success);
+                        $('#dataTable').DataTable().ajax.reload(); // Reload datatable
+                    },
+                    error: function(xhr) {
+                        alert(xhr.responseJSON.error || "Terjadi kesalahan saat menghapus unit.");
+                    }
+                });
+            }
+        });
+    </script>
+
 @endsection

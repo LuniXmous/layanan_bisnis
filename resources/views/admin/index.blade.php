@@ -30,7 +30,7 @@
                 <div class="card-body text-center">
                 <h3><i class="fa-solid fa-square-check"></i> {{ $jumlahSelesai }}</h3>
                     <p>JUMLAH SELESAI</p>
-                    <a href="{{ route('application.index', ['approve_status' => '4']) }}" class="btn btn-primary btn-sm">Lihat Detail >></a>
+                    <a href="{{ route('application.index', ['approve_status' => '3,4', 'status' => '1,2,3']) }}" class="btn btn-primary btn-sm">Lihat Detail >></a>
                 </div>
             </div>
         </div>

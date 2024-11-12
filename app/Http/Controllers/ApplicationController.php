@@ -99,6 +99,17 @@ class ApplicationController extends Controller
             } elseif ($request->approve_status === '1,2') {
                 // Filter untuk approve_status 1 atau 2
                 $applications->whereIn('approve_status', [1, 2]);
+            } elseif ($request->approve_status === '3,4' && $request->has('status')) {
+                // Tambahan filter untuk kondisi spesifik (status dan approve_status)
+                $applications->where(function ($query) use ($request) {
+                    $query->where(function ($q) {
+                        $q->where('status', 1)->where('approve_status', 4);
+                    })->orWhere(function ($q) {
+                        $q->where('status', 2)->where('approve_status', 3);
+                    })->orWhere(function ($q) {
+                        $q->where('status', 3)->where('approve_status', 3);
+                    });
+                });
             } else {
                 // Filter untuk approve_status tertentu
                 $applications->where('approve_status', $request->approve_status);

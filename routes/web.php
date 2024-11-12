@@ -84,6 +84,7 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
             Route::prefix('unit')->name('unit.')->group(function () {
                 Route::get('/', [App\Http\Controllers\UnitController::class, 'index'])->name('index');
                 Route::post('create', [App\Http\Controllers\UnitController::class, 'store'])->name('store');
+                Route::delete('/unit/{id}', [App\Http\Controllers\UnitController::class, 'destroy'])->name('unit.destroy');
                 Route::get('/{id}', [App\Http\Controllers\UnitController::class, 'show'])->name('detail');
                 Route::post('/{id}/activity', [App\Http\Controllers\UnitController::class, 'updateOrCreateActivity'])->name('updateOrCreateActivity');
             });

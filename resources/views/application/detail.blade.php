@@ -14,7 +14,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12" style="text-align: center; position: relative; margin-bottom:10px;">
+        <div class="col-12" style="text-align: center; position: relative;">
             <div class="card shadow-sm border mb-3" style="width: 100%; max-width: 100%; margin: auto;">
                 <div class="card-body">
                     <div style="display: flex; align-items: center; justify-content: space-between; text-align: center;">
@@ -25,22 +25,24 @@
                                 <i class="fa-solid fa-user" style="color: #ffffff; font-size: 24px;"></i>
                             </div>
                             <h6 style="margin-top: 13px;">Admin Layanan Bisnis</h6>
-                            @if($application->approve_status == '1')
-                                {{ $application->statusAlias()['status'] }}<br>
-                                {{ $application->updated_at }}
-                            @else($application->approve_status != '1')
-                                @foreach ($submissionLogs as $log)
-                                    @if ($log->status == 1 && $log->approve_status == 2)
-                                        {{ $log->StatusAlias()['status'] }} <br>
-                                        {{ $log->created_at }}
-                                        &nbsp;
-                                    @endif
-                                @endforeach
-                            @endif
+                            <div>
+                                @if($application->approve_status == '1')
+                                    {{ $application->statusAlias()['status'] }}<br>
+                                    {{ $application->updated_at }}
+                                @else($application->approve_status != '1')
+                                    @foreach ($submissionLogs as $log)
+                                        @if ($log->status == 1 && $log->approve_status == 2)
+                                            {{ $log->StatusAlias()['status'] }} <br>
+                                            {{ $log->created_at }}
+                                            &nbsp;
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </div>
                         </div>
 
                         <!-- Garis Horizontal -->
-                        <div style="flex-grow: 1; height: 1px; background-color: #018797; margin-bottom: 10%;"></div>
+                        <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 1%; margin-bottom: 4%;"></div>
 
                         <!-- Icon 2: Review Wakil Direktur 4 -->
                         <div>
@@ -48,27 +50,29 @@
                                 <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 24px;"></i>
                             </div>
                             <h6 style="margin-top: 13px;">Wakil Direktur 4</h6>
-                            @if($application->approve_status == '2')
-                                {{ $application->statusAlias()['status'] }}<br>
-                                {{ $application->updated_at }}
-                            @else($application->approve_status != '2')
-                                @foreach ($submissionLogs as $log)
-                                    @if ($log->status == 1 && $log->approve_status == 3)
-                                        {{ $log->StatusAlias()['status'] }} <br>
-                                        {{ $log->created_at }}
-                                        &nbsp;
-                                    @endif
-                                @endforeach
-                            @endif
+                            <div>
+                                @if($application->approve_status == '2')
+                                    {{ $application->statusAlias()['status'] }}<br>
+                                    {{ $application->updated_at }}
+                                @else($application->approve_status != '2')
+                                    @foreach ($submissionLogs as $log)
+                                        @if ($log->status == 1 && $log->approve_status == 3)
+                                            {{ $log->StatusAlias()['status'] }} <br>
+                                            {{ $log->created_at }}
+                                            &nbsp;
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </div>
                         </div>
 
                         <!-- Garis Horizontal -->
-                        <div style="flex-grow: 1; height: 1px; background-color: #018797; margin-bottom: 10%;"></div>
+                        <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 10px; margin-bottom: 4%;"></div>
 
                         <!-- Icon 3: Review Direktur -->
                         <div>
-                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '3' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                <i class="fa-solid fa-user-check" style="color: #ffffff; font-size: 24px;"></i>
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '3' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                <i class="fa-solid fa-user-tie"style="color: #ffffff; font-size: 24px;"></i>
                             </div>
                             <h6 style="margin-top: 13px;"> Direktur</h6>
                             @if($application->approve_status == '3')
@@ -86,12 +90,12 @@
                         </div>
 
                         <!-- Garis Horizontal -->
-                        <div style="flex-grow: 1; height: 1px; background-color: #018797; margin-bottom: 10%;"></div>
+                        <div style="flex-grow: 1; height: 1px; background-color: #018797; margin-bottom: 4%;"></div>
 
                         <!-- Icon 4: Selesai Di Review -->
                         <div>
                             <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '4' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                <i class="fa-solid fa-flag-checkered" style="color: #ffffff; font-size: 24px;"></i>
+                                <i class="fa-solid fa-envelope-circle-check" style="color: #ffffff; font-size: 24px;"></i>
                             </div>
                             <h6 style="margin-top: 13px;">Selesai Review</h6>
                             @if($application->approve_status == '4')

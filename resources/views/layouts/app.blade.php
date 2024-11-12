@@ -90,8 +90,8 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('application.index', ['status' => [1, 2, 3],'approve_status' => [3, 4]]) }}" class="dropdown-item">
-                                        <i class="fa-solid fa-circle-check"></i>
+                                        <a href="{{ route('application.index', ['approve_status' => '3,4', 'status' => '1,2,3']) }}" class="dropdown-item">
+                                            <i class="fa-solid fa-circle-check"></i>
                                             Review Selesai
                                         </a>
                                     </li>
