@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/chat', function () {
-    return view('chat');
-})->name('chat.blade');
+        return view('chat');
+    })->name('chat.blade');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes(['verify' => true,
@@ -41,6 +41,7 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
 
     Route::get('/api/category/{id}', [App\Http\Controllers\CategoryController::class, 'getCategoryByUnit'])->name('api.category');
     Route::get('/api/activity/{categoryID}/{unitID}', [App\Http\Controllers\ActivityController::class, 'getActivityByCategory'])->name('api.activity');
+    Route::get('/api/chart',[App\Http\Controllers\ChartController::class, 'chartData']);
 
     //api end
     Route::get('/roleCheck', [App\Http\Controllers\RoleController::class, 'checkRole'])->name('role.check');
@@ -86,7 +87,7 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
                 Route::get('/', [App\Http\Controllers\UnitController::class, 'index'])->name('index');
                 Route::post('create', [App\Http\Controllers\UnitController::class, 'store'])->name('store');
                 Route::get('/delete/{id}', [App\Http\Controllers\UnitController::class, 'destroy'])->name('destroy');
-                Route::delete(uri: '/activity/destroy', [App\Http\Controllers\UnitController::class, 'destroyActivity'])->name('activity.destroy');
+                Route::delete('/activity/destroy', [App\Http\Controllers\UnitController::class, 'destroyActivity'])->name('activity.destroy');
                 Route::get('/{id}', [App\Http\Controllers\UnitController::class, 'show'])->name('detail');
                 Route::post('/{id}/activity', [App\Http\Controllers\UnitController::class, 'updateOrCreateActivity'])->name('updateOrCreateActivity');
             });

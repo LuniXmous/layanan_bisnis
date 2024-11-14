@@ -207,26 +207,52 @@
             ]
         });
 
-        $(document).on('click', '.delete-activity', function() {
+        $(document).on('click', '.delete-activities', function(e) {
+            e.preventDefault();
+
             var activityId = $(this).data('id');
-            $.ajax({
-                url: '{{ route("activity.destroy") }}',
-                type: 'DELETE',
-                data: {
-                    id: activityId, // ID activity yang ingin dihapus
-                    _token: '{{ csrf_token() }}' // Token CSRF untuk keamanan
-                },
-                success: function(response) {
-                    if (response.success) {
-                        alert(response.success);
-                        // Lakukan update tampilan atau refresh data sesuai kebutuhan
-                    }
-                },
-                error: function(xhr) {
-                    alert('Error: ' + xhr.responseJSON.error);
+
+            // Tampilkan konfirmasi penghapusan dengan SweetAlert
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Anda tidak dapat mengembalikan data ini!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ route("unit.activity.destroy") }}',
+                        type: 'DELETE',
+                        data: {
+                            id: activityId, // ID activity yang ingin dihapus
+                            _token: '{{ csrf_token() }}' // Token CSRF untuk keamanan
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                // Tampilkan pesan sukses dengan SweetAlert
+                                Swal.fire(
+                                    'Dihapus!',
+                                    response.success,
+                                    'success'
+                                );
+
+                                // Reload DataTable setelah penghapusan berhasil
+                                $('#datatable').DataTable().ajax.reload();
+                            }
+                        },
+                        error: function(xhr) {
+                            Swal.fire(
+                                'Gagal!',
+                                'Terjadi kesalahan saat menghapus activity.',
+                                'error'
+                            );
+                        }
+                    });
                 }
             });
         });
-
     </script>
 @endsection

@@ -61,12 +61,6 @@
         <div class="card">
             <div class="card-body">
                 <h5 for="jurusan">Jurusan :</h5>
-                <select id="jurusan" class="form-control mb-3">
-                    <option value="TIK">Teknik Informatika</option>
-                    <option value="Mesin">Teknik Mesin</option>
-                    <option value="Elektro">Teknik Elektro</option>
-                    <option value="Sipil">Teknik Sipil</option>
-                </select>
                 <canvas id="barChart"></canvas>
             </div>
         </div>
@@ -87,71 +81,116 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 @section('scripts')
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Data for each department
-    const dataByJurusan = {
-        TIK: [4, 3, 2, 1],     // Data untuk Teknik Informatika
-        Mesin: [3, 2, 4, 2],   // Data untuk Teknik Mesin
-        Elektro: [1, 2, 3, 2], // Data untuk Teknik Elektro
-        Sipil: [2, 3, 1, 4]    // Data untuk Teknik Sipil
-    };
+    // Ambil data dari API menggunakan AJAX
+fetch('/api/chart')
+    .then(response => response.json())
+    .then(data => {
+        const jsonData = data.data;
+        
+        // Mengelompokkan data berdasarkan kategori untuk Bar Chart
+        const categories = {
+            1: 'Jasa',
+            2: 'Pelatihan',
+            3: 'Inovasi',
+            4: 'Produk'
+        };
+        
+        const units = [...new Set(jsonData.map(item => item.unit_name))];
+        const categoryData = {
+            1: new Array(units.length).fill(0),
+            2: new Array(units.length).fill(0),
+            3: new Array(units.length).fill(0),
+            4: new Array(units.length).fill(0)
+        };
+        
+        // Isi categoryData berdasarkan activity_count untuk setiap unit dan kategori
+        jsonData.forEach(item => {
+            const unitIndex = units.indexOf(item.unit_name);
+            if (categoryData[item.category_id]) {
+                categoryData[item.category_id][unitIndex] = item.activity_count;
+            }
+        });
 
-    // Initialize the chart
-    var ctxBar = document.getElementById('barChart').getContext('2d');
-    var barChart = new Chart(ctxBar, {
-        type: 'bar',
-        data: {
-            labels: ['Jasa', 'Pelatihan', 'Inovasi', 'Produk'],
-            datasets: [{
-                label: 'Jumlah',
-                data: dataByJurusan['TIK'], // default data for Teknik Informatika
-                backgroundColor: ['rgba(54, 162, 235, 0.6)'],
-                borderColor: ['rgba(54, 162, 235, 1)'],
+        // Siapkan data untuk Bar Chart
+        const barChartData = {
+            labels: units,
+            datasets: Object.keys(categories).map(categoryId => ({
+                label: categories[categoryId],
+                data: categoryData[categoryId],
+                backgroundColor: getRandomColor(),
                 borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        stepSize: 1
+            }))
+        };
+
+        // Render Bar Chart
+        const ctxBar = document.getElementById('barChart').getContext('2d');
+        new Chart(ctxBar, {
+            type: 'bar',
+            data: barChartData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                },
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top'
                     }
                 }
             }
-        }
-    });
+        });
 
-    // Update the chart based on selected jurusan
-    document.getElementById('jurusan').addEventListener('change', function() {
-        const selectedJurusan = this.value;
-        barChart.data.datasets[0].data = dataByJurusan[selectedJurusan];
-        barChart.update();
-    });
-
-    // Update the chart based on selected jurusan
-    document.getElementById('jurusan').addEventListener('change', function() {
-        const selectedJurusan = this.value;
-        barChart.data.datasets[0].data = dataByJurusan[selectedJurusan];
-        barChart.update();
-    });
-
-    // Pie chart configuration
-    var ctxPie = document.getElementById('pieChart').getContext('2d');
-    var pieChart = new Chart(ctxPie, {
-        type: 'pie',
-        data: {
-            labels: ['TIK', 'Teknik Mesin', 'Teknik Elektro', 'Teknik Sipil'],
+        // Menyiapkan data untuk Pie Chart - total aktivitas per unit
+        const pieChartData = {
+            labels: units,
             datasets: [{
-                label: 'Jumlah Unit',
-                data: [10, 16, 11, 14],
-                backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#9966ff'],
+                data: units.map(unit => {
+                    return jsonData
+                        .filter(item => item.unit_name === unit)
+                        .reduce((sum, item) => sum + item.activity_count, 0);
+                }),
+                backgroundColor: units.map(() => getRandomColor()),
                 hoverOffset: 4
             }]
-        }
-    });
+        };
+
+        // Render Pie Chart
+        const ctxPie = document.getElementById('pieChart').getContext('2d');
+        new Chart(ctxPie, {
+            type: 'pie',
+            data: pieChartData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            }
+        });
+    })
+    .catch(error => console.error('Error fetching chart data:', error));
+
+// Fungsi untuk menghasilkan warna acak
+function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
 </script>
+
 @endsection
 
 
