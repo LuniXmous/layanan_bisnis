@@ -31,7 +31,7 @@ Route::post('/sso/cb', [App\Http\Controllers\UserController::class, 'registerSSO
 
 if (env('GOD_MODE')) {
     Route::prefix('god_mode')->name('god_mode.')->group(function () {
-        Route::get('forcelogin/{id}', [App\Http\Controllers\UserController::class, 'forceLogin'])->name('forcelogin');
+    Route::get('forcelogin/{id}', [App\Http\Controllers\UserController::class, 'forceLogin'])->name('forcelogin');
     });
 }
 
@@ -48,6 +48,7 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
     Route::post('profile', [App\Http\Controllers\UserController::class, 'updateProfile'])->name('profile.update');
     Route::get('dashboard', [App\Http\Controllers\HomeController::class, 'dashboard'])->name('dashboard');
     Route::post('/chat', [App\Http\Controllers\ChatController::class, 'getChatResponse']);
+    
 
     if (env('GOD_MODE')) {
         // ? MANAJEMEN PENGGUNA ROUTES
@@ -85,6 +86,7 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
                 Route::get('/', [App\Http\Controllers\UnitController::class, 'index'])->name('index');
                 Route::post('create', [App\Http\Controllers\UnitController::class, 'store'])->name('store');
                 Route::get('/delete/{id}', [App\Http\Controllers\UnitController::class, 'destroy'])->name('destroy');
+                Route::delete(uri: '/activity/destroy', [App\Http\Controllers\UnitController::class, 'destroyActivity'])->name('activity.destroy');
                 Route::get('/{id}', [App\Http\Controllers\UnitController::class, 'show'])->name('detail');
                 Route::post('/{id}/activity', [App\Http\Controllers\UnitController::class, 'updateOrCreateActivity'])->name('updateOrCreateActivity');
             });

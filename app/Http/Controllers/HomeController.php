@@ -64,4 +64,6 @@ class HomeController extends Controller
         
             return view('admin.index', compact('jumlahPengajuan', 'jumlahSelesai', 'jumlahOnProgress', 'jumlahPengguna','year', 'totalNominal'));
     }
+
+    
 }

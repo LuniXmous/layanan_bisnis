@@ -56,6 +56,7 @@ class UnitController extends Controller
                 ->addColumn('action', function ($row) {
                     $html = '
                         <button type="button" onclick="updateActivity(' . $row->id . ',' . $row->category_id . ',\'' . $row->name . '\')" class="btn btn-warning">Edit</button>
+                        <button class="btn btn-danger delete-activities" data-id="' . $row->id . '">Hapus</button>
                     ';
                     return $html;
                 })
@@ -118,12 +119,32 @@ class UnitController extends Controller
 
     public function destroy(Request $request)
     {
+        // Hapus semua aktivitas yang terkait dengan unit yang akan dihapus
+        Activity::where("unit_id", $request->id)->delete();
 
+        // Hapus unit itu sendiri
         $delete = Unit::findOrFail($request->id)->delete();
+
         if ($delete) {
-            return response()->json(['success' => 'Unit berhasil dihapus.']);
+            return response()->json(['success' => 'Unit dan aktivitas terkait berhasil dihapus.']);
         } else {
             return response()->json(['error' => 'Terjadi kesalahan saat menghapus unit.'], 500);
         }
-    }  
+    }
+
+    public function destroyActivity(Request $request)
+    {
+        // Temukan aktivitas berdasarkan ID
+        $activity = Activity::findOrFail($request->id);
+
+        // Hapus aktivitas tersebut
+        $delete = $activity->delete();
+
+        if ($delete) {
+            return response()->json(['success' => 'Aktivitas berhasil dihapus.']);
+        } else {
+            return response()->json(['error' => 'Terjadi kesalahan saat menghapus aktivitas.'], 500);
+        }
+    }
+
 }

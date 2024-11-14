@@ -13,7 +13,6 @@ class CategoryController extends Controller
         if (!$categories) {
             return response(["status" => "not found"], 422);
         }
-
         return response(["status" => "ok", "data" => $categories], 200);
     }
 }

@@ -206,5 +206,27 @@
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });
+
+        $(document).on('click', '.delete-activity', function() {
+            var activityId = $(this).data('id');
+            $.ajax({
+                url: '{{ route("activity.destroy") }}',
+                type: 'DELETE',
+                data: {
+                    id: activityId, // ID activity yang ingin dihapus
+                    _token: '{{ csrf_token() }}' // Token CSRF untuk keamanan
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert(response.success);
+                        // Lakukan update tampilan atau refresh data sesuai kebutuhan
+                    }
+                },
+                error: function(xhr) {
+                    alert('Error: ' + xhr.responseJSON.error);
+                }
+            });
+        });
+
     </script>
 @endsection
