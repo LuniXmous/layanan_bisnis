@@ -54,7 +54,7 @@ class ApplicationController extends Controller
             return redirect()->back();
         }
     }
-    
+
     public function exportDana(Request $request)
     {
         if (Auth::user()->role_id == 0) {
@@ -174,11 +174,11 @@ class ApplicationController extends Controller
             ->where('approve_status', 0)
             ->orderBy('created_at', 'desc')
             ->first()
-            ->get();     
+            ->get();
 
         return view('application.detail', compact('application', 'submissionLogs'));
     }
-    
+
 
     public function indexTebusan(Request $request)
     {
@@ -249,7 +249,7 @@ class ApplicationController extends Controller
             $extraType = ExtraApplication::where("application_id", $application->id)->latest()->first()?->typeAlias();
         }
         $extraApp = "";
-        if ($application->activity->category_id == 1) { //pengajuan dana 
+        if ($application->activity->category_id == 1) { //pengajuan dana
             if ($application->approve_status == 4) {
                 $extraApp = "Pencairan Dana";
             }
@@ -319,7 +319,7 @@ class ApplicationController extends Controller
         if (!$application) {
             return redirect()->back()->with(["error" => "invalid action"]);
         }
- 
+
         $application->update([
             "status" => 4,
         ]);
@@ -350,7 +350,7 @@ class ApplicationController extends Controller
             "nominal" => "required|numeric|min:0", // Validasi untuk nominal
         ]);
 
-        
+
         if ($request->has('extra_application_id')) {
             $extraApplication = ExtraApplication::find($request->extra_application_id);
             if ($extraApplication) {
@@ -424,7 +424,7 @@ class ApplicationController extends Controller
                         'ext' => "img",
                         'file' => $name,
                     ]);
-                    if (isset($request->lampiran["pks"])) { 
+                    if (isset($request->lampiran["pks"])) {
                         $lampiran = $request->lampiran["pks"];
                         $name = time() . "_" . $lampiran->getClientOriginalName();
                         Storage::disk('dokumen_bisnis')->put($name, file_get_contents($lampiran));
@@ -526,7 +526,7 @@ class ApplicationController extends Controller
             return redirect()->back()->with(["error" => "invalid action"]);
         }
         // Simpan status lama sebelum diperbarui
-        $status = $application->approve_status;  
+        $status = $application->approve_status;
 
         // Update status persetujuan
         $application->update([
@@ -535,7 +535,7 @@ class ApplicationController extends Controller
         ]);
 
         // dd($status);
-        
+
         $extraApp = "";
         if ($application->activity->category_id == 1) {
             if ($application->status == 2) {
@@ -548,7 +548,7 @@ class ApplicationController extends Controller
                 $extraApp = "Pengajuan Pemberitahuan Kegiatan Selesai Dilaksanakan";
             }
         }
-        
+
         //kirim email
         $users = [];
         //kirim email tebusan
@@ -571,7 +571,7 @@ class ApplicationController extends Controller
                 \Mail::to($application->user->email)->send(new \App\Mail\approveExtraApplicationMail($application, ExtraApplication::where("application_id", $application->id)->latest("created_at")->first()));
             }
         }
-        
+
         foreach ($users as $user) {
             \Mail::to($user->email)->send(new \App\Mail\reviewMail($application, $extraApp));
         }
@@ -580,7 +580,7 @@ class ApplicationController extends Controller
                 \Mail::to($user->email)->send(new \App\Mail\tebusanMail($application));
             }
         }
- 
+
         ApplicationStatusLog::create([
             'application_id' => $application->id,
             'status' => $application->status,
@@ -599,7 +599,7 @@ class ApplicationController extends Controller
         if(Auth::user()->role_id != 5){
             if(Auth::user()->role_id != 0){
             return redirect()->back()->with(["error" => "invalid action"]);
-            } 
+            }
         }
         //checking logic
         $comment = $this->comment($application);
@@ -613,16 +613,19 @@ class ApplicationController extends Controller
         ]);
 
         if ($application->status == 1 && $application->approve_status == 4) {
-            // Ambil data RekapDana berdasarkan application_id
-            $rekapDana = RekapDana::where('application_id', $application->id)->first();
-        
-            // Pastikan data RekapDana ditemukan
-            if ($rekapDana) {
-                $rekapDana->update([
-                    'nilai_kontrak' => $rekapDana->nominal, // Akses properti nominal dari objek model
+            $rekapDana = RekapDana::where('application_id', $application->id)->get(); // ambil data dlu
+            $dataRekap = RekapDana::where('application_id', $application->id); // data untuk di update
+            if ($rekapDana->isNotEmpty()) {
+                $firstRekapDana = $rekapDana->first();
+                $dataRekap->update([
+                    'nilai_kontrak' => $firstRekapDana->nominal,
                 ]);
+            } else {
+                dd("Data RekapDana tidak ditemukan.");
             }
         }
+
+
 
         //kirim email
         $users = [];
@@ -715,7 +718,7 @@ class ApplicationController extends Controller
                 $extraApp = "Pemberitahuan Kegiatan Selesai Dilaksanakan";
             }
         }
-        
+
         $application->update([
             "approve_status" => 0,
             "checkpoint" => $application->approve_status,
@@ -730,7 +733,7 @@ class ApplicationController extends Controller
             'user_id' => Auth::user()->id,
             'role_id' => Auth::user()->role_id,
         ]);
-    
+
 
         \Mail::to($application->user->email)->send(new \App\Mail\rejectApplicationMail($application, $extraApp));
 
