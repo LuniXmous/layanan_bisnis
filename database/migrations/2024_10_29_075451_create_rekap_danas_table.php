@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('application_id');  // Ubah menjadi uuid
             $table->decimal('nominal', 15, 2);
+            $table->decimal('nilai_kontrak', 15, 3)->nullable(); // Menambahkan kolom nilai_kontrak
             $table->timestamps();
         
             // Tambahkan foreign key

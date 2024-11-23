@@ -152,7 +152,7 @@
             <header class="mb-xl-4 mb-3">
                 <a href="#" class="burger-btn {{ Route::is('application.create') || Route::is('application.edit') ? 'd-block' : 'd-block d-xl-none' }}">
                     <div class="btn btn-primary">
-                        <i class="bi bi-justify fs-5"></i>
+                        <i class="fa-solid fa-bars"></i>
                     </div>
                 </a>
             </header>

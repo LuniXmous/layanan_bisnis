@@ -13,8 +13,8 @@
                         <h6>Form Pengajuan</h6>
                         <section class="mb-3">
                             <div class="form-group mb-3">
-                                <label class="mb-2 text-dark fw-bold text-capitalize">Unit <span
-                                        class="text-danger">*</span></label>
+                                <label class="mb-2 text-dark fw-bold text-capitalize">Unit 
+                                    <span class="text-danger">*</span></label>
                                 <select name="unit" id="unit" class="form-control required mb-2" required>
                                     <option value="">--- Pilih ---</option>
                                     @foreach ($unit as $item)
@@ -48,6 +48,13 @@
                                     <input type="text"
                                         placeholder="Permohonan menjadi narasumber di ….. pada tanggal ……." name="title"
                                         id="title" class="form-control required" value="{{ old('title') }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-dark mb-2 fw-bold text-capitalize" for="nominal">Nominal Kontrak yang Di Ajukan <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <input type="number" id="nominal" placeholder="Masukkan Nominal" name="nominal" class="form-control" oninput="updateFormattedValue(this)">
+                                    </div>
+                                    <div id="formattedValue" class="mt-2" style="font-weight: bold;"></div> <!-- Untuk menampilkan nilai format -->
                                 </div>
                                 <div class="form-group mb-3">
                                     <label class="text-dark mb-2 fw-bold" for="summernote">Deskripsi Permohonan <span
@@ -431,5 +438,22 @@
             $(`#question-${$("#category").val()} input`).removeAttr('disabled');
             $(`#question-${$("#category").val()}`).fadeIn();
         });
+
+        function updateFormattedValue(input) {
+            // Mengambil nilai dari input dan menghilangkan semua karakter non-digit
+            let value = input.value.replace(/[^0-9]/g, '');
+            
+            // Menambahkan titik pemisah ribuan
+            let formattedValue = '';
+            if (value) {
+                formattedValue = 'Rp. ' + parseInt(value).toLocaleString('id-ID'); // Format sebagai ID
+            }
+            
+            // Menampilkan nilai format di elemen lain
+            document.getElementById('formattedValue').innerText = formattedValue;
+            
+            // Menyimpan nilai bersih untuk dikirim ke server
+            input.value = value; // Mengupdate input value dengan nilai numerik
+        }
     </script>
 @endsection

@@ -319,7 +319,7 @@ class ApplicationController extends Controller
         if (!$application) {
             return redirect()->back()->with(["error" => "invalid action"]);
         }
-
+ 
         $application->update([
             "status" => 4,
         ]);
@@ -329,13 +329,13 @@ class ApplicationController extends Controller
 
     public function report(Request $request)
     {
-    $year = $request->input('year', date('Y')); // Ambil tahun dari input, default ke tahun ini
-    $rekapDana = RekapDana::whereYear('created_at', $year)->get();
+        $year = $request->input('year', date('Y')); // Ambil tahun dari input, default ke tahun ini
+        $rekapDana = RekapDana::whereYear('created_at', $year)->get();
 
-    // Hitung total nominal
-    $totalNominal = $rekapDana->sum('nominal');
+        // Hitung total nominal
+        $totalNominal = $rekapDana->sum('nominal');
 
-    return view('application.report', compact('rekapDana', 'totalNominal', 'year'));
+        return view('application.report', compact('rekapDana', 'totalNominal', 'year'));
     }
 
 
@@ -599,7 +599,6 @@ class ApplicationController extends Controller
         if(Auth::user()->role_id != 5){
             if(Auth::user()->role_id != 0){
             return redirect()->back()->with(["error" => "invalid action"]);
-            
             } 
         }
         //checking logic
@@ -612,6 +611,19 @@ class ApplicationController extends Controller
             "approve_status" => $application->approve_status + 1,
             "note" => null,
         ]);
+
+        if ($application->status == 1 && $application->approve_status == 4) {
+            // Ambil data RekapDana berdasarkan application_id
+            $rekapDana = RekapDana::where('application_id', $application->id)->first();
+        
+            // Pastikan data RekapDana ditemukan
+            if ($rekapDana) {
+                $rekapDana->update([
+                    'nilai_kontrak' => $rekapDana->nominal, // Akses properti nominal dari objek model
+                ]);
+            }
+        }
+
         //kirim email
         $users = [];
         //kirim email tebusan
@@ -756,6 +768,11 @@ class ApplicationController extends Controller
             'user_id' => Auth::user()->id,
             'title' => $request->title,
             'description' => $request->desc,
+        ]);
+
+        RekapDana :: create ([
+            'application_id' => $application->id,
+            'nominal' => $request->nominal,
         ]);
 
         foreach ($request->lampiran as $key => $lampiran) {

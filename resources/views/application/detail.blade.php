@@ -1085,21 +1085,21 @@
         });
 
         function updateFormattedValue(input) {
-    // Mengambil nilai dari input dan menghilangkan semua karakter non-digit
-    let value = input.value.replace(/[^0-9]/g, '');
-    
-    // Menambahkan titik pemisah ribuan
-    let formattedValue = '';
-    if (value) {
-        formattedValue = 'Rp. ' + parseInt(value).toLocaleString('id-ID'); // Format sebagai ID
-    }
-    
-    // Menampilkan nilai format di elemen lain
-    document.getElementById('formattedValue').innerText = formattedValue;
-    
-    // Menyimpan nilai bersih untuk dikirim ke server
-    input.value = value; // Mengupdate input value dengan nilai numerik
-}
+            // Mengambil nilai dari input dan menghilangkan semua karakter non-digit
+            let value = input.value.replace(/[^0-9]/g, '');
+            
+            // Menambahkan titik pemisah ribuan
+            let formattedValue = '';
+            if (value) {
+                formattedValue = 'Rp. ' + parseInt(value).toLocaleString('id-ID'); // Format sebagai ID
+            }
+            
+            // Menampilkan nilai format di elemen lain
+            document.getElementById('formattedValue').innerText = formattedValue;
+            
+            // Menyimpan nilai bersih untuk dikirim ke server
+            input.value = value; // Mengupdate input value dengan nilai numerik
+        }
 
     </script>
 @endsection
