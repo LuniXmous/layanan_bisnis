@@ -10,7 +10,7 @@
                     <input type="number" name="year" value="{{ $year }}" min="2000" max="{{ date('Y') }}" class="form-control w-auto d-inline-block" style="margin-right: 10px;">
                     <button type="submit" class="btn btn-primary">Tampilkan</button>
                 </form>
-                <h2>Total Nominal: Rp. {{ number_format($totalNominal, 2, ',', '.') }}</h2>
+                <h2>Total Nominal: Rp. {{ number_format($totalNilaiKontrak, 2, ',', '.') }}</h2>
                 <br/>
                 
                 @if (Auth::user()->role_id != 1)
@@ -22,8 +22,9 @@
                             <tr>
                                 <th width="3%" data-order="asc">No</th>
                                 <th data-order="asc">Judul Permohonan</th>
+                                <th data-order="asc">Nilai Kontrak Yang Di Ajukan</th>
+                                <th data-order="asc">Nilai Kontrak Yang Diterima</th>
                                 <th data-order="asc">Tanggal</th>
-                                <th data-order="asc">Nominal</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -31,8 +32,10 @@
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $rekap->application->title }}</td>
-                                <td>{{ $rekap->created_at->format('d-m-Y') }}</td>
                                 <td>Rp. {{ number_format($rekap->nominal, 2, ',', '.') }}</td>
+                                <td>Rp. {{ number_format($rekap->nilai_kontrak, 2, ',', '.') }}</td>
+                                <td>{{ $rekap->created_at->format('d-m-Y') }}</td>
+
                             </tr>
                             @endforeach
                         </tbody>

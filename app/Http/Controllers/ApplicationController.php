@@ -333,9 +333,9 @@ class ApplicationController extends Controller
         $rekapDana = RekapDana::whereYear('created_at', $year)->get();
 
         // Hitung total nominal
-        $totalNominal = $rekapDana->sum('nominal');
+        $totalNilaiKontrak = $rekapDana->sum('nilai_kontrak');
 
-        return view('application.report', compact('rekapDana', 'totalNominal', 'year'));
+        return view('application.report', compact('rekapDana', 'totalNilaiKontrak', 'year'));
     }
 
 

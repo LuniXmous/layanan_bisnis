@@ -54,15 +54,22 @@ class HomeController extends Controller
                       ->where('approve_status', 3);
             })->count();            
             $jumlahOnProgress = Application::whereIn('approve_status', [1, 2])->count();
+            $jumlahDiTolak = Application::where(function($query) {
+                $query->where('status', 1)
+                      ->where('approve_status', 0);
+            })->orWhere(function($query) {
+                $query->whereIn('status', [2, 3])
+                      ->where('approve_status', 0);
+            })->count();
             $jumlahPengguna = User::count();
 
             $year = $request->input('year', date('Y')); 
     
             // Ambil rekapDana untuk tahun tersebut
             $rekapDana = RekapDana::whereYear('created_at', $year)->get();
-            $totalNominal = $rekapDana->sum('nominal');
+            $totalNilaiKontrak = $rekapDana->sum('nilai_kontrak');
         
-            return view('admin.index', compact('jumlahPengajuan', 'jumlahSelesai', 'jumlahOnProgress', 'jumlahPengguna','year', 'totalNominal'));
+            return view('admin.index', compact('jumlahPengajuan', 'jumlahSelesai', 'jumlahOnProgress', 'jumlahDiTolak', 'jumlahPengguna','year', 'totalNilaiKontrak'));
     }
 
     

@@ -239,6 +239,12 @@
                                 <span class="fw-bold h6">Kegiatan: </span> &nbsp;
                                 {{ $application->activity->name }}
                             </div>
+                            <div class="mb-3">
+                                <span class="fw-bold h6">Nilai Kontrak Yang Di Ajukan: </span> &nbsp;
+                                @foreach ($rekapDana as $rekap)
+                                    Rp.{{ number_format($rekap->nominal, 0, ',', '.') }}
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                     <div class="row border-top pt-4">
@@ -400,12 +406,6 @@
                         <div class="row border-top pt-4">
                             <div class="col-xxl-4" style="margin-left:20px;">
                                 <div class="fw-bold h5">Lampiran </div>
-                                <div class="mb-3">
-                                    <span class="fw-bold h6">Total Transfer: </span> &nbsp; <br>
-                                    @foreach ($rekapDana as $rekap)
-                                        Rp.{{ number_format($rekap->nominal, 0, ',', '.') }}
-                                    @endforeach
-                                </div>
                                 @foreach ($extra->document->whereNotIn('type', ['lainnya', 'extra']) as $file)
                                     <div class="mb-2">
                                         <span role="button" id="document-lampiran" data-type="{{ $file->ext }}"
@@ -568,12 +568,6 @@
                         <div class="row border-top pt-4">
                             <div class="col-xl-4">
                                 <div class="fw-bold h5">Lampiran </div>
-                                <div class="mb-3">
-                                    <span class="fw-bold h6">Total Transfer: </span> &nbsp; <br>
-                                    @foreach ($rekapDana as $rekap)
-                                        Rp.{{ number_format($rekap->nominal, 0, ',', '.') }}
-                                    @endforeach
-                                </div>
                                 @foreach ($extra->document->whereNotIn('type', ['lainnya', 'extra']) as $file)
                                     <div class="mb-2">
                                         <span role="button" id="document-lampiran"
@@ -737,12 +731,6 @@
                         <div class="row border-top pt-4">
                             <div class="col-xl-4">
                                 <div class="fw-bold h5">Lampiran </div>
-                                <div class="mb-3">
-                                    <span class="fw-bold h6">Total Transfer: </span> &nbsp; <br>
-                                    @foreach ($rekapDana as $rekap)
-                                        Rp.{{ number_format($rekap->nominal, 0, ',', '.') }}
-                                    @endforeach
-                                </div>
                                 @foreach ($extra->document->whereNotIn('type', '!=', 'lainnya') as $file)
                                     <div class="mb-2">
                                         <span role="button" id="document-lampiran"
@@ -857,14 +845,6 @@
                             </div>
                             {{-- disini banyak casenya --}}
                             @if ($application->activity->category->id == 1)
-                            <div class="form-group">
-                                <label class="mb-2 fw-bold text-capitalize" for="nominal">Nominal Jumlah Uang <span class="text-danger">*</span></label>
-                                <input type="hidden" name="extra_application_id" value="{{ $application->id }}">
-                                <div class="input-group">
-                                    <input type="number" id="nominal" placeholder="Masukkan Nominal" name="nominal" class="form-control" required oninput="updateFormattedValue(this)">
-                                </div>
-                                <div id="formattedValue" class="mt-2" style="font-weight: bold;"></div> <!-- Untuk menampilkan nilai format -->
-                            </div>
                                 <div class="form-group">
                                     <label class="mb-2 fw-bold" for="role_id">Bukti Transfer Mitra (File berupa Gambar/Screenshot)<span
                                             class="text-danger">*</span></label>
@@ -896,14 +876,6 @@
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
                                     <div class="form-group">
-                                        <label class="mb-2 fw-bold text-capitalize" for="nominal">Nominal Jumlah Uang <span class="text-danger">*</span></label>
-                                        <input type="hidden" name="extra_application_id" value="{{ $application->id }}">
-                                        <div class="input-group">
-                                            <input type="number" id="nominal" placeholder="Masukkan Nominal" name="nominal" class="form-control" required oninput="updateFormattedValue(this)">
-                                        </div>
-                                        <div id="formattedValue" class="mt-2" style="font-weight: bold;"></div> <!-- Untuk menampilkan nilai format -->
-                                    </div>
-                                    <div class="form-group">
                                         <label class="mb-2 fw-bold" for="role_id">Bukti Transfer Mitra (File berupa Gambar/Screenshot)<span
                                                 class="text-danger">*</span></label>
                                         <input type="file" required name="lampiran[transfer]" class="form-control"
@@ -921,14 +893,6 @@
                                         <input type="file" name="lampiran[dokumentasi kegiatan]" class="form-control"
                                         accept="application/pdf">
                                         <small class="text-muted">Format file harus berupa PDF</small>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="mb-2 fw-bold text-capitalize" for="nominal">Nominal Jumlah Uang <span class="text-danger">*</span></label>
-                                        <input type="hidden" name="extra_application_id" value="{{ $application->id }}">
-                                        <div class="input-group">
-                                            <input type="number" id="nominal" placeholder="Masukkan Nominal" name="nominal" class="form-control" required oninput="updateFormattedValue(this)">
-                                        </div>
-                                        <div id="formattedValue" class="mt-2" style="font-weight: bold;"></div> <!-- Untuk menampilkan nilai format -->
                                     </div>
                                     <div class="form-group">
                                         <label class="mb-2 fw-bold" for="role_id">Bukti Transfer Mitra (File berupa Gambar/Screenshot)<span

@@ -108,7 +108,7 @@
                                 {{ Request::route()->action['as'] == 'application.report' ? 'active' : null }}">
                                 <a href="{{ route('application.report') }}" class="sidebar-link">
                                 <i class="fa-solid fa-money-bill-wave"></i>
-                                    <span>Laporan Dana</span>
+                                    <span>Nilai Kontrak</span>
                                 </a>
                             </li>
                             <li class="sidebar-item 

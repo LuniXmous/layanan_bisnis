@@ -10,9 +10,9 @@
         <div class="col-md-13">
             <div class="card">
                 <div class="card-body text-center">
-                <h1>Dana Masuk Tahun {{ $year }}</h1>
-                    <h5>Total Nominal: Rp. {{ number_format($totalNominal, 2, ',', '.') }}</h5><br>
-                    <a href="{{ route('application.report') }}" class="btn btn-primary btn-sm">Lihat Detail >></a>
+                <h3>Nilai Kontrak Masuk Tahun {{ $year }}</h3>
+                    <h5>Total Nominal: Rp. {{ number_format($totalNilaiKontrak, 2, ',', '.') }}</h5><br>
+                    <a href="{{ route('application.report') }}" class="btn btn-primary btn-sm">Lihat Detail</a>
                 </div>
             </div>
         </div>
@@ -20,8 +20,17 @@
             <div class="card">
                 <div class="card-body text-center">
                 <h3><i class="fa-solid fa-file"></i> {{ $jumlahPengajuan }}</h3>
-                    <p>JUMLAH PENGAJUAN</p>
-                    <a href="{{ route('application.index') }}" class="btn btn-primary btn-sm">Lihat Detail >></a>
+                    <h6>JUMLAH PENGAJUAN</h6><br>
+                    <a href="{{ route('application.index') }}" class="btn btn-primary btn-sm">Lihat Detail</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h3><i class="fa-solid fa-bars-progress"></i> {{ $jumlahOnProgress }}</h3>
+                    <h6>JUMLAH ON PROGRESS</h6><br>
+                    <a href="{{ route('application.index', ['approve_status' => '1,2']) }}" class="btn btn-primary btn-sm">Lihat Detail</a>
                 </div>
             </div>
         </div>
@@ -29,29 +38,29 @@
             <div class="card">
                 <div class="card-body text-center">
                 <h3><i class="fa-solid fa-square-check"></i> {{ $jumlahSelesai }}</h3>
-                    <p>JUMLAH SELESAI</p>
-                    <a href="{{ route('application.index', ['approve_status' => '3,4', 'status' => '1,2,3']) }}" class="btn btn-primary btn-sm">Lihat Detail >></a>
+                    <h6>JUMLAH SELESAI</h6><br>
+                    <a href="{{ route('application.index', ['approve_status' => '3,4', 'status' => '1,2,3']) }}" class="btn btn-primary btn-sm">Lihat Detail</a>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body text-center">
-                <h3><i class="fa-solid fa-bars-progress"></i> {{ $jumlahOnProgress }}</h3>
-                    <p>JUMLAH ON PROGRESS</p>
-                    <a href="{{ route('application.index', ['approve_status' => '1,2']) }}" class="btn btn-primary btn-sm">Lihat Detail >></a>
+                <h3><i class="fa-solid fa-square-xmark"></i> {{ $jumlahDiTolak }}</h3>
+                    <h6>JUMLAH DI TOLAK</h6><br>
+                    <a href="{{ route('application.index', ['approve_status' => '0', 'status' => '1,2,3']) }}" class="btn btn-primary btn-sm">Lihat Detail</a>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <!-- <div class="col-md-3">
             <div class="card">
                 <div class="card-body text-center">
                 <h3><i class="fa-solid fa-users"></i> {{ $jumlahPengguna }}</h3>
                     <p>JUMLAH PENGGUNA</p>
-                    <a href="{{ route('user.index') }}" class="btn btn-primary btn-sm">Lihat Detail >></a>
+                    <a href="{{ route('user.index') }}" class="btn btn-primary btn-sm">Lihat Detail</a>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <!-- Chart Section -->
@@ -69,7 +78,7 @@
         <div class="col-md-4">
             <div class="card" style="height: 92%;">
                 <div class="card-body">
-                    <h5 class="text-center">Jumlah Unit</h5>
+                    <h5 class="text-center">Jumlah Unit</h5> <br>
                     <canvas id="pieChart" style="margin: -15px;"></canvas>
                 </div>
             </div>

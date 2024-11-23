@@ -34,8 +34,9 @@ class rekapDanaExport implements FromArray, WithHeadings, ShouldAutoSize, WithEv
             $temp = [
                 $x + 1,
                 $data->application->title,
-                $data->created_at,
                 $data->nominal,
+                $data->nilai_kontrak,
+                $data->created_at,
             ];
             $arr[$x] = $temp;
             $x++;
@@ -45,7 +46,7 @@ class rekapDanaExport implements FromArray, WithHeadings, ShouldAutoSize, WithEv
     }
     public function headings(): array
     {
-        return ["No.",  "Judul Permohonan", "Tanggal", "Nominal"];
+        return ["No.",  "Judul Permohonan", "Nilai Kontrak Yang Di Ajukan", "Nilai Kontrak Yang Disetujui", "Tanggal"];
     }
     public function styles(Worksheet $sheet)
     {
