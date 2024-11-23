@@ -25,8 +25,6 @@ class ApplicationStatusLog extends Model
                 return "Pencairan Dana Operasional";
             } else if ($this->type == "kegiatan") {
                 return "Pemberitahuan Kegiatan Selesai Dilaksanakan";
-                // } else if ($this->type == "kegiatan") {
-                //     return "Pencairan Dana Setelah Kegiatan";
             } else {
                 return '';
             }
@@ -51,7 +49,7 @@ class ApplicationStatusLog extends Model
             } else if ($this->approve_status == 2) {
                 return ['status' => 'Selesai Di Review Admin Layanan Bisnis', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 0)->get(), 'must_role' => [0]];
             } else if ($this->approve_status == 3) {
-                return ['status' => 'Selesai Di Wakil Direktur 4', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 4)->get(), 'must_role' => [4, 0, 3]];
+                return ['status' => 'Selesai Di Review Wakil Direktur 4', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 4)->get(), 'must_role' => [4, 0, 3]];
             } else if ($this->approve_status == 4) {
                 return ['status' => 'Telah Di Review Direktur ', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 5)->get(), 'must_role' => [5, 0, 3]];
             } 
@@ -84,14 +82,13 @@ class ApplicationStatusLog extends Model
     {
         return $this->belongsTo(Application::class);
     }
-
     public function user ()
     {
         return $this->belongsTo(User::class);
     }
     public function role ()
     {
-        return $this->belongsTo(role::class);
+        return $this->belongsTo(role::class, 'role_id');
     }
     
 }

@@ -18,10 +18,24 @@
             <div class="card shadow-sm border mb-3" style="width: 100%; max-width: 100%; margin: auto;">
                 <div class="card-body">
                     <div style="display: flex; align-items: center; justify-content: space-between; text-align: center;">
-                    @if($application->status == '1')
+                    @if($application->status == '1' || $application->status == '0')
                         <!-- Icon 1: Review Admin Layanan Bisnis -->
                         <div>
-                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '1' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; 
+                                background-color: 
+                                @php
+                                    $latestLog = $submissionLogs->sortByDesc('created_at')->first();
+                                @endphp
+                                    @if($application->approve_status == '1') 
+                                        #ffc107 /* kuning */
+                                    @elseif(in_array($application->approve_status, ['2','3', '4'])) 
+                                        #198754 /* hijau */
+                                        @elseif($latestLog && $latestLog->status == 0 && $latestLog->approve_status == 0 && $latestLog->role_id == 0)
+                                        #dc3545 /* merah */
+                                    @else 
+                                        #018797 /* biru tua */
+                                    @endif; 
+                                display: flex; align-items: center; justify-content: center; margin: auto;">
                                 <i class="fa-solid fa-user" style="color: #ffffff; font-size: 24px;"></i>
                             </div>
                             <h6 style="margin-top: 13px;">Admin Layanan Bisnis</h6>
@@ -29,9 +43,13 @@
                                 @if($application->approve_status == '1')
                                     {{ $application->statusAlias()['status'] }}<br>
                                     {{ $application->updated_at }}
-                                @else($application->approve_status != '1')
+                                @else
                                     @foreach ($submissionLogs as $log)
                                         @if ($log->status == 1 && $log->approve_status == 2)
+                                            {{ $log->StatusAlias()['status'] }} <br>
+                                            {{ $log->created_at }}
+                                            &nbsp;
+                                        @elseif($latestLog && $latestLog->status == 0 && $latestLog->approve_status == 0 && $latestLog->role_id == 0)
                                             {{ $log->StatusAlias()['status'] }} <br>
                                             {{ $log->created_at }}
                                             &nbsp;
@@ -40,13 +58,25 @@
                                 @endif
                             </div>
                         </div>
-
                         <!-- Garis Horizontal -->
-                        <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 1%; margin-bottom: 4%;"></div>
-
+                        <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 10px; margin-bottom: 4%;"></div>
                         <!-- Icon 2: Review Wakil Direktur 4 -->
                         <div>
-                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '2' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                            <div style="width: 50px; height: 50px; border-radius: 50%; 
+                                background-color: 
+                                 @php
+                                    $latestLog = $submissionLogs->sortByDesc('created_at')->first();
+                                @endphp
+                                    @if($application->approve_status == '2') 
+                                        #ffc107 /* kuning */
+                                    @elseif(in_array($application->approve_status, ['3', '4'])) 
+                                        #198754 /* hijau */
+                                    @elseif($latestLog && $latestLog->status == 0 && $latestLog->approve_status == 0 && $latestLog->role_id == 4)
+                                        #dc3545 /* merah */
+                                    @else 
+                                        #018797 /* biru tua */
+                                    @endif; 
+                                display: flex; align-items: center; justify-content: center; margin: auto;">
                                 <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 24px;"></i>
                             </div>
                             <h6 style="margin-top: 13px;">Wakil Direktur 4</h6>
@@ -54,44 +84,70 @@
                                 @if($application->approve_status == '2')
                                     {{ $application->statusAlias()['status'] }}<br>
                                     {{ $application->updated_at }}
-                                @else($application->approve_status != '2')
-                                    @foreach ($submissionLogs as $log)
+                                @else
+                                    @foreach ($submissionLogs->sortByDesc('created_at') as $log)
                                         @if ($log->status == 1 && $log->approve_status == 3)
                                             {{ $log->StatusAlias()['status'] }} <br>
                                             {{ $log->created_at }}
                                             &nbsp;
+                                            @break
+                                        @elseif ($log->status == 0 && $log->approve_status == 0 && $log->role_id == 4)
+                                            {{ $log->StatusAlias()['status'] }} <br>
+                                            {{ $log->created_at }}
+                                            &nbsp;
+                                            @break
                                         @endif
                                     @endforeach
                                 @endif
                             </div>
                         </div>
-
                         <!-- Garis Horizontal -->
                         <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 10px; margin-bottom: 4%;"></div>
-
                         <!-- Icon 3: Review Direktur -->
                         <div>
-                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '3' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                <i class="fa-solid fa-user-tie"style="color: #ffffff; font-size: 24px;"></i>
+                            <div style="width: 50px; height: 50px; border-radius: 50%; 
+                                background-color: 
+                                    @if($application->approve_status == '3') 
+                                        #ffc107 /* kuning */
+                                    @elseif(in_array($application->approve_status, ['3', '4'])) 
+                                        #198754 /* hijau */
+                                    @elseif(
+                                        isset($submissionLogs) && 
+                                        $submissionLogs->where('status', 0)
+                                                    ->where('approve_status', 0)
+                                                    ->where('role_id', 5)
+                                                    ->isNotEmpty()) 
+                                        #dc3545 /* merah */
+                                    @else 
+                                        #018797 /* biru tua */
+                                    @endif; 
+                                display: flex; align-items: center; justify-content: center; margin: auto;">
+                                <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 24px;"></i>
                             </div>
-                            <h6 style="margin-top: 13px;"> Direktur</h6>
-                            @if($application->approve_status == '3')
-                                {{ $application->statusAlias()['status'] }}<br>
-                                {{ $application->updated_at }}
-                            @else($application->approve_status != '3')
-                                @foreach ($submissionLogs as $log)
-                                    @if ($log->status == 1 && $log->approve_status == 4)
-                                        {{ $log->StatusAlias()['status'] }} <br>
-                                        {{ $log->created_at }}
-                                        &nbsp;
-                                    @endif
-                                @endforeach
-                            @endif
+                            <h6 style="margin-top: 13px;">Direktur</h6>
+                            <div>
+                                @if($application->approve_status == '3')
+                                    {{ $application->statusAlias()['status'] }}<br>
+                                    {{ $application->updated_at }}
+                                @else
+                                    @foreach ($submissionLogs as $log)
+                                        @if ($log->status == 1 && $log->approve_status == 4)
+                                            {{ $log->StatusAlias()['status'] }} <br>
+                                            {{ $log->created_at }}
+                                            &nbsp;
+                                            @break 
+                                        @elseif ($log->status == 0 && $log->approve_status == 0 && $log->role_id == 5)
+                                            {{ $log->StatusAlias()['status'] }} <br>
+                                            {{ $log->created_at }}
+                                            &nbsp;
+                                            @break
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </div>
                         </div>
-
                         <!-- Garis Horizontal -->
                         <div style="flex-grow: 1; height: 1px; background-color: #018797; margin-bottom: 4%;"></div>
-
                         <!-- Icon 4: Selesai Di Review -->
                         <div>
                             <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '4' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
@@ -103,40 +159,44 @@
                                 {{ $application->updated_at }}
                             @endif
                         </div>
-                    @else {{-- jika status != 1 --}}
-                        <div>
-                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                <i class="fa-solid fa-user" style="color: #ffffff;font-size: 30px; margin: 10px;"></i>
-                            </div>
-                            <h6 style="margin-top: 13px;">Review Admin Layanan Bisnis</h6>
+                    </div>
+{{-- jika status != 1 && approveStatus !0--}}
+                    @else
+                    <div>
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                            <i class="fa-solid fa-user" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
                         </div>
-                            <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
-                        <div>
-                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
-                            </div>
-                            <h6 style="margin-top: 13px;">Review Wakil Direktur 4</h6>
+                        <h6 style="margin-top: 13px;">Admin Layanan Bisnis</h6>
+                    </div>
+                    <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+
+                    <div>
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                            <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
                         </div>
-                            <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
-                        <div>
-                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
-                            </div>
-                            <h6 style="margin-top: 13px;">Review Direktur</h6>
+                        <h6 style="margin-top: 13px;">Wakil Direktur 4</h6>
+                    </div>
+                        <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+
+                    <div>
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                            <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
                         </div>
-                            <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
-                        <div>
-                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                <i class="fa-solid fa-user-check" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
-                            </div>
-                            <h6 style="margin-top: 13px;">Review Selesai</h6>
+                        <h6 style="margin-top: 13px;">Direktur</h6>
+                    </div>
+                        <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+
+                    <div>
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                            <i class="fa-solid fa-envelope-circle-check" style="color: #ffffff; font-size: 27px; margin: 10px;"></i>
                         </div>
+                        <h6 style="margin-top: 13px;">Review Selesai</h6>
+                    </div>
                     @endif
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="col-xxl-8">
             <div class="card shadow-sm border mb-4">
                 @if ($application->note)
@@ -229,10 +289,24 @@
                             @if($application->status == '2')
                             <!-- Icon 1: Review Admin Layanan Bisnis -->
                                 <div style="width:30%; text-align:center;">
-                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '1' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                        <i class="fa-solid fa-user" style="color: #ffffff; font-size: 24px;"></i>
-                                    </div>
-                                    <h6 style="margin-top: 13px;">Review Wakil Direktur 4</h6>
+                                <div style="width: 50px; height: 50px; border-radius: 50%; 
+                                    background-color: 
+                                    @php
+                                        $latestLog = $submissionLogs->sortByDesc('created_at')->first();
+                                    @endphp
+                                        @if($application->approve_status == '1') 
+                                            #ffc107 /* kuning */
+                                        @elseif(in_array($application->approve_status, ['2', '3'])) 
+                                            #198754 /* hijau */
+                                        @elseif($latestLog && $latestLog->status == 2 && $latestLog->approve_status == 0 && $latestLog->role_id == 4)
+                                            #dc3545 /* merah */
+                                        @else 
+                                            #018797 /* biru tua */
+                                        @endif; 
+                                    display: flex; align-items: center; justify-content: center; margin: auto;">
+                                    <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 24px;"></i>
+                                </div>
+                                    <h6 style="margin-top: 13px;">Wakil Direktur 4</h6>
                                     @if($application->approve_status == '1')
                                         {{ $application->statusAlias()['status'] }}<br>
                                         {{ $application->updated_at }}
@@ -249,10 +323,19 @@
                                 <div style="flex-grow: 1; height: 1px; background-color: #018797; margin-bottom: 10%;"></div>
                             <!-- Icon 2: Review Wakil Direktur 4 -->
                                 <div style="width:30%; text-align:center;">
-                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '2' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                <div style="width: 50px; height: 50px; border-radius: 50%; 
+                                        background-color: 
+                                            @if($application->approve_status == '2') 
+                                                #ffc107 /* kuning */
+                                            @elseif(in_array($application->approve_status, ['3'])) 
+                                                #198754 /* hijau */
+                                            @else 
+                                                #018797 /* biru tua */
+                                            @endif; 
+                                        display: flex; align-items: center; justify-content: center; margin: auto;">
                                         <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 24px;"></i>
                                     </div>
-                                    <h6 style="margin-top: 13px;">Review Wakil Direktur 2</h6>
+                                    <h6 style="margin-top: 13px;">Wakil Direktur 2</h6>
                                     @if($application->approve_status == '2')
                                     {{ $application->statusAlias()['status'] }}
                                     {{ $application->updated_at }}
@@ -274,7 +357,7 @@
                                     </div>
                                     <h6 style="margin-top: 13px;">Selesai Review</h6>
                                     @if($application->approve_status == '3')
-                                        {{ $application->statusAlias()['status'] }}
+                                        {{ $application->statusAlias()['status'] }} <br>
                                         {{ $application->updated_at }}
                                     @endif
                                 </div>
@@ -283,7 +366,7 @@
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
                                         <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
                                     </div>
-                                    <h6 style="margin-top: 13px;">Review Wakil Direktur 4</h6>
+                                    <h6 style="margin-top: 13px;">Wakil Direktur 4</h6>
                                 </div>
                                     <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
 
@@ -352,44 +435,88 @@
                     <div class="card-header border-bottom" style="padding-left: 7%; padding-right: 8%;">
                         <div style="display: flex; align-items: center; justify-content: space-between; text-align: center;">
                             @if($application->status == '2')
-                            <!-- Icon 1: Review Admin Layanan Bisnis -->
+                        <!-- Icon 1: Review Wakil Direktur 4 -->
                                 <div style="width:30%; text-align:center;">
-                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '1' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                        <i class="fa-solid fa-user" style="color: #ffffff; font-size: 24px;"></i>
-                                    </div>
-                                    <h6 style="margin-top: 13px;">Review Wakil Direktur 4</h6>
-                                    @if($application->approve_status == '1')
-                                        {{ $application->statusAlias()['status'] }}
-                                        {{ $application->updated_at }}
-                                    @else($application->approve_status != '1')
-                                        @foreach ($submissionLogs as $log)
-                                            @if ($log->status == 2 && $log->approve_status == 2)
-                                                {{ $log->StatusAlias()['status'] }} <br>
-                                                {{ $log->created_at }}
-                                                &nbsp;
-                                            @endif
-                                        @endforeach
-                                    @endif
-                                </div>
-                                <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 20px 10px;"></div>
-                            <!-- Icon 2: Review Wakil Direktur 4 -->
-                                <div style="width:30%; text-align:center;">
-                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '2' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; 
+                                        background-color: 
+                                        @php
+                                            $latestLog = $submissionLogs->sortByDesc('created_at')->first();
+                                        @endphp
+                                            @if($application->approve_status == '1') 
+                                                #ffc107 /* kuning */
+                                            @elseif(in_array($application->approve_status, ['2', '3'])) 
+                                                #198754 /* hijau */
+                                            @elseif($latestLog && $latestLog->status == 2 && $latestLog->approve_status == 0 && $latestLog->role_id == 4)
+                                                #dc3545 /* merah */
+                                            @else 
+                                                #018797 /* biru tua */
+                                            @endif; 
+                                        display: flex; align-items: center; justify-content: center; margin: auto;">
                                         <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 24px;"></i>
                                     </div>
-                                    <h6 style="margin-top: 13px;">Review Wakil Direktur 2</h6>
-                                    @if($application->approve_status == '2')
-                                        {{ $application->statusAlias()['status'] }}
-                                        {{ $application->updated_at }}
-                                    @else($application->approve_status != '2')
-                                        @foreach ($submissionLogs as $log)
-                                            @if ($log->status == 2 && $log->approve_status == 3)
-                                                {{ $log->StatusAlias()['status'] }} <br>
-                                                {{ $log->created_at }}
-                                                &nbsp;
-                                            @endif
-                                        @endforeach
-                                    @endif
+                                    <h6 style="margin-top: 13px;">Wakil Direktur 4</h6>
+                                    <div>
+                                        @if($application->approve_status == '1')
+                                            {{ $application->statusAlias()['status'] }}<br>
+                                            {{ $application->updated_at }}
+                                        @else
+                                            @foreach ($submissionLogs->sortByDesc('created_at') as $log)
+                                                @if ($log->status == 2 && $log->approve_status == 2)
+                                                    {{ $log->StatusAlias()['status'] }} <br>
+                                                    {{ $log->created_at }}
+                                                    &nbsp;
+                                                    @break
+                                                @elseif ($log->status == 2 && $log->approve_status == 0 && $log->role_id == 4)
+                                                    {{ $log->StatusAlias()['status'] }} <br>
+                                                    {{ $log->created_at }}
+                                                    &nbsp;
+                                                    @break
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </div>
+                                </div>
+                                <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 20px 10px;"></div>
+                        <!-- Icon 2: Review Wakil Direktur 2 -->
+                                <div style="width:30%; text-align:center;">
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; 
+                                        background-color: 
+                                        @php
+                                            $latestLog = $submissionLogs->sortByDesc('created_at')->first();
+                                        @endphp
+                                            @if($application->approve_status == '2') 
+                                                #ffc107 /* kuning */
+                                            @elseif(in_array($application->approve_status, ['3'])) 
+                                                #198754 /* hijau */
+                                            @elseif($latestLog && $latestLog->status == 2 && $latestLog->approve_status == 0 && $latestLog->role_id == 3)
+                                                #dc3545 /* merah */
+                                            @else 
+                                                #018797 /* biru tua */
+                                            @endif; 
+                                        display: flex; align-items: center; justify-content: center; margin: auto;">
+                                        <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 24px;"></i>
+                                    </div>
+                                    <h6 style="margin-top: 13px;">Wakil Direktur 2</h6>
+                                    <div>
+                                        @if($application->approve_status == '2')
+                                            {{ $application->statusAlias()['status'] }}<br>
+                                            {{ $application->updated_at }}
+                                        @else
+                                            @foreach ($submissionLogs->sortByDesc('created_at') as $log)
+                                                @if ($log->status == 2 && $log->approve_status == 3)
+                                                    {{ $log->StatusAlias()['status'] }} <br>
+                                                    {{ $log->created_at }}
+                                                    &nbsp;
+                                                    @break
+                                                @elseif ($log->status == 2 && $log->approve_status == 0 && $log->role_id == 3)
+                                                    {{ $log->StatusAlias()['status'] }} <br>
+                                                    {{ $log->created_at }}
+                                                    &nbsp;
+                                                    @break
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </div>
                                 </div>
                                 <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 20px 10px;"></div>
                             <!-- Icon 3: Selesai Di Review -->
@@ -399,11 +526,11 @@
                                     </div>
                                     <h6 style="margin-top: 13px;">Selesai Review</h6>
                                     @if($application->approve_status == '3')
-                                        {{ $application->statusAlias()['status'] }}
+                                        {{ $application->statusAlias()['status'] }}<br>
                                         {{ $application->updated_at }}
                                     @endif
                                 </div>
-                            @else ($application->status == '3')  
+                            @else
                                 <div>
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
                                         <i class="fa-solid fa-user" style="color: #ffffff;font-size: 30px; margin: 10px;"></i>
@@ -478,47 +605,91 @@
                     <div class="card-header border-bottom" style="padding-left: 7%; padding-right: 8%;">
                         <div style="display: flex; align-items: center; justify-content: space-between; text-align: center;">
                             @if($application->status == '3')
-                            <!-- Icon 1: Review Admin Layanan Bisnis -->
+                            <!-- Icon 1:  Review Wakil Direktur 4 -->
                                 <div style="width:30%; text-align:center;">
-                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '1' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                        <i class="fa-solid fa-user" style="color: #ffffff; font-size: 24px;"></i>
-                                    </div>
-                                    <h6 style="margin-top: 13px;">Review Wakil Direktur 4</h6>
-                                    @if($application->approve_status == '1')
-                                        {{ $application->statusAlias()['status'] }}
-                                        {{ $application->updated_at }}
-                                    @else($application->approve_status != '1')
-                                        @foreach ($submissionLogs as $log)
-                                            @if ($log->status == 3 && $log->approve_status == 2)
-                                                {{ $log->StatusAlias()['status'] }} <br>
-                                                {{ $log->created_at }}
-                                                &nbsp;
-                                            @endif
-                                        @endforeach
-                                    @endif
-                                </div>
-                                <div style="flex-grow: 1; height: 1px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
-                            <!-- Icon 2: Review Wakil Direktur 4 -->
-                                <div style="width:30%; text-align:center;">
-                                    <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '2' ? '#ffc107' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; 
+                                        background-color: 
+                                        @php
+                                            $latestLog = $submissionLogs->sortByDesc('created_at')->first();
+                                        @endphp
+                                            @if($application->approve_status == '1') 
+                                                #ffc107 /* kuning */
+                                            @elseif(in_array($application->approve_status, ['2', '3'])) 
+                                                #198754 /* hijau */
+                                            @elseif($latestLog && $latestLog->status == 3 && $latestLog->approve_status == 0 && $latestLog->role_id == 4)
+                                                #dc3545 /* merah */
+                                            @else 
+                                                #018797 /* biru tua */
+                                            @endif; 
+                                        display: flex; align-items: center; justify-content: center; margin: auto;">
                                         <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 24px;"></i>
                                     </div>
-                                    <h6 style="margin-top: 13px;">Review Wakil Direktur 2</h6>
-                                    @if($application->approve_status == '2')
-                                        {{ $application->statusAlias()['status'] }}
-                                        {{ $application->updated_at }}
-                                    @else($application->approve_status != '2')
-                                        @foreach ($submissionLogs as $log)
-                                            @if ($log->status == 3 && $log->approve_status == 3)
-                                                {{ $log->StatusAlias()['status'] }} <br>
-                                                {{ $log->created_at }}
-                                                &nbsp;
-                                            @endif
-                                        @endforeach
-                                    @endif
+                                    <h6 style="margin-top: 13px;">Wakil Direktur 4</h6>
+                                    <div>
+                                        @if($application->approve_status == '1')
+                                            {{ $application->statusAlias()['status'] }}<br>
+                                            {{ $application->updated_at }}
+                                        @else
+                                            @foreach ($submissionLogs->sortByDesc('created_at') as $log)
+                                                @if ($log->status == 3 && $log->approve_status == 2)
+                                                    {{ $log->StatusAlias()['status'] }} <br>
+                                                    {{ $log->created_at }}
+                                                    &nbsp;
+                                                    @break
+                                                @elseif ($log->status == 3 && $log->approve_status == 0 && $log->role_id == 4)
+                                                    {{ $log->StatusAlias()['status'] }} <br>
+                                                    {{ $log->created_at }}
+                                                    &nbsp;
+                                                    @break
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </div>
+                                </div>
+                                <div style="flex-grow: 3; height: 3px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                            <!-- Icon 2: Review Wakil Direktur 2 -->
+                                <div style="width:30%; text-align:center;">
+                                   <div style="width: 50px; height: 50px; border-radius: 50%; 
+                                        background-color: 
+                                        @php
+                                            $latestLog = $submissionLogs->sortByDesc('created_at')->first();
+                                        @endphp
+                                            @if($application->approve_status == '2') 
+                                                #ffc107 /* kuning */
+                                            @elseif(in_array($application->approve_status, ['3'])) 
+                                                #198754 /* hijau */
+                                            @elseif($latestLog && $latestLog->status == 3 && $latestLog->approve_status == 0 && $latestLog->role_id == 3)
+                                                #dc3545 /* merah */
+                                            @else 
+                                                #018797 /* biru tua */
+                                            @endif; 
+                                        display: flex; align-items: center; justify-content: center; margin: auto;">
+                                        <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 24px;"></i>
+                                    </div>
+                                    <h6 style="margin-top: 13px;">Wakil Direktur 2</h6>
+                                    <div>
+                                        @if($application->approve_status == '2')
+                                            {{ $application->statusAlias()['status'] }}<br>
+                                            {{ $application->updated_at }}
+                                        @else
+                                            @foreach ($submissionLogs->sortByDesc('created_at') as $log)
+                                                @if ($log->status == 3 && $log->approve_status == 3)
+                                                    {{ $log->StatusAlias()['status'] }} <br>
+                                                    {{ $log->created_at }}
+                                                    &nbsp;
+                                                    @break
+                                                @elseif ($log->status == 3 && $log->approve_status == 0 && $log->role_id == 3)
+                                                    {{ $log->StatusAlias()['status'] }} <br>
+                                                    {{ $log->created_at }}
+                                                    &nbsp;
+                                                    @break
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </div>
                                 </div>
                             <!-- Garis Horizontal -->
-                                <div style="flex-grow: 1; height: 1px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                                <div style="flex-grow: 3; height: 3px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
                                 <!-- Icon 3: Selesai Di Review -->
                                 <div style="width:30%; text-align:center;">
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '3' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
@@ -535,7 +706,7 @@
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
                                         <i class="fa-solid fa-user" style="color: #ffffff;font-size: 30px; margin: 10px;"></i>
                                     </div>
-                                    <h6 style="margin-top: 13px;">Review Wakil Direktur 4</h6>
+                                    <h6 style="margin-top: 13px;">Wakil Direktur 4</h6>
                                 </div>
                                     <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
                                 <div>

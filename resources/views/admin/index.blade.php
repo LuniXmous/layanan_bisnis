@@ -67,10 +67,10 @@
     </div>
 
         <div class="col-md-4">
-            <div class="card">
+            <div class="card" style="height: 92%;">
                 <div class="card-body">
                     <h5 class="text-center">Jumlah Unit</h5>
-                    <canvas id="pieChart"></canvas>
+                    <canvas id="pieChart" style="margin: -15px;"></canvas>
                 </div>
             </div>
         </div>
@@ -154,7 +154,7 @@ fetch('/api/chart')
             datasets: [{
                 data: units.map(unit => {
                     return jsonData
-                        .filter(item => item.unit_name === unit)
+                        .filter(item => item.unit_name === unit) 
                         .reduce((sum, item) => sum + item.activity_count, 0);
                 }),
                 backgroundColor: units.map(() => getRandomColor()),

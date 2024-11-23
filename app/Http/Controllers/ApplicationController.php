@@ -99,6 +99,17 @@ class ApplicationController extends Controller
             } elseif ($request->approve_status === '1,2') {
                 // Filter untuk approve_status 1 atau 2
                 $applications->whereIn('approve_status', [1, 2]);
+            } elseif ($request->approve_status === '0') {
+                // Filter untuk approve_status 0
+                $applications->where(function ($query) use ($request) {
+                    $query->where(function ($q) {
+                        $q->where('status', 0)->where('approve_status', 0);
+                    })->orWhere(function ($q) {
+                        $q->where('status', 2)->where('approve_status', 0);
+                    })->orWhere(function ($q) {
+                        $q->where('status', 3)->where('approve_status', 0);
+                    });
+                });
             } elseif ($request->approve_status === '3,4' && $request->has('status')) {
                 // Tambahan filter untuk kondisi spesifik (status dan approve_status)
                 $applications->where(function ($query) use ($request) {
@@ -159,9 +170,12 @@ class ApplicationController extends Controller
     {
         $application = Application::findOrFail($id);
         $submissionLogs = ApplicationStatusLog::where('application_id', $id)
-                                ->orderBy('created_at', 'desc')
-                                ->get();     
-        // Kembalikan ke view dengan status timeline HTML
+            ->where('status', 0)
+            ->where('approve_status', 0)
+            ->orderBy('created_at', 'desc')
+            ->first()
+            ->get();     
+
         return view('application.detail', compact('application', 'submissionLogs'));
     }
     
@@ -482,7 +496,6 @@ class ApplicationController extends Controller
                 return redirect()->back()->with(["error" => "invalid action"]);
             }
         }
-
         $extraApp = "";
         if ($application->activity->category_id == 1) {
             if ($application->status == 2) {
@@ -690,13 +703,22 @@ class ApplicationController extends Controller
                 $extraApp = "Pemberitahuan Kegiatan Selesai Dilaksanakan";
             }
         }
-
+        
         $application->update([
             "approve_status" => 0,
             "checkpoint" => $application->approve_status,
             "status" => $status,
             "note" => $request->note,
         ]);
+
+        ApplicationStatusLog::create([
+            'application_id' => $application->id,
+            'status' => $status,
+            'approve_status' => $application->approve_status,
+            'user_id' => Auth::user()->id,
+            'role_id' => Auth::user()->role_id,
+        ]);
+    
 
         \Mail::to($application->user->email)->send(new \App\Mail\rejectApplicationMail($application, $extraApp));
 

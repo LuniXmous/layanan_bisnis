@@ -76,7 +76,6 @@ class Application extends Model
             }
         } else if ($this->status == 2) {
             $latestExtraType = $this->extra()->orderBy('created_at', 'desc')->first()?->typeAlias();
-
             if ($this->approve_status == 0) {
                 return ['status' => "Pengajuan $latestExtraType Telah Ditolak", 'class' => 'bg-danger', 'users' => [$this->user], 'must_role' => [0, 3]];
             } else if ($this->approve_status == 1) {
@@ -90,7 +89,6 @@ class Application extends Model
             }
         } else if ($this->status == 3) {
             $latestExtraType = $this->extra()->orderBy('created_at', 'desc')->first()?->typeAlias();
-
             if ($this->approve_status == 0) {
                 return ['status' => "Pengajuan $latestExtraType Telah Ditolak", 'class' => 'bg-danger', 'users' => [$this->user], 'must_role' => [0, 3]];
             } else if ($this->approve_status == 1) {

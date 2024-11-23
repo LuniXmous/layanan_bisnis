@@ -44,7 +44,8 @@
                         @endif
                         <!-- sidebar wadir 2 -->
                         @if (Auth::user()->role->alias == 'wadir2' || env('GOD_MODE'))
-                            <li class="sidebar-item">
+                            <li class="sidebar-item
+                            {{ Request::route()->action['as'] == 'application.tebusan' ? 'active' : null }}">
                                 <a href="{{ route('application.tebusan') }}" class="sidebar-link">
                                     <i class="fas fa-file-alt"></i>
                                     <span>Tebusan</span>
@@ -87,6 +88,12 @@
                                         <a href="{{ route('application.index', ['approve_status' => '1,2']) }}" class="dropdown-item">
                                         <i class="fa-solid fa-clock"></i>
                                             Menunggu Review
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('application.index', ['approve_status' => '0', 'status' => '1,2,3']) }}" class="dropdown-item">
+                                        <i class="fa-solid fa-circle-xmark"></i>
+                                            Perlu Perbaikan
                                         </a>
                                     </li>
                                     <li>
