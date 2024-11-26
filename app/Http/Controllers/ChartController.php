@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Activity;
 use App\Models\Unit;
+use App\Models\RekapDana;
 use Illuminate\Support\Facades\DB;
 
 class ChartController extends Controller
@@ -22,5 +23,19 @@ class ChartController extends Controller
             ->get();
 
         return response()->json(['data' => $data]);
+    }
+
+    public function chartvalue()
+    {
+    $data = RekapDana::select(
+            DB::raw('EXTRACT(YEAR FROM created_at) as year'), // Mengambil tahun dari created_at
+            DB::raw('SUM(nominal) as total_nominal'), // Totalkan nominal berdasarkan tahun
+            DB::raw('SUM(nilai_kontrak) as total_kontrak') // Totalkan nilai kontrak berdasarkan tahun
+        )
+        ->groupBy(DB::raw('EXTRACT(YEAR FROM created_at)')) // Kelompokkan berdasarkan tahun
+        ->orderBy('year', 'asc') // Urutkan berdasarkan tahun
+        ->get();
+
+    return response()->json(['data' => $data]);
     }
 }

@@ -10,7 +10,7 @@
                     <input type="number" name="year" value="{{ $year }}" min="2000" max="{{ date('Y') }}" class="form-control w-auto d-inline-block" style="margin-right: 10px;">
                     <button type="submit" class="btn btn-primary">Tampilkan</button>
                 </form>
-                <h2>Total Nominal: Rp. {{ number_format($totalNilaiKontrak, 2, ',', '.') }}</h2>
+                <h2>Total Nominal Nilai Kontrak Yang Di Terima: Rp. {{ number_format($totalNilaiKontrak, 2, ',', '.') }}</h2>
                 <br/>
                 
                 @if (Auth::user()->role_id != 1)

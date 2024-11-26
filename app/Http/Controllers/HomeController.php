@@ -55,7 +55,7 @@ class HomeController extends Controller
             })->count();            
             $jumlahOnProgress = Application::whereIn('approve_status', [1, 2])->count();
             $jumlahDiTolak = Application::where(function($query) {
-                $query->where('status', 1)
+                $query->where('status', 0)
                       ->where('approve_status', 0);
             })->orWhere(function($query) {
                 $query->whereIn('status', [2, 3])

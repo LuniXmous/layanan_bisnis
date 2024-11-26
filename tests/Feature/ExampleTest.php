@@ -4,6 +4,11 @@ namespace Tests\Feature;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\Application;
+use App\Models\Activity;
+use App\Models\ApplicationStatusLog;
+use App\Models\ExtraApplication;
+
 
 class ExampleTest extends TestCase
 {

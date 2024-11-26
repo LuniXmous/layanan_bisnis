@@ -41,7 +41,9 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
 
     Route::get('/api/category/{id}', [App\Http\Controllers\CategoryController::class, 'getCategoryByUnit'])->name('api.category');
     Route::get('/api/activity/{categoryID}/{unitID}', [App\Http\Controllers\ActivityController::class, 'getActivityByCategory'])->name('api.activity');
-    Route::get('/api/chart',[App\Http\Controllers\ChartController::class, 'chartData']);
+    Route::get('/api/chartdata',[App\Http\Controllers\ChartController::class, 'chartData']);
+    Route::get('/api/chartvalue', [App\Http\Controllers\ChartController::class, 'chartvalue']);
+
 
     //api end
     Route::get('/roleCheck', [App\Http\Controllers\RoleController::class, 'checkRole'])->name('role.check');

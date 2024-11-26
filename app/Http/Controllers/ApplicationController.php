@@ -347,17 +347,16 @@ class ApplicationController extends Controller
             "title" => "required",
             "description" => "required",
             "lampiran.transfer" => "required",
-            "nominal" => "required|numeric|min:0", // Validasi untuk nominal
         ]);
 
 
-        if ($request->has('extra_application_id')) {
-            $extraApplication = ExtraApplication::find($request->extra_application_id);
-            if ($extraApplication) {
-                $extraApplication->nominal = $request->input('nominal');
-                $extraApplication->save();
-            }
-        }
+        // if ($request->has('extra_application_id')) {
+        //     $extraApplication = ExtraApplication::find($request->extra_application_id);
+        //     if ($extraApplication) {
+        //         $extraApplication->nominal = $request->input('nominal');
+        //         $extraApplication->save();
+        //     }
+        // }
         //check if exist?
         if ($application->activity->category_id == 1) {
             $request->validate([
@@ -365,10 +364,7 @@ class ApplicationController extends Controller
                 "description" => "required",
                 "lampiran.transfer" => "required",
             ]);
-            RekapDana::create([
-                'application_id' => $request->id,
-                'nominal' => $request->nominal
-            ]);
+ 
             $extraApplication = ExtraApplication::create(
                 [
                     'application_id' => $application->id,
@@ -401,10 +397,7 @@ class ApplicationController extends Controller
                     "title" => "required",
                     "lampiran.transfer" => "required",
                 ]);
-                RekapDana::create([
-                    'application_id' => $request->id,
-                    'nominal' => $request->nominal
-                ]);
+
                 $extraApplication = ExtraApplication::create(
                     [
                         'application_id' => $application->id,
@@ -448,10 +441,7 @@ class ApplicationController extends Controller
                     "title" => "required",
                     "lampiran.transfer" => "required",
                 ]);
-                RekapDana::create([
-                    'application_id' => $request->id,
-                    'nominal' => $request->nominal
-                ]);
+
                 $extraApplication = ExtraApplication::create(
                     [
                         'application_id' => $application->id,
