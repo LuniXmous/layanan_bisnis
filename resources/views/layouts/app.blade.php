@@ -107,7 +107,7 @@
                             <li class="sidebar-item 
                                 {{ Request::route()->action['as'] == 'application.report' ? 'active' : null }}">
                                 <a href="{{ route('application.report') }}" class="sidebar-link">
-                                <i class="fa-solid fa-money-bill-wave"></i>
+                                <i class="fa-solid fa-money-bill"></i>
                                     <span>Nilai Kontrak</span>
                                 </a>
                             </li>

@@ -2,20 +2,36 @@
 
 @section('page-title')
     @section('content')
-    <h3>Laporan Tahunan {{ $year }}</h3>
+        <h3>Laporan Tahunan {{ $year }}</h3>
+            <br>
+                <div class="row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        <div class="card text-center">
+                        <div class="card-body">
+                            <h4 class="card-title">Total Nilai Kontrak Yang Di Ajukan</h4>
+                            <h5 class="card-text">Rp. {{ number_format($totalNominal, 2, ',', '.') }}</h5>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card text-center">
+                        <div class="card-body">
+                            <h4 class="card-title">Total Nilai Kontrak Yang Di Terima</h4>
+                            <h5 class="card-text">Rp. {{ number_format($totalNilaiKontrak, 2, ',', '.') }}</h5>
+                        </div>
+                        </div>
+                    </div>
+                </div>
         <div class="card">
             <div class="card-body">
-                <form method="GET" action="{{ route('application.report') }}" class="mb-4">
-                    <label for="year" class="form-label">Pilih Tahun:</label>
+                <form method="GET" action="{{ route('application.report') }}" class="mb-4" style="flex: end;">
+                    <label for="year" class="form-label" style="font-size: 20px;">Pilih Tahun:</label>
                     <input type="number" name="year" value="{{ $year }}" min="2000" max="{{ date('Y') }}" class="form-control w-auto d-inline-block" style="margin-right: 10px;">
                     <button type="submit" class="btn btn-primary">Tampilkan</button>
                 </form>
-                <h2>Total Nominal Nilai Kontrak Yang Di Terima: Rp. {{ number_format($totalNilaiKontrak, 2, ',', '.') }}</h2>
-                <br/>
-                
                 @if (Auth::user()->role_id != 1)
                     <a href="{{ route('application.exportDana') }}" class="btn btn-primary mb-3" ><i class="fas fa-file-excel"></i> Generate Excel</a>
-                @endif<br/>
+                @endif
                 <div class="table-responsive mt-4">
                     <table class="table table-striped w-100 table-bordered table-xs table-hover" id="datatable-rekap">
                         <thead>

@@ -9,7 +9,7 @@
                     <form action="" class="tab-wizard validation-wizard wizard-circle" method="POST"
                         enctype="multipart/form-data">
                         @csrf
-                        {{-- STEP 1 --}}
+                {{-- STEP 1 --}}
                         <h6>Form Pengajuan</h6>
                         <section class="mb-3">
                             <div class="form-group mb-3">
@@ -62,7 +62,7 @@
                                     <br>
                                     <textarea name="desc" id="summernote" class="form-control required" rows="3" required></textarea>
                                 </div>
-
+                        <!-- Pertanyaan 1 -->
                                 <div id="question-1" class="question" style="display: none">
                                     <div class="form-group mb-4">
                                         <label class="text-dark mb-2 fw-bold" for="lampiran_undangan">Surat Undangan (PDF)</label>
@@ -93,11 +93,25 @@
                                             accept="application/pdf">
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label class="mb-2 fw-bold text-dark" for="role_id">RAB (PDF)<span
+                                                class="text-danger">*</span></label>
+                                        <p>
+                                            Format surat TOR dapat di download disini (link) Form perubahan dapat di
+                                            download disini (link) <a href="{{ url('/template/template-tor.doc') }}"
+                                                target="_blank">{{ url('/template/template-tor.doc') }}</a>
+                                        </p>
+                                        <input type="file" required name="lampiran[rab]" class="form-control"
+                                            accept="application/pdf">
+                                        <small class="text-muted">Format file harus berupa PDF</small>
+                                    </div>
+
                                     <button type="button" class="btn btn-outline-primary" onclick="addExtraFile(1)"> <i
                                             class="fas fa-plus-circle"></i>&nbsp; Tambah Dokumen</button>
                                     <div class="col-12 mb-2 mt-3" id="question-1-extra-file"></div>
                                 </div>
-
+                        <!-- Pertanyaan 2 -->
                                 <div id="question-2" class="question" style="display: none">
                                     <div class="form-group mb-4">
                                         <label class="text-dark mb-2 fw-bold" for="lampiran_undangan">Surat Permohonan dari Mitra (PDF)</label>
@@ -130,12 +144,24 @@
                                             accept="application/pdf">
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="mb-2 fw-bold text-dark" for="role_id">RAB (PDF)<span
+                                                class="text-danger">*</span></label>
+                                        <p>
+                                            Format surat TOR dapat di download disini (link) Form perubahan dapat di
+                                            download disini (link) <a href="{{ url('/template/template-tor.doc') }}"
+                                                target="_blank">{{ url('/template/template-tor.doc') }}</a>
+                                        </p>
+                                        <input type="file" required name="lampiran[rab]" class="form-control"
+                                            accept="application/pdf">
+                                        <small class="text-muted">Format file harus berupa PDF</small>
+                                    </div>
 
                                     <button type="button" class="btn btn-outline-primary" onclick="addExtraFile(2)"> <i
                                             class="fas fa-plus-circle"></i>&nbsp; Tambah Dokumen</button>
                                     <div class="col-12 mb-2 mt-3" id="question-2-extra-file"></div>
                                 </div>
-                                <!-- file -->
+                        <!-- Pertanyaan 3 --> <!-- file -->
                                 <div id="question-3" class="question" style="display: none">
                                     <div class="form-group mb-4">
                                         <label class="text-dark mb-2 fw-bold" for="lampiran_undangan">Surat Permohonan dari Mitra (PDF)</label>
@@ -167,12 +193,24 @@
                                             accept="application/pdf">
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="mb-2 fw-bold text-dark" for="role_id">RAB (PDF)<span
+                                                class="text-danger">*</span></label>
+                                        <p>
+                                            Format surat TOR dapat di download disini (link) Form perubahan dapat di
+                                            download disini (link) <a href="{{ url('/template/template-tor.doc') }}"
+                                                target="_blank">{{ url('/template/template-tor.doc') }}</a>
+                                        </p>
+                                        <input type="file" required name="lampiran[rab]" class="form-control"
+                                            accept="application/pdf">
+                                        <small class="text-muted">Format file harus berupa PDF</small>
+                                    </div>
 
                                     <button type="button" class="btn btn-outline-primary" onclick="addExtraFile(3)"> <i
                                             class="fas fa-plus-circle"></i>&nbsp; Tambah Dokumen</button>
                                     <div class="col-12 mb-2 mt-3" id="question-3-extra-file"></div>
                                 </div>
-
+                        <!-- Pertanyaan 4  --> 
                                 <div id="question-4" class="question" style="display: none">
                                     <div class="form-group mb-4">
                                         <label class="text-dark mb-2 fw-bold" for="lampiran_undangan">Surat Permohonan dari Mitra (PDF)</label>
@@ -203,6 +241,18 @@
                                                 target="_blank">{{ url('/template/template-tor.doc') }}</a>
                                         </p>
                                         <input type="file" required name="lampiran[tor]" class="form-control"
+                                            accept="application/pdf">
+                                        <small class="text-muted">Format file harus berupa PDF</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="mb-2 fw-bold text-dark" for="role_id">RAB (PDF)<span
+                                                class="text-danger">*</span></label>
+                                        <p>
+                                            Format surat TOR dapat di download disini (link) Form perubahan dapat di
+                                            download disini (link) <a href="{{ url('/template/template-tor.doc') }}"
+                                                target="_blank">{{ url('/template/template-tor.doc') }}</a>
+                                        </p>
+                                        <input type="file" required name="lampiran[rab]" class="form-control"
                                             accept="application/pdf">
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>

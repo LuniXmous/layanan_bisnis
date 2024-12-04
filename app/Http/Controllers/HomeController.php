@@ -68,6 +68,7 @@ class HomeController extends Controller
             // Ambil rekapDana untuk tahun tersebut
             $rekapDana = RekapDana::whereYear('created_at', $year)->get();
             $totalNilaiKontrak = $rekapDana->sum('nilai_kontrak');
+            $totalNominal = $rekapDana->sum('nominal');
         
             return view('admin.index', compact('jumlahPengajuan', 'jumlahSelesai', 'jumlahOnProgress', 'jumlahDiTolak', 'jumlahPengguna','year', 'totalNilaiKontrak'));
     }

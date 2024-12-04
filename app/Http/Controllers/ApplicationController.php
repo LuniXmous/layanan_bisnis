@@ -334,8 +334,9 @@ class ApplicationController extends Controller
 
         // Hitung total nominal
         $totalNilaiKontrak = $rekapDana->sum('nilai_kontrak');
+        $totalNominal = $rekapDana->sum('nominal');
 
-        return view('application.report', compact('rekapDana', 'totalNilaiKontrak', 'year'));
+        return view('application.report', compact('rekapDana', 'totalNilaiKontrak','totalNominal', 'year'));
     }
 
 
@@ -614,9 +615,6 @@ class ApplicationController extends Controller
                 dd("Data RekapDana tidak ditemukan.");
             }
         }
-
-
-
         //kirim email
         $users = [];
         //kirim email tebusan
@@ -749,6 +747,7 @@ class ApplicationController extends Controller
                 'desc' => 'required',
                 'lampiran.permohonan ijin kegiatan' => 'required',
                 'lampiran.tor' => 'required',
+                'lampiran.rab' => 'required',
             ],
             ['telp_industri.regex' => 'format nomor telpon tidak valid']
         );
@@ -776,7 +775,7 @@ class ApplicationController extends Controller
                     'application_id' => $application->id,
                     'type' => $key,
                     'ext' => 'doc',
-                    'title' => $key,
+                    'title' => $key,    
                     'file' => $name,
                 ]);
             } else {
