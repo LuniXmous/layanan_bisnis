@@ -14,7 +14,8 @@ class ExtraApplication extends Model
         'application_id',
         'type',
         'title',
-        'description',
+        'description',  
+        'note',
     ];
     protected static function boot()
     {

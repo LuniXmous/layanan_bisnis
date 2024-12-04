@@ -13,14 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('extra_applications', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->uuid("application_id");
-            $table->string("type");
-            $table->string("title");
-            $table->text("description");
-            $table->timestamps();
-            $table->text('note');
+        Schema::table('extra_applications', function (Blueprint $table) {
+            $table->text('note')->nullable()->after('approve_status'); // Tambahkan kolom note
         });
     }
 
@@ -31,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('extra_applications');
+        Schema::table('extra_applications', function (Blueprint $table) {
+            $table->dropColumn('note'); // Hapus kolom saat rollback
+        });
     }
 };

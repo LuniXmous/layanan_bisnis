@@ -111,18 +111,18 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
         });
         // ? MIDDLEWARE ROLE ADMIN, WADIR 4, DIREKTUR, ADMIN UNIT
         // Route::group(['middleware' => 'isAdmin', 'isAdminUnit', 'isWadir4', 'isDirektur'], function () {
+        // Route::post('application/{id}/addNote', action: [App\Http\Controllers\ApplicationController::class, 'addNote'])->name('addNote');
+        Route::post('/{id}/approvewithnote', [App\Http\Controllers\ApplicationController::class, 'approveWithNote'])->name('approveWithNote');
         Route::get('/{id}/approve', [App\Http\Controllers\ApplicationController::class, 'approve'])->name('approve');
         Route::post('/{id}/approve', [App\Http\Controllers\ApplicationController::class, 'approveWithFile'])->name('approveWithFile');
         Route::post('/{id}/reject', [App\Http\Controllers\ApplicationController::class, 'reject'])->name('reject');
         Route::get('/export', [App\Http\Controllers\ApplicationController::class, 'export'])->name('export');
         Route::get('/exportDana', [App\Http\Controllers\ApplicationController::class, 'exportDana'])->name('exportDana');
         Route::get('/report', [App\Http\Controllers\ApplicationController::class, 'report'])->name('report');
-
         // });
         // ? MIDDLEWARE AUTH LOGGED IN, WHATEVER ROLE
         Route::get('', [App\Http\Controllers\ApplicationController::class, 'index'])->name('index');
         Route::get('/tebusan', [App\Http\Controllers\ApplicationController::class, 'indexTebusan'])->name('tebusan');
-        // Add the new route here
         Route::get('/{id}/submission-log', [App\Http\Controllers\ApplicationController::class, 'showSubmissionLog'])->name('submissionLog');
         Route::get('/{identifier}', [App\Http\Controllers\ApplicationController::class, 'show'])->name('detail');
         Route::get('/data', [App\Http\Controllers\ApplicationController::class, 'getData'])->name('data');

@@ -266,6 +266,10 @@ class ApplicationController extends Controller
         // Ambil data rekap dana terkait dengan application
         $rekapDana = RekapDana::where('application_id',$application->id)->get();
 
+        // Ambil data Note Wadir 2
+        $extraApplication = ExtraApplication::where('application_id', $application->id)->latest()->first();
+        $note = $extraApplication ? $extraApplication->note : null;
+
     // Return view with all necessary data
     return view('application.detail', [
         "submissionLogs" => $submissionLogs,
@@ -274,6 +278,7 @@ class ApplicationController extends Controller
         "extraApp" => $extraApp,
         "comment" => $comment,
         "rekapDana" => $rekapDana,
+        "note" => $note,
     ]);
     }
 
@@ -349,16 +354,6 @@ class ApplicationController extends Controller
             "description" => "required",
             "lampiran.transfer" => "required",
         ]);
-
-
-        // if ($request->has('extra_application_id')) {
-        //     $extraApplication = ExtraApplication::find($request->extra_application_id);
-        //     if ($extraApplication) {
-        //         $extraApplication->nominal = $request->input('nominal');
-        //         $extraApplication->save();
-        //     }
-        // }
-        //check if exist?
         if ($application->activity->category_id == 1) {
             $request->validate([
                 "title" => "required",
@@ -505,6 +500,45 @@ class ApplicationController extends Controller
         }
         return redirect()->back()->with(["success" => "Permohonan berhasil diajukan"]);
     }
+
+    
+//     public function addNote(Request $request, $id)
+// {
+//     // Validasi input
+//     $request->validate([
+//         'note' => 'required|string|max:1000',
+//     ]);
+
+//     // Ambil aplikasi yang sesuai dengan ID
+//     $application = Application::findOrFail($id);
+
+//     // Pastikan status dan approve_status sesuai
+//     if (auth()->user()->role_id == 3 && $application->status == 2 && $application->approve_status == 2) {
+//         // Cari entri yang sudah ada dalam tabel extra_applications berdasarkan application_id
+//         $extraApplication = ExtraApplication::where('application_id', $id)->first();
+
+//         // Jika ditemukan, perbarui catatan
+//         if ($extraApplication) {
+//             $extraApplication->note = $request->note;
+//             $extraApplication->save();
+
+//             return redirect()->back()->with('success', 'Catatan berhasil diperbarui.');
+//         } else {
+//             // Jika tidak ditemukan, buat entri baru
+//             ExtraApplication::create([
+//                 'application_id' => $id, // Relasi ke aplikasi
+//                 'note' => $request->note, // Catatan dari form
+//                 'type' => 'default', // Set nilai default untuk type jika diperlukan
+//             ]);
+
+//             return redirect()->back()->with('success', 'Catatan berhasil ditambahkan.');
+//         }
+//     }
+
+//     return redirect()->back()->with('error', 'Catatan tidak dapat ditambahkan.');
+// }
+
+
 
     public function approve(Request $request, $id)
     {
@@ -677,6 +711,52 @@ class ApplicationController extends Controller
         return redirect()->route('application.index')->with(["success" => "Permintaan telah disetujui"]);
     }
 
+    public function approveWithNote(Request $request, $id)
+    {
+    $request->validate([
+        'note' => 'required|string|max:1000',
+    ]);
+
+    // Temukan Application berdasarkan ID
+    $application = Application::findOrFail($id);
+
+    // Temukan ExtraApplication terkait (asumsikan ada relasi antara Application dan ExtraApplication)
+    $extraApplication = ExtraApplication::where('application_id', $application->id)->first();
+
+    if (!$extraApplication) {
+        return redirect()->route('application.detail', ['identifier' => $id])
+        ->with(['error' => 'Extra Application tidak ditemukan.']);
+    }
+
+    // Tambahkan catatan pada ExtraApplication dan update approve_status pada Application
+    $extraApplication->update([
+        'note' => $request->note,  // Menambahkan catatan
+    ]);
+
+    // Update approve_status pada Application
+    $application->update([
+        'approve_status' => $application->approve_status + 1, // Menambah status approve pada Application
+    ]);
+    $status = $application->status ?? 2;  // Gunakan nilai default jika null, misal 1
+         // Ambil nilai untuk kolom 'status'
+        $approve_status = $application->approve_status;  // Ambil nilai untuk kolom 'approve_status'
+
+        ApplicationStatusLog::create([
+            'application_id' => $application->id,
+            'status' => $application->status,
+            'approve_status' => $approve_status,  // Masukkan nilai approve_status
+            'user_id' => Auth::user()->id,
+            'role_id' => Auth::user()->role_id,
+        ]);
+
+    // Redirect ke route 'application.detail' dengan menyertakan parameter 'id'
+    return redirect()->route('application.detail', ['identifier' => $id])
+    ->with(['success' => 'Catatan berhasil ditambahkan pada Extra Application dan pengajuan disetujui.']);
+    }
+
+    
+
+    
     public function reject(Request $request, $id)
     {
         $request->validate([

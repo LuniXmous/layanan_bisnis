@@ -565,6 +565,14 @@
                             <span class="fw-bold h6">Deskripsi Permohonan: </span> &nbsp; <br>
                             {!! $extra->description !!}
                         </div>
+                        <div class="mb-3">
+                            <span class="fw-bold h6">Catatan Dari Wadir 2: </span><br>
+                            @if (!empty($note))
+                                {!! $note !!}
+                            @else
+                                <span class="text-muted">Belum ada catatan.</span>
+                            @endif
+                        </div>
                         <div class="row border-top pt-4">
                             <div class="col-xl-4">
                                 <div class="fw-bold h5">Lampiran </div>
@@ -968,8 +976,30 @@
             </div>
         </div>
     @endif
+    @if (auth()->user()->role_id == 3 && $application->status == 2 && $application->approve_status == 2)
+        <div class="modal fade" id="addNoteModal" tabindex="-1" aria-labelledby="addNoteModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Tambah Catatan</h5><span class="text-danger">*</span></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('application.approveWithNote', $application->id) }}" method="POST">
+                            @csrf
+                            <div class="form-group">
+                                <textarea name="note" id="note" rows="10" class="form-control" required></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Terima Pengajuan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 @endsection
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/pages/summernote.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/extensions/summernote/summernote-lite.css') }}" />
@@ -1022,10 +1052,11 @@
             $(param).parent().parent().remove();
         }
 
-
         function terimaPengajuan() {
             @if (Auth::user()->role_id == 5 || Auth::user()->role_id == 0 )
                 $("#approve-modal").modal("toggle");
+            @elseif (Auth::user()->role_id == 3 && $application->status == 2 && $application->approve_status == 2)
+                $("#addNoteModal").modal("toggle");
             @else
                 $(location).prop('href', "{{ route('application.approve', ['id' => $application->id]) }}")
             @endif
