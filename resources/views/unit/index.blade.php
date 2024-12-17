@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('page-title', 'Manajemen Unit')
+@section('page-title', 'Manajemen Pusat/Jurusan/Unit')
 
 @section('content')
     <div class="row">
@@ -33,7 +33,6 @@
                 <div class="modal-body">
                     <form action="{{ route('unit.store') }}" method="post">
                         @csrf
-                    
                         <div class="form-group">
                             <label class="mb-2 fw-bold text-capitalize" for="email">Nama Unit <span class="text-danger">*</span></label>
                             <input type="text" id="activityName" class="form-control" name="name" required value="">

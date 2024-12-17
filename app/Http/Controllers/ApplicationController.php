@@ -65,105 +65,106 @@ class ApplicationController extends Controller
     }
 
     public function index(Request $request)
-{
-    if ($request->ajax()) {
-        $applications = Application::query();
-
-        // Filter berdasarkan role
-        if (Auth::user()->role->id == 0) {
-            // Admin bisa melihat semua aplikasi
-            $applications->orderBy('updated_at', 'desc');
-        } else if (Auth::user()->role->id == 1) {
-            // Admin Unit: status = 1, approve_status = 0
-            $applications->orderBy('updated_at', 'desc');
-        } else if (Auth::user()->role->id == 4) {
-            // Wakil Direktur 4: status = 1, approve_status = 2 atau status > 1, approve_status = 1
-            $applications->where(function($query) {
-                $query->where("status", 1)->where("approve_status", 2)
-                      ->orWhere("status", ">", 1)->where("approve_status", 1);
-            })->orderBy('updated_at', 'desc');
-        } else if (Auth::user()->role->id == 3) {
-            // Wakil Direktur 2: status > 1, approve_status = 2
-            $applications->where("status", ">", 1)->where("approve_status", 2)->orderBy('updated_at', 'desc');
-        } else if (Auth::user()->role->id == 5) {
-            // Direktur: status = 1, approve_status = 3
-            $applications->where("status", 1)->where("approve_status", 3)->orderBy('updated_at', 'desc');
-        } else {
-            // Applicant: hanya aplikasi milik user sendiri
-            $applications = Auth::user()->application();
-        }
-        // Filter berdasarkan approve_status (tambahan filter jika diperlukan)
-        if ($request->has('approve_status') && $request->approve_status !== '') {
-            if ($request->approve_status === '1,2,3,4') {
-                // Tidak ada filter, tampilkan semua
-            } elseif ($request->approve_status === '1,2') {
-                // Filter untuk approve_status 1 atau 2
-                $applications->whereIn('approve_status', [1, 2]);
-            } elseif ($request->approve_status === '0') {
-                // Filter untuk approve_status 0
-                $applications->where(function ($query) use ($request) {
-                    $query->where(function ($q) {
-                        $q->where('status', 0)->where('approve_status', 0);
-                    })->orWhere(function ($q) {
-                        $q->where('status', 2)->where('approve_status', 0);
-                    })->orWhere(function ($q) {
-                        $q->where('status', 3)->where('approve_status', 0);
-                    });
-                });
-            } elseif ($request->approve_status === '3,4' && $request->has('status')) {
-                // Tambahan filter untuk kondisi spesifik (status dan approve_status)
-                $applications->where(function ($query) use ($request) {
-                    $query->where(function ($q) {
-                        $q->where('status', 1)->where('approve_status', 4);
-                    })->orWhere(function ($q) {
-                        $q->where('status', 2)->where('approve_status', 3);
-                    })->orWhere(function ($q) {
-                        $q->where('status', 3)->where('approve_status', 3);
-                    });
-                });
+    {
+        if ($request->ajax()) {
+            $applications = Application::query();
+    
+            // Filter berdasarkan role
+            // Filter berdasarkan role
+            if (Auth::user()->role->id == 0) {
+                // Admin bisa melihat semua aplikasi
+                $applications->orderBy('updated_at', 'desc');
+            } else if (Auth::user()->role->id == 1) {
+                // Admin Unit: hanya aplikasi dengan user_id pengguna
+                $applications->where('user_id', Auth::user()->id)
+                        ->orderBy('updated_at', 'desc');
+            } else if (Auth::user()->role->id == 4) {
+                // Wakil Direktur 4: status = 1, approve_status = 2 atau status > 1, approve_status = 1
+                $applications->where(function($query) {
+                    $query->where("status", 1)->where("approve_status", 2)
+                        ->orWhere("status", ">", 1)->where("approve_status", 1);
+                })->orderBy('updated_at', 'desc');
+            } else if (Auth::user()->role->id == 3) {
+                // Wakil Direktur 2: status > 1, approve_status = 2
+                $applications->where("status", ">", 1)->where("approve_status", 2)->orderBy('updated_at', 'desc');
+            } else if (Auth::user()->role->id == 5) {
+                // Direktur: status = 1, approve_status = 3
+                $applications->where("status", 1)->where("approve_status", 3)->orderBy('updated_at', 'desc');
             } else {
-                // Filter untuk approve_status tertentu
-                $applications->where('approve_status', $request->approve_status);
+                // Applicant: hanya aplikasi milik user sendiri
+                $applications = Auth::user()->application();
             }
-        }
-        // Menghasilkan JSON untuk DataTable
-        $json = DataTables::collection($applications->get())
-            ->addIndexColumn()
-            ->addColumn('title', function ($row) {
-                return '<a href="' . route('application.detail', ['identifier' => $row->id]) . '"> ' . $row->title . ' </a>';
-            })
-            ->addColumn('updated_at', function ($row) {
-                return Carbon::parse($row->updated_at)->translatedFormat('d F Y, H:i');
-            })
-            ->addColumn('created_at', function ($row) {
-                return Carbon::parse($row->created_at)->translatedFormat('d F Y, H:i');
-            })
-            ->addColumn('applicant_name', function ($row) {
-                if (Auth::user()->role_id == 0) {
-                    return $row->user->name . ' (' . $row->user->email . ')';
+    
+            // Filter tambahan berdasarkan approve_status
+            if ($request->has('approve_status') && $request->approve_status !== '') {
+                if ($request->approve_status === '1,2,3,4') {
+                    // Tidak ada filter tambahan
+                } elseif ($request->approve_status === '1,2') {
+                    $applications->whereIn('approve_status', [1, 2]);
+                } elseif ($request->approve_status === '0') {
+                    $applications->where(function ($query) use ($request) {
+                        $query->where(function ($q) {
+                            $q->where('status', 0)->where('approve_status', 0);
+                        })->orWhere(function ($q) {
+                            $q->where('status', 2)->where('approve_status', 0);
+                        })->orWhere(function ($q) {
+                            $q->where('status', 3)->where('approve_status', 0);
+                        });
+                    });
+                } elseif ($request->approve_status === '3,4' && $request->has('status')) {
+                    $applications->where(function ($query) use ($request) {
+                        $query->where(function ($q) {
+                            $q->where('status', 1)->where('approve_status', 4);
+                        })->orWhere(function ($q) {
+                            $q->where('status', 2)->where('approve_status', 3);
+                        })->orWhere(function ($q) {
+                            $q->where('status', 3)->where('approve_status', 3);
+                        });
+                    });
                 } else {
-                    return $row->user->name;
+                    $applications->where('approve_status', $request->approve_status);
                 }
-            })
-            ->addColumn('unit_name', function ($row) {
-                return $row->activity->unit->name;
-            })
-            ->addColumn('category_name', function ($row) {
-                return $row->activity->category->name;
-            })
-            ->addColumn('activity_name', function ($row) {
-                return $row->activity->name;
-            })
-            ->addColumn('status_applicant', function ($row) {
-                return '<span class="badge ' . $row->statusAlias()['class'] . '"> ' . $row->statusAlias()['status'] . ' </span>';
-            })
-            ->rawColumns(['title', 'applicant_name', 'unit_name', 'category_name', 'status_applicant', 'activity_name'])
-            ->toJson();
-        return $json;
+            }
+    
+            // Menghasilkan JSON untuk DataTable
+            $json = DataTables::collection($applications->get())
+                ->addIndexColumn()
+                ->addColumn('title', function ($row) {
+                    return '<a href="' . route('application.detail', ['identifier' => $row->id]) . '"> ' . $row->title . ' </a>';
+                })
+                ->addColumn('updated_at', function ($row) {
+                    return Carbon::parse($row->updated_at)->translatedFormat('d F Y, H:i');
+                })
+                ->addColumn('created_at', function ($row) {
+                    return Carbon::parse($row->created_at)->translatedFormat('d F Y, H:i');
+                })
+                ->addColumn('applicant_name', function ($row) {
+                    if (Auth::user()->role_id == 0) {
+                        return $row->user->name . ' (' . $row->user->email . ')';
+                    } else {
+                        return $row->user->name;
+                    }
+                })
+                ->addColumn('unit_name', function ($row) {
+                    return $row->activity->unit->name;
+                })
+                ->addColumn('category_name', function ($row) {
+                    return $row->activity->category->name;
+                })
+                ->addColumn('activity_name', function ($row) {
+                    return $row->activity->name;
+                })
+                ->addColumn('status_applicant', function ($row) {
+                    return '<span class="badge ' . $row->statusAlias()['class'] . '"> ' . $row->statusAlias()['status'] . ' </span>';
+                })
+                ->rawColumns(['title', 'applicant_name', 'unit_name', 'category_name', 'status_applicant', 'activity_name'])
+                ->toJson();
+            return $json;
+        }
+    
+        return view('application.index');
     }
-
-    return view('application.index');
-}
+        
 
 
     public function showSubmissionLog($id)
@@ -279,6 +280,7 @@ class ApplicationController extends Controller
         "comment" => $comment,
         "rekapDana" => $rekapDana,
         "note" => $note,
+        
     ]);
     }
 
@@ -501,44 +503,6 @@ class ApplicationController extends Controller
         return redirect()->back()->with(["success" => "Permohonan berhasil diajukan"]);
     }
 
-    
-//     public function addNote(Request $request, $id)
-// {
-//     // Validasi input
-//     $request->validate([
-//         'note' => 'required|string|max:1000',
-//     ]);
-
-//     // Ambil aplikasi yang sesuai dengan ID
-//     $application = Application::findOrFail($id);
-
-//     // Pastikan status dan approve_status sesuai
-//     if (auth()->user()->role_id == 3 && $application->status == 2 && $application->approve_status == 2) {
-//         // Cari entri yang sudah ada dalam tabel extra_applications berdasarkan application_id
-//         $extraApplication = ExtraApplication::where('application_id', $id)->first();
-
-//         // Jika ditemukan, perbarui catatan
-//         if ($extraApplication) {
-//             $extraApplication->note = $request->note;
-//             $extraApplication->save();
-
-//             return redirect()->back()->with('success', 'Catatan berhasil diperbarui.');
-//         } else {
-//             // Jika tidak ditemukan, buat entri baru
-//             ExtraApplication::create([
-//                 'application_id' => $id, // Relasi ke aplikasi
-//                 'note' => $request->note, // Catatan dari form
-//                 'type' => 'default', // Set nilai default untuk type jika diperlukan
-//             ]);
-
-//             return redirect()->back()->with('success', 'Catatan berhasil ditambahkan.');
-//         }
-//     }
-
-//     return redirect()->back()->with('error', 'Catatan tidak dapat ditambahkan.');
-// }
-
-
 
     public function approve(Request $request, $id)
     {
@@ -576,7 +540,6 @@ class ApplicationController extends Controller
 
         //kirim email
         $users = [];
-        //kirim email tebusan
         $users2 = [];
         if ($application->status == 1) {
             if ($application->approve_status == 1) {
@@ -651,7 +614,6 @@ class ApplicationController extends Controller
         }
         //kirim email
         $users = [];
-        //kirim email tebusan
         $users2 = [];
         if ($application->status == 1) {
             if ($application->approve_status == 1) {
@@ -713,45 +675,66 @@ class ApplicationController extends Controller
 
     public function approveWithNote(Request $request, $id)
     {
-    $request->validate([
-        'note' => 'required|string|max:1000',
-    ]);
-
-    // Temukan Application berdasarkan ID
-    $application = Application::findOrFail($id);
-
-    // Temukan ExtraApplication terkait (asumsikan ada relasi antara Application dan ExtraApplication)
-    $extraApplication = ExtraApplication::where('application_id', $application->id)->first();
-
-    if (!$extraApplication) {
-        return redirect()->route('application.detail', ['identifier' => $id])
-        ->with(['error' => 'Extra Application tidak ditemukan.']);
-    }
-
-    // Tambahkan catatan pada ExtraApplication dan update approve_status pada Application
-    $extraApplication->update([
-        'note' => $request->note,  // Menambahkan catatan
-    ]);
-
-    // Update approve_status pada Application
-    $application->update([
-        'approve_status' => $application->approve_status + 1, // Menambah status approve pada Application
-    ]);
-    $status = $application->status ?? 2;  // Gunakan nilai default jika null, misal 1
-         // Ambil nilai untuk kolom 'status'
-        $approve_status = $application->approve_status;  // Ambil nilai untuk kolom 'approve_status'
-
-        ApplicationStatusLog::create([
-            'application_id' => $application->id,
-            'status' => $application->status,
-            'approve_status' => $approve_status,  // Masukkan nilai approve_status
-            'user_id' => Auth::user()->id,
-            'role_id' => Auth::user()->role_id,
+        $request->validate([
+            'note' => 'required|string|max:1000',
         ]);
 
-    // Redirect ke route 'application.detail' dengan menyertakan parameter 'id'
-    return redirect()->route('application.detail', ['identifier' => $id])
-    ->with(['success' => 'Catatan berhasil ditambahkan pada Extra Application dan pengajuan disetujui.']);
+        // Temukan Application berdasarkan ID
+        $application = Application::findOrFail($id);
+
+        // Temukan ExtraApplication terkait (asumsikan ada relasi antara Application dan ExtraApplication)
+        $extraApplication = ExtraApplication::where('application_id', $application->id)->first();
+
+        if (!$extraApplication) {
+            return redirect()->route('application.detail', ['identifier' => $id])
+            ->with(['error' => 'Extra Application tidak ditemukan.']);
+        }
+
+        // Tambahkan catatan pada ExtraApplication dan update approve_status pada Application
+        $extraApplication->update([
+            'note' => $request->note,  // Menambahkan catatan
+        ]);
+
+        // Update approve_status pada Application
+        $application->update([
+            'approve_status' => $application->approve_status + 1, // Menambah status approve pada Application
+        ]);
+        $status = $application->status ?? 2;  // Gunakan nilai default jika null, misal 1
+            // Ambil nilai untuk kolom 'status'
+            $approve_status = $application->approve_status;  // Ambil nilai untuk kolom 'approve_status'
+
+            ApplicationStatusLog::create([
+                'application_id' => $application->id,
+                'status' => $application->status,
+                'approve_status' => $approve_status,  // Masukkan nilai approve_status
+                'user_id' => Auth::user()->id,
+                'role_id' => Auth::user()->role_id,
+            ]);
+
+            $users = [];
+            $users2 = [];
+            if ($application->status == 1) {
+                if ($application->approve_status == 1) {
+                    $users = User::where("role_id", 0)->get();
+                } else if ($application->approve_status == 2) {
+                    $users = User::where("role_id", 4)->get();
+                } else if ($application->approve_status == 3) {
+                    $users = User::where("role_id", 5)->get();
+                } else if ($application->approve_status == 4) {
+                    $users2 = User::where("role_id", 3)->get();
+                    \Mail::to($application->user->email)->send(new \App\Mail\approveApplicationMail($application));
+                }
+            } else {
+                if ($application->approve_status == 2) {
+                    $users = User::where("role_id", 3)->get();
+                } else if ($application->approve_status == 3) {
+                    \Mail::to($application->user->email)->send(new \App\Mail\approveExtraApplicationMail($application, ExtraApplication::where("application_id", $application->id)->latest("created_at")->first()));
+                }
+            }
+            
+
+        // Redirect ke route 'application.detail' dengan menyertakan parameter 'id'
+        return redirect()->route('application.detail', ['identifier' => $id])->with(['success' => 'Catatan berhasil ditambahkan dan Pengajuan disetujui.']);
     }
 
     
@@ -808,7 +791,7 @@ class ApplicationController extends Controller
         return redirect()->route('application.index')->with(["success" => "Permintaan telah ditolak"]);
     }
 
-    public function create()
+   public function create()
     {
         $unit = Unit::all();
         return view('application.create', [
@@ -816,8 +799,9 @@ class ApplicationController extends Controller
         ]);
     }
 
+
     public function store(Request $request)
-    {
+    {  
         $request->validate(
             [
                 'unit' => 'required|exists:App\Models\Unit,id',

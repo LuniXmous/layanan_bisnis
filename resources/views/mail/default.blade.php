@@ -190,6 +190,7 @@
                                                             <th align="left" width="30%" style="padding: 0 15px 0 0;">Layanan yang Diajukan</th>
                                                             <td style="padding: 10px 15px;">{{$application->activity->name}}</td>
                                                         </tr>
+                                                        
                                                     </table>
                                                 </td>
                                             </tr>

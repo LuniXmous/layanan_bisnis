@@ -115,9 +115,10 @@ class UserController extends Controller
         return view('user.index');
     }
 
+
     public function profile()
     {
-        $user = Auth::user();
+        $user = Auth::user()->load('unit'); // Load relasi unit
         return view('auth.profile', [
             'data' => $user,
         ]);
@@ -156,9 +157,11 @@ class UserController extends Controller
 
     public function create()
     {
-        $roles = Role::where('alias', '!=', 'unit')->get();
+        $roles = Role::all();
+        $units = Unit::all();  // Mengambil semua unit
         return view('user.create', [
             'roles' => $roles,
+            'units' => $units, // Mengirim data unit ke form
         ]);
     }
 
@@ -170,36 +173,33 @@ class UserController extends Controller
                 'email' => 'unique:users,email',
                 'password' => 'required|min:8',
                 're_password' => 'required|same:password',
+                'role' => 'required|exists:App\Models\Role,id', // Validasi role yang dipilih
             ]
         );
-        $unit = null;
-        $role = '38b79570-06d5-4b16-ae74-313ed3879bb6'; // admin unit
+    
+        $role = $request->role;  // Ambil role_id dari input
+        $unit = $request->unit_id;  // Ambil unit_id dari input
         $redirect = 'user.index';
         $data = [];
-        if ($request->unit) {
-            $request->validate([
-                'unit' => 'required|exists:App\Models\Unit,id',
-            ]);
-            $unit = $request->unit;
+    
+        if ($unit) {
             $redirect = 'unit.detail';
-            $data["id"] = $request->unit;
-        } else {
-            $request->validate([
-                'role' => 'required|exists:App\Models\Role,id',
-            ]);
-            $role = $request->role;
+            $data["id"] = $unit;
         }
+    
+        // Create user with selected role and unit_id
         $user = User::forceCreate([
             "name" => $request->name,
             "email" => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => $role,
-            'unit_id' => $unit,
+            'role_id' => $role,  // Menggunakan role_id yang dipilih di form
+            'unit_id' => $unit,  // Menggunakan unit_id yang dipilih di form
             'email_verified_at' => Carbon::now(),
             'status' => 1,
         ]);
+    
         if ($user) {
-            if ($unit != null) {
+            if ($unit) {
                 Unit::find($unit)->update([
                     "admin_id" => $user->id,
                 ]);
@@ -210,54 +210,62 @@ class UserController extends Controller
             return redirect()->route($redirect, $data)->with('error', 'Gagal ditambah');
         }
     }
+    
 
     public function edit($id)
     {
-        $roles = Role::where('alias', '!=', 'unit')->get();
         $user = User::find($id);
+        $roles = Role::all();
+        $units = Unit::all();  // Mengambil semua unit
+    
         return view('user.edit', [
-            'roles' => $roles,
             'data' => $user,
+            'roles' => $roles,
+            'units' => $units,  // Kirim data unit ke view
         ]);
     }
 
     public function updateUser(Request $request)
-    {
-        $request->validate(
-            [
-                'name' => 'required',
-                'email' => 'required',
-                'role' => 'required',
-            ]
-        );
-        $update = 0;
-        if ($request->password) {
-            $request->validate(
-                [
-                    'password' => 'required|min:8',
-                    're_password' => 'required|same:password',
-                ]
-            );
-            $update = User::findOrFail($request->id)->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'role_id' => $request->role,
-                'password' => Hash::make($request->password),
-            ]);
-        } else {
-            $update = User::findOrFail($request->id)->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'role_id' => $request->role,
-            ]);
-        }
-        if ($update) {
-            return redirect()->back()->with('success', 'Berhasil diubah');
-        } else {
-            return redirect()->back()->with('error', 'Gagal diubah');
-        }
-        dd($request->input(), $update);
+{
+    // Validasi
+    $request->validate([
+        'name' => 'required',
+        'email' => 'required|email',
+        'role' => 'required|exists:roles,id',
+    ]);
+
+    // Ambil data user yang ingin diubah
+    $user = User::findOrFail($request->id);
+
+    // Persiapkan data untuk diupdate
+    $updateData = [
+        'name' => $request->name,
+        'email' => $request->email,
+        'role_id' => $request->role,
+    ];
+
+
+    // Tambahkan password jika ada
+    if ($request->password) {
+        $request->validate([
+            'password' => 'required|min:8',
+            're_password' => 'required|same:password',
+        ]);
+        $updateData['password'] = Hash::make($request->password);
     }
+
+    // Update data user
+    $update = $user->update($updateData);
+
+    // Kembali ke halaman dengan pesan sukses/gagal
+    if ($update) {
+        return redirect()->route('user.index')->with('success', 'Berhasil diubah');
+    } else {
+        return redirect()->route('user.index')->with('error', 'Gagal diubah');
+    }
+}
+
+    
 
     public function deleteUser($id)
     {

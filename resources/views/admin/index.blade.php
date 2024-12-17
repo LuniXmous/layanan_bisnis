@@ -1,99 +1,97 @@
 @extends('layouts.app')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-@section('content')
-<div class="container">
-    <div class="row mt-3">
-    @if (Auth::user()->role->alias == 'admin')
-        <h3 class="mb-4">Selamat Datang {{ Auth::user()->name }}!</h3>
-    @endif
-        <!-- Statistik Panel -->
-        <div class="col-md-13">
-            <div class="card">
-                <div class="card-body text-center">
-                <h3>Nilai Kontrak Masuk Tahun {{ $year }}</h3>
-                    <h5>Total Nominal: Rp. {{ number_format($totalNilaiKontrak, 2, ',', '.') }}</h5><br>
-                    <a href="{{ route('application.report') }}" class="btn btn-primary btn-sm">Lihat Detail</a>
+@section('page-title', Auth::user()->role->alias == 'admin' ? 'Selamat Datang ' . Auth::user()->name . '!' : '')
+    @section('content')
+    <div class="container">
+        <div class="row mt-3">
+            <!-- Statistik Panel -->
+            <div class="col-md-13">
+                <div class="card">
+                    <div class="card-body text-center">
+                    <h3>Nilai Kontrak Masuk Tahun {{ $year }}</h3>
+                        <h5>Total Nominal: Rp. {{ number_format($totalNilaiKontrak, 2, ',', '.') }}</h5><br>
+                        <a href="{{ route('application.report') }}" class="btn btn-primary btn-sm">Lihat Detail</a>
+                    </div>
                 </div>
             </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                    <h3><i class="fa-solid fa-file"></i> {{ $jumlahPengajuan }}</h3>
+                        <h6>JUMLAH PENGAJUAN</h6><br>
+                        <a href="{{ route('application.index') }}" class="btn btn-primary btn-sm">Lihat Detail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h3><i class="fa-solid fa-bars-progress"></i> {{ $jumlahOnProgress }}</h3>
+                        <h6>JUMLAH ON PROGRESS</h6><br>
+                        <a href="{{ route('application.index', ['approve_status' => '1,2']) }}" class="btn btn-primary btn-sm">Lihat Detail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                    <h3><i class="fa-solid fa-square-check"></i> {{ $jumlahSelesai }}</h3>
+                        <h6>JUMLAH SELESAI</h6><br>
+                        <a href="{{ route('application.index', ['approve_status' => '3,4', 'status' => '1,2,3']) }}" class="btn btn-primary btn-sm">Lihat Detail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                    <h3><i class="fa-solid fa-square-xmark"></i> {{ $jumlahDiTolak }}</h3>
+                        <h6>JUMLAH DI TOLAK</h6><br>
+                        <a href="{{ route('application.index', ['approve_status' => '0', 'status' => '0,2,3']) }}" class="btn btn-primary btn-sm">Lihat Detail</a>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                    <h3><i class="fa-solid fa-users"></i> {{ $jumlahPengguna }}</h3>
+                        <p>JUMLAH PENGGUNA</p>
+                        <a href="{{ route('user.index') }}" class="btn btn-primary btn-sm">Lihat Detail</a>
+                    </div>
+                </div>
+            </div> -->
         </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body text-center">
-                <h3><i class="fa-solid fa-file"></i> {{ $jumlahPengajuan }}</h3>
-                    <h6>JUMLAH PENGAJUAN</h6><br>
-                    <a href="{{ route('application.index') }}" class="btn btn-primary btn-sm">Lihat Detail</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h3><i class="fa-solid fa-bars-progress"></i> {{ $jumlahOnProgress }}</h3>
-                    <h6>JUMLAH ON PROGRESS</h6><br>
-                    <a href="{{ route('application.index', ['approve_status' => '1,2']) }}" class="btn btn-primary btn-sm">Lihat Detail</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body text-center">
-                <h3><i class="fa-solid fa-square-check"></i> {{ $jumlahSelesai }}</h3>
-                    <h6>JUMLAH SELESAI</h6><br>
-                    <a href="{{ route('application.index', ['approve_status' => '3,4', 'status' => '1,2,3']) }}" class="btn btn-primary btn-sm">Lihat Detail</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body text-center">
-                <h3><i class="fa-solid fa-square-xmark"></i> {{ $jumlahDiTolak }}</h3>
-                    <h6>JUMLAH DI TOLAK</h6><br>
-                    <a href="{{ route('application.index', ['approve_status' => '0', 'status' => '0,2,3']) }}" class="btn btn-primary btn-sm">Lihat Detail</a>
-                </div>
-            </div>
-        </div>
-        <!-- <div class="col-md-3">
-            <div class="card">
-                <div class="card-body text-center">
-                <h3><i class="fa-solid fa-users"></i> {{ $jumlahPengguna }}</h3>
-                    <p>JUMLAH PENGGUNA</p>
-                    <a href="{{ route('user.index') }}" class="btn btn-primary btn-sm">Lihat Detail</a>
-                </div>
-            </div>
-        </div> -->
-    </div>
 
-    <!-- Chart Section -->
-    <!-- Chart Section -->
-    <div class="row mt-2">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <h5 for="jurusan">Jurusan :</h5>
-                    <canvas id="barChart"></canvas>
+        <!-- Chart Section -->
+        <!-- Chart Section -->
+        <div class="row mt-2">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 for="jurusan">Jurusan :</h5>
+                        <canvas id="barChart"></canvas>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card" style="height: 92%;">
-                <div class="card-body">
-                    <h5 class="text-center">Jumlah Unit</h5> <br>
-                    <canvas id="pieChart" style="margin: -15px;"></canvas>
+            <div class="col-md-4">
+                <div class="card" style="height: 92%;">
+                    <div class="card-body">
+                        <h5 class="text-center">Jumlah Pusat/Jurusan/Unit</h5> <br>
+                        <canvas id="pieChart" style="margin: -15px;"></canvas>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-8" style="width: 100%;">
-            <div class="card">
-                <div class="card-body">
-                    <h5 for="jurusan">Nilai Kontrak :</h5>
-                    <canvas id="yearlyChart" ></canvas>
+            <div class="col-md-8" style="width: 100%;">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 for="jurusan">Nilai Kontrak :</h5>
+                        <canvas id="yearlyChart" ></canvas>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-@endsection
+    @endsection
 
 @section('scripts')
 <script>

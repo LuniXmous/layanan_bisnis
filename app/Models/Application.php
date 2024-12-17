@@ -111,5 +111,7 @@ class Application extends Model
     {
         return $this->hasMany(ApplicationStatusLog::class);
     }
+
+    
     
 }

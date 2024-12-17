@@ -8,6 +8,21 @@
     <link rel="stylesheet" href="{{ asset('assets/css/main/app.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/pages/auth.css') }}" />
     <link rel="shortcut icon" href="assets/images/logo.webp" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Arial', sans-serif;
+            font-weight: 600;
+        }
+
+        p, li, span {
+            font-family: 'Arial', sans-serif;
+            font-weight: 400;
+        }
+    </style>
 </head>
 <body>
     <div id="auth">
@@ -15,3 +30,4 @@
     </div>
 </body>
 </html>
+

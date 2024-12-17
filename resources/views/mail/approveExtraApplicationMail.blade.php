@@ -42,7 +42,7 @@
         </tr>
         <tr>
             <td>Catatan</td>
-            <td>:</td>
+            <td>:</td>  
             <td> {{$application->note}} </td>
         </tr>
 

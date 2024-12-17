@@ -1,11 +1,10 @@
 @extends('layouts.app')
 @section('page-title', 'Pengajuan Kegiatan')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
 @section('content')
     <div class="row">
         <div class="col-12">
             <div class="card shadow-sm border mb-3">
-                <div class="card-body">
+                <div class="card-body"> 
                     <h5 class="card-title mb-0">
                         <span class="fw-bold">Status Pengajuan </span>
                         <span class="badge {{ $application->statusAlias()['class'] }}">
@@ -151,7 +150,7 @@
                         <!-- Icon 4: Selesai Di Review -->
                         <div>
                             <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '4' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                <i class="fa-solid fa-envelope-circle-check" style="color: #ffffff; font-size: 24px;"></i>
+                                <i class="fa-solid fa-circle-check" style="color: #ffffff; font-size: 24px;"></i>                     
                             </div>
                             <h6 style="margin-top: 13px;">Selesai Review</h6>
                             @if($application->approve_status == '4')
@@ -188,7 +187,7 @@
 
                     <div>
                         <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
-                            <i class="fa-solid fa-envelope-circle-check" style="color: #ffffff; font-size: 27px; margin: 10px;"></i>
+                            <i class="fa-solid fa-circle-check" style="color: #ffffff; font-size: 27px; margin: 10px;"></i>
                         </div>
                         <h6 style="margin-top: 13px;">Review Selesai</h6>
                     </div>
@@ -359,7 +358,7 @@
                             <!-- Icon 3: Selesai Di Review -->
                                 <div style="width:30%; text-align:center;">
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '3' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                        <i class="fa-solid fa-flag-checkered" style="color: #ffffff; font-size: 24px;"></i>
+                                        <i class="fa-solid fa-circle-check" style="color: #ffffff; font-size: 24px;"></i>                     
                                     </div>
                                     <h6 style="margin-top: 13px;">Selesai Review</h6>
                                     @if($application->approve_status == '3')
@@ -386,7 +385,7 @@
 
                                 <div>
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                        <i class="fa-solid fa-user-check" style="color: #ffffff; font-size: 27px; margin: 10px;"></i>
+                                        <i class="fa-solid fa-circle-check" style="color: #ffffff; font-size: 27px;margin: 10px;"></i>                     
                                     </div>
                                     <h6 style="margin-top: 13px;">Review Selesai</h6>
                                 </div>
@@ -401,6 +400,14 @@
                         <div class="mb-3">
                             <span class="fw-bold h6">Deskripsi Permohonan: </span> &nbsp; <br>
                             {!! $extra->description !!}
+                        </div>
+                        <div class="mb-3">
+                            @if (!empty($note))
+                            <span class="fw-bold h6">Catatan Dari Wadir 2: </span><br>
+                                {!! $note !!}
+                            @else
+                                <span class="text-muted" style="display:none;">Belum ada catatan.</span>
+                            @endif
                         </div>
                         </div>
                         <div class="row border-top pt-4">
@@ -522,7 +529,7 @@
                             <!-- Icon 3: Selesai Di Review -->
                                 <div style="width:30%; text-align:center;">
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '3' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                        <i class="fa-solid fa-flag-checkered" style="color: #ffffff; font-size: 24px;"></i>
+                                        <i class="fa-solid fa-circle-check" style="color: #ffffff; font-size: 24px;"></i>                     
                                     </div>
                                     <h6 style="margin-top: 13px;">Selesai Review</h6>
                                     @if($application->approve_status == '3')
@@ -538,7 +545,7 @@
                                     <h6 style="margin-top: 13px;">Review Wakil Direktur 4</h6>
                                 </div>
 
-                                    <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                                    <div style="flex-grow: 1; height: 1px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
                                 <div>
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
                                         <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
@@ -546,10 +553,10 @@
                                     <h6 style="margin-top: 13px;">Review Wakil Direktur 2</h6>
                                 </div>
 
-                                    <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                                    <div style="flex-grow: 1; height: 1px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
                                 <div>
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                        <i class="fa-solid fa-user-check" style="color: #ffffff; font-size: 27px; margin: 10px;"></i>
+                                        <i class="fa-solid fa-circle-check" style="color: #ffffff; font-size: 27px;margin: 10px;"></i>                     
                                     </div>
                                     <h6 style="margin-top: 13px;">Review Selesai</h6>
                                 </div>
@@ -566,11 +573,11 @@
                             {!! $extra->description !!}
                         </div>
                         <div class="mb-3">
-                            <span class="fw-bold h6">Catatan Dari Wadir 2: </span><br>
                             @if (!empty($note))
+                            <span class="fw-bold h6">Catatan Dari Wadir 2: </span><br>
                                 {!! $note !!}
                             @else
-                                <span class="text-muted">Belum ada catatan.</span>
+                                <span class="text-muted" style="display:none;">Belum ada catatan.</span>
                             @endif
                         </div>
                         <div class="row border-top pt-4">
@@ -648,7 +655,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div style="flex-grow: 3; height: 3px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                                <div style="flex-grow: 1; height: 1px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
                             <!-- Icon 2: Review Wakil Direktur 2 -->
                                 <div style="width:30%; text-align:center;">
                                    <div style="width: 50px; height: 50px; border-radius: 50%; 
@@ -691,11 +698,11 @@
                                     </div>
                                 </div>
                             <!-- Garis Horizontal -->
-                                <div style="flex-grow: 3; height: 3px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                                <div style="flex-grow: 1; height: 1px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
                                 <!-- Icon 3: Selesai Di Review -->
                                 <div style="width:30%; text-align:center;">
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '3' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                        <i class="fa-solid fa-flag-checkered" style="color: #ffffff; font-size: 24px;"></i>
+                                        <i class="fa-solid fa-circle-check" style="color: #ffffff; font-size: 24px;"></i>                     
                                     </div>
                                     <h6 style="margin-top: 13px;">Selesai Review</h6>
                                     @if($application->approve_status == '3')
@@ -710,14 +717,14 @@
                                     </div>
                                     <h6 style="margin-top: 13px;">Wakil Direktur 4</h6>
                                 </div>
-                                    <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                                    <div style="flex-grow: 1; height: 1px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
                                 <div>
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
                                         <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
                                     </div>
                                     <h6 style="margin-top: 13px;">Review Wakil Direktur 2</h6>
                                 </div>
-                                    <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                                    <div style="flex-grow: 1; height: 1px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
                                 <div>
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
                                         <i class="fa-solid fa-user-check" style="color: #ffffff; font-size: 27px; margin: 10px;"></i>
@@ -735,6 +742,14 @@
                         <div class="mb-3">
                             <span class="fw-bold h6">Deskripsi Permohonan: </span> &nbsp; <br>
                             {!! $extra->description !!}
+                        </div>
+                        <div class="mb-3">
+                            @if (!empty($note))
+                            <span class="fw-bold h6">Catatan Dari Wadir 2: </span><br>
+                                {!! $note !!}
+                            @else
+                                <span class="text-muted" style="display:none;">Belum ada catatan.</span>
+                            @endif
                         </div>
                         <div class="row border-top pt-4">
                             <div class="col-xl-4">
@@ -846,10 +861,14 @@
                             enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
-                                <label class="mb-2 fw-bold text-capitalize" for="role_id"> Judul {{ $extraApp == 'Pengajuan Pemberitahuan Kegiatan Selesai Dilaksanakan' ? 'Ajukan' : 'Permohonan' }} <span
-                                        class="text-danger">*</span></label>
-                                <input type="text" placeholder="{{ $extraApp == 'Pengajuan Pemberitahuan Kegiatan Selesai Dilaksanakan' ? '...' : 'Permohonan pencairan dana untuk ....' }}" name="title"
-                                    class="form-control" value="" required>
+                                <label class="mb-2 fw-bold text-capitalize" for="role_id"> Judul {{ $extraApp == 'Pengajuan Pemberitahuan Kegiatan Selesai Dilaksanakan' ? 'Ajukan' : 'Permohonan' }} 
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" 
+                                    name="title"
+                                    class="form-control" 
+                                    value="{{ $application->title ?? '' }}" 
+                                    readonly>
                             </div>
                             {{-- disini banyak casenya --}}
                             @if ($application->activity->category->id == 1)

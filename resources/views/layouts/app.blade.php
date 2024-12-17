@@ -10,14 +10,28 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css/main/app.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/extensions/sweetalert2/sweetalert2.min.css') }}" />
-    @yield('css')
     <script src="{{ asset('assets/extensions/jquery/jquery.min.js') }}"></script>
+    @yield('css')
     <style>
         .sidebar-wrapper {
             width: 230px;
         }
         #main {
             margin-left: 215px;
+        }
+        /* Menggunakan font Open Sans */
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Arial', sans-serif;
+            font-weight: 600;
+        }
+
+        p, li, span {
+            font-family: 'Arial', sans-serif;
+            font-weight: 400;
         }
     </style>
 </head>
@@ -115,7 +129,7 @@
                                 {{ Request::route()->action['as'] == 'unit.index' ? 'active' : null }}">
                                 <a href="{{ route('unit.index') }}" class="sidebar-link">
                                     <i class="fas fa-th"></i>
-                                    <span>Unit</span>
+                                    <span>Pusat/Jurusan/Unit</span>
                                 </a>
                             </li>
                             <li class="sidebar-item 

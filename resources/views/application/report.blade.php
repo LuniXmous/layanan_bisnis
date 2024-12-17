@@ -1,23 +1,20 @@
 @extends('layouts.app')
-
-@section('page-title')
+@section('page-title', 'Laporan Tahunan ' . $year)
     @section('content')
-        <h3>Laporan Tahunan {{ $year }}</h3>
-            <br>
                 <div class="row">
                     <div class="col-sm-6 mb-3 mb-sm-0">
-                        <div class="card text-center">
+                        <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Total Nilai Kontrak Yang Di Ajukan</h4>
-                            <h5 class="card-text">Rp. {{ number_format($totalNominal, 2, ',', '.') }}</h5>
+                            <h6 class="card-title">Total Nilai Kontrak Yang Di Ajukan:</h6>
+                            <h1 class="card-text">Rp. {{ number_format($totalNominal, 2, ',', '.') }}</h1>
                         </div>
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <div class="card text-center">
+                        <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Total Nilai Kontrak Yang Di Terima</h4>
-                            <h5 class="card-text">Rp. {{ number_format($totalNilaiKontrak, 2, ',', '.') }}</h5>
+                            <h6 class="card-title">Total Nilai Kontrak Yang Di Terima:</h6>
+                            <h1 class="card-text">Rp. {{ number_format($totalNilaiKontrak, 2, ',', '.') }}</h1>
                         </div>
                         </div>
                     </div>

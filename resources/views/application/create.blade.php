@@ -87,7 +87,7 @@
                                         <p>
                                             Format surat TOR dapat di download disini (link) Form perubahan dapat di
                                             download disini (link) <a href="{{ url('/template/template-tor.doc') }}"
-                                                target="_blank">{{ url('/template/template-tor.doc') }}</a>
+                                                target="_blank">{{ url('/template/template-tor.doc') }}</a> 
                                         </p>
                                         <input type="file" required name="lampiran[tor]" class="form-control"
                                             accept="application/pdf">
@@ -95,12 +95,12 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="mb-2 fw-bold text-dark" for="role_id">RAB (PDF)<span
+                                        <label class="mb-2 fw-bold text-dark" for="role_id">RAB<span
                                                 class="text-danger">*</span></label>
                                         <p>
-                                            Format surat TOR dapat di download disini (link) Form perubahan dapat di
-                                            download disini (link) <a href="{{ url('/template/template-tor.doc') }}"
-                                                target="_blank">{{ url('/template/template-tor.doc') }}</a>
+                                            Format surat RAB dapat di download disini (link) Form perubahan dapat di
+                                            download disini (link) <a href="{{ url('/template/template-rab.xlsx') }}"
+                                                target="_blank">{{ url('/template/template-rab.xlsx') }}</a>
                                         </p>
                                         <input type="file" required name="lampiran[rab]" class="form-control"
                                             accept="application/pdf">
@@ -145,12 +145,12 @@
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
                                     <div class="form-group">
-                                        <label class="mb-2 fw-bold text-dark" for="role_id">RAB (PDF)<span
+                                        <label class="mb-2 fw-bold text-dark" for="role_id">RAB<span
                                                 class="text-danger">*</span></label>
                                         <p>
                                             Format surat TOR dapat di download disini (link) Form perubahan dapat di
-                                            download disini (link) <a href="{{ url('/template/template-tor.doc') }}"
-                                                target="_blank">{{ url('/template/template-tor.doc') }}</a>
+                                            download disini (link) <a href="{{ url('/template/template-rab.xlsx') }}"
+                                                target="_blank">{{ url('/template/template-rab.xlsx') }}</a>
                                         </p>
                                         <input type="file" required name="lampiran[rab]" class="form-control"
                                             accept="application/pdf">
@@ -194,12 +194,12 @@
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
                                     <div class="form-group">
-                                        <label class="mb-2 fw-bold text-dark" for="role_id">RAB (PDF)<span
+                                        <label class="mb-2 fw-bold text-dark" for="role_id">RAB<span
                                                 class="text-danger">*</span></label>
                                         <p>
                                             Format surat TOR dapat di download disini (link) Form perubahan dapat di
-                                            download disini (link) <a href="{{ url('/template/template-tor.doc') }}"
-                                                target="_blank">{{ url('/template/template-tor.doc') }}</a>
+                                            download disini (link) <a href="{{ url('/template/template-rab.xlsx') }}"
+                                                target="_blank">{{ url('/template/template-rab.xlsx') }}</a>
                                         </p>
                                         <input type="file" required name="lampiran[rab]" class="form-control"
                                             accept="application/pdf">
@@ -245,12 +245,12 @@
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
                                     <div class="form-group">
-                                        <label class="mb-2 fw-bold text-dark" for="role_id">RAB (PDF)<span
+                                        <label class="mb-2 fw-bold text-dark" for="role_id">RAB<span
                                                 class="text-danger">*</span></label>
                                         <p>
                                             Format surat TOR dapat di download disini (link) Form perubahan dapat di
-                                            download disini (link) <a href="{{ url('/template/template-tor.doc') }}"
-                                                target="_blank">{{ url('/template/template-tor.doc') }}</a>
+                                            download disini (link) <a href="{{ url('/template/template-rab.xlsx') }}"
+                                                target="_blank">{{ url('/template/template-rab.xlsx') }}</a>
                                         </p>
                                         <input type="file" required name="lampiran[rab]" class="form-control"
                                             accept="application/pdf">

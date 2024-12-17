@@ -17,7 +17,7 @@
                             <th width="3%">No</th>
                             <th>Judul Permohonan</th>
                             <th>Nama Pemohon</th>
-                            <th>Unit/Jurusan yang diajukan</th>
+                            <th>Pusat/Unit/Jurusan yang diajukan</th>
                             <th>Kategori</th>
                             <th>Kegiatan</th>
                             <th>Status</th>

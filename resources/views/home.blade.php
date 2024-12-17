@@ -63,20 +63,36 @@
       padding: 10px 20px;
       border-radius: 5px;
     }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .fade-in-up {
+      opacity: 0; 
+      animation: fadeInUp 1s ease-out forwards;
+      animation-delay: 1s;
+    }
   </style>
 </head>
       <nav class="navbar navbar-expand-lg bg-body-tertiary" >
         <div class="container-fluid">
           <a class="navbar-brand" href="#"><img src="{{ asset('assets/images/logo.webp') }}" alt="Logo" style="width: 60px; height: auto;"  ></a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-          </button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                <a class="nav-link active" aria-current="page" href="#">Layanan Bisnis</a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a class="nav-link" href="#">Link</a>
               </li>
               <li class="nav-item dropdown">
@@ -100,7 +116,7 @@
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="#">Something else here</a></li>
                 </ul>
-              </li>
+              </li> -->
             </ul>
             <form class="d-flex" role="search" style="margin-right:5px;">
                 <a href="http://127.0.0.1:5000" class="btn btn-primary" style="background-color: #018797; border: none;">
@@ -120,8 +136,8 @@
             style="width: 100%; height: 550px; object-fit: cover;">
         <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #018797; opacity: 0.8;"></div>
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; text-align: center;">
-          <h2 style="color:white; font-size: 50px">Layanan Bisnis</h2>
-          <h4 style="color:white; font-size: 50px">Politeknik Negeri Jakarta</h4>
+          <h2 class="animate-on-load" style="color:white; font-size: 50px;">Layanan Bisnis</h2>
+          <h4 class="animate-on-load" style="color:white; font-size: 50px;">Politeknik Negeri Jakarta</h4>
         </div>
       </div>
       <div class="container">
@@ -135,5 +151,17 @@
           <img src="{{ asset('assets/images/background pnj.jpeg') }}" alt="Enterprise" style="width: 350px; height: auto; border-radius: 10%;">
         </div>
       </div>
-    
+@endsection
+@section('scripts')
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const elements = document.querySelectorAll(".animate-on-load");
+
+      elements.forEach((el, index) => {
+        setTimeout(() => {
+          el.classList.add("fade-in-up");
+        }, index * 200); // Delay animasi untuk setiap elemen
+      });
+    });
+  </script>
 @endsection

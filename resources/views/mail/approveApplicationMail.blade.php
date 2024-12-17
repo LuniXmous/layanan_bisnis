@@ -41,6 +41,8 @@
             <td> {{$application->note}} </td>
         </tr>
         
+
+        
     </table>
 
     klik link dibawah untuk menuju permintaan terkait <br>
