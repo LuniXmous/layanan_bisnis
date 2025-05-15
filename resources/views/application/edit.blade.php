@@ -281,8 +281,22 @@
 
         .wizard-content .actions.clearfix {
             margin-top: 30px;
-            /* display: none !important; */
         }
+
+        .wizard-content .actions.clearfix li[aria-hidden="false"] a {
+            background-color: #018797;
+            color: #fff; 
+            border: none; 
+        }
+
+        /* Hover untuk tombol Finish dan Next */
+        .wizard-content .actions.clearfix li[aria-hidden="false"] a:hover {
+            background-color: #00616C; 
+            color: #fff; 
+            cursor: pointer; 
+        }
+
+
     </style>
 
 @endsection

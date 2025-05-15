@@ -27,8 +27,8 @@ class UserSeeder extends Seeder
         ]);
         User::create([
             'id' => "54846a7c-8f1b-4bb6-b503-b36cefe129c8",
-            'name' => "pengguna",
-            'email' => "pengguna@gmail.com",
+            'name' => "applikan",
+            'email' => "applikan@gmail.com",
             'role_id' => 1,
             'email_verified_at' => Carbon::now(),
             'password' => Hash::make("pengguna123"),

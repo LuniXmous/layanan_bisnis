@@ -42,24 +42,24 @@ class ApplicationStatusLog extends Model
     public function statusAlias()
     {
         if ($this->status == 0) {
-            return ['status' => 'Perlu Perbaikan', 'class' => 'bg-danger', 'users' => [$this->user], 'must_role' => [0]];
+            return ['status' => 'Pengajuan Ditolak', 'class' => 'bg-danger', 'users' => [$this->user], 'must_role' => [0]];
         } else if ($this->status == 1) {
             if ($this->approve_status == 0) {
                 return ['status' => 'Selesai Di Review Admin Unit', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 2)->get(), 'must_role' => [2, 0]];
             } else if ($this->approve_status == 2) {
-                return ['status' => 'Selesai Di Review Admin Layanan Bisnis', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 0)->get(), 'must_role' => [0]];
+                return ['status' => 'Disetujui Oleh Admin Layanan Bisnis', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 0)->get(), 'must_role' => [0]];
             } else if ($this->approve_status == 3) {
-                return ['status' => 'Selesai Di Review Wakil Direktur 4', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 4)->get(), 'must_role' => [4, 0, 3]];
+                return ['status' => 'Disetujui Oleh Wakil Direktur 4', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 4)->get(), 'must_role' => [4, 0, 3]];
             } else if ($this->approve_status == 4) {
-                return ['status' => 'Telah Di Review Direktur ', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 5)->get(), 'must_role' => [5, 0, 3]];
+                return ['status' => 'Disetujui Oleh Direktur ', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 5)->get(), 'must_role' => [5, 0, 3]];
             } 
         } else if ($this->status == 2) {
             if ($this->approve_status == 0) {
                 return ['status' => "Pengajuan Telah Ditolak", 'class' => 'bg-danger', 'users' => [$this->user], 'must_role' => [0, 3]];
             } else if ($this->approve_status == 2) {
-                return ['status' => 'Selesai Di Review Wakil Direktur 4 Permohonan Pencairan Dana Operasional', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 4)->get(), 'must_role' => [4, 0, 3]];
+                return ['status' => 'Permohonan Pencairan Dana Operasional Disetujui Oleh Wakil Direktur 4', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 4)->get(), 'must_role' => [4, 0, 3]];
             } else if ($this->approve_status == 3) {
-                return ['status' => 'Selesai Di Review Wakil Direktur 2 Permohonan Pencairan Dana Operasional', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 3)->get(), 'must_role' => [3, 0, 3]];
+                return ['status' => 'Permohonan Pencairan Dana Operasional Disetujui Oleh Wakil Direktur 2', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 3)->get(), 'must_role' => [3, 0, 3]];
             } else {
                 return ['status' => '', 'class' => '', 'users' => null, 'must_role' => []];
             }
@@ -67,9 +67,9 @@ class ApplicationStatusLog extends Model
             if ($this->approve_status == 0) {
                 return ['status' => "Pengajuan Telah Ditolak", 'class' => 'bg-danger', 'users' => [$this->user], 'must_role' => [0, 3]];
             } else if ($this->approve_status == 2) {
-                return ['status' => 'Selesai Di Review Wakil Direktur 4 Pemberitahuan Kegiatan Selesai Dilaksanakan', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 4)->get(), 'must_role' => [4, 0, 3]];
+                return ['status' => 'Pemberitahuan Kegiatan Selesai Dilaksanakan Disetujui Oleh Wakil Direktur 4', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 4)->get(), 'must_role' => [4, 0, 3]];
             } else if ($this->approve_status == 3) {
-                return ['status' => 'Selesai Di Review Wakil Direktur 2 Pemberitahuan Kegiatan Selesai Dilaksanakan', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 3)->get(), 'must_role' => [3, 0, 3]];
+                return ['status' => 'Pemberitahuan Kegiatan Selesai Dilaksanakan Disetujui Oleh Wakil Direktur 2', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 3)->get(), 'must_role' => [3, 0, 3]];
             } else {
                 return ['status' => '', 'class' => '', 'users' => null, 'must_role' => []];
             }

@@ -10,7 +10,7 @@
                 <thead>
                     <tr>
                         <th width="4%">No</th>
-                        <th>Nama</th>
+                        <th>Nama Pengguna</th>
                         <th>Email</th>
                         <th>Role</th>
                         <th>Status</th>

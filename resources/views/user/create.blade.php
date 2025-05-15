@@ -10,7 +10,7 @@
                     <div class="row">
                         <div class="col-12 mb-2">
                             <div class="form-group">
-                                <label class="mb-2 fw-bold text-capitalize" for="username">Nama <span class="text-danger">*</span></label>
+                                <label class="mb-2 fw-bold text-capitalize" for="username">Nama Pengguna<span class="text-danger">*</span></label>
                                 <input type="text" id="name" class="form-control" name="name" required value="">
                             </div>
                         </div>

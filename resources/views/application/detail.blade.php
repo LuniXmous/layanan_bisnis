@@ -26,13 +26,13 @@
                                     $latestLog = $submissionLogs->sortByDesc('created_at')->first();
                                 @endphp
                                     @if($application->approve_status == '1') 
-                                        #ffc107 /* kuning */
+                                        #ffc107
                                     @elseif(in_array($application->approve_status, ['2','3', '4'])) 
-                                        #198754 /* hijau */
+                                        #198754 
                                         @elseif($latestLog && $latestLog->status == 0 && $latestLog->approve_status == 0 && $latestLog->role_id == 0)
-                                        #dc3545 /* merah */
+                                        #dc3545 
                                     @else 
-                                        #018797 /* biru tua */
+                                        #018797 
                                     @endif; 
                                 display: flex; align-items: center; justify-content: center; margin: auto;">
                                 <i class="fa-solid fa-user" style="color: #ffffff; font-size: 24px;"></i>
@@ -67,13 +67,13 @@
                                     $latestLog = $submissionLogs->sortByDesc('created_at')->first();
                                 @endphp
                                     @if($application->approve_status == '2') 
-                                        #ffc107 /* kuning */
+                                        #ffc107 
                                     @elseif(in_array($application->approve_status, ['3', '4'])) 
-                                        #198754 /* hijau */
+                                        #198754 
                                     @elseif($latestLog && $latestLog->status == 0 && $latestLog->approve_status == 0 && $latestLog->role_id == 4)
-                                        #dc3545 /* merah */
+                                        #dc3545 
                                     @else 
-                                        #018797 /* biru tua */
+                                        #018797
                                     @endif; 
                                 display: flex; align-items: center; justify-content: center; margin: auto;">
                                 <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 24px;"></i>
@@ -107,9 +107,9 @@
                             <div style="width: 50px; height: 50px; border-radius: 50%; 
                                 background-color: 
                                     @if($application->approve_status == '3') 
-                                        #ffc107 /* kuning */
+                                        #ffc107 
                                     @elseif(in_array($application->approve_status, ['3', '4'])) 
-                                        #198754 /* hijau */
+                                        #198754 
                                     @elseif(
                                         isset($submissionLogs) && 
                                         $submissionLogs->where('status', 0)
@@ -152,7 +152,7 @@
                             <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '4' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
                                 <i class="fa-solid fa-circle-check" style="color: #ffffff; font-size: 24px;"></i>                     
                             </div>
-                            <h6 style="margin-top: 13px;">Selesai Review</h6>
+                            <h6 style="margin-top: 13px;">Review Selesai</h6>
                             @if($application->approve_status == '4')
                                 {{ $application->statusAlias()['status'] }}<br>
                                 {{ $application->updated_at }}
@@ -196,12 +196,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-xxl-8">
+        <div class="col-xxl-13">
             <div class="card shadow-sm border mb-4">
                 @if ($application->note)
                     <div class="card-header border-bottom" style="background-color: rgba(220,53,69,0.3);">
                         <div class="card-title text-danger fw-bold">
-                            <span class="text-dark h5">Catatan Perbaikan: </span>{{ $application->note }}
+                            <span class="text-dark h5">Catatan Penolakan: </span>{{ $application->note }}
                         </div>
                     </div>
                 @endif
@@ -253,7 +253,7 @@
                                 <div class="mb-2">
                                     <span role="button" id="document-lampiran"
                                         class="ms-2 text-capitalize fw-bold text-primary"
-                                        data-file="{{ asset('dokumen_bisnis/' . $file->file) }}"
+                                        data-file="{{ url('dokumen_bisnis/' . rawurlencode($file->file)) }}"
                                         data-type="{{ $file->ext }}"><i class="fas fa-file-pdf"></i>&nbsp; Dokumen
                                         {{ $file->title }} 
                                     </span>
@@ -268,7 +268,7 @@
                                         <span role="button" id="document-lampiran"
                                             class="ms-2 text-capitalize fw-bold text-primary"
                                             data-type="{{ $file->ext }}"
-                                            data-file="{{ asset('dokumen_bisnis/' . $file->file) }}"><i
+                                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($file->file)) }}"><i
                                             class="fas fa-file-pdf"></i>&nbsp; Dokumen {{ $file->title }} 
                                         </span>
                                     </div>
@@ -360,7 +360,7 @@
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '3' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
                                         <i class="fa-solid fa-circle-check" style="color: #ffffff; font-size: 24px;"></i>                     
                                     </div>
-                                    <h6 style="margin-top: 13px;">Selesai Review</h6>
+                                    <h6 style="margin-top: 13px;">Review Selesai</h6>
                                     @if($application->approve_status == '3')
                                         {{ $application->statusAlias()['status'] }} <br>
                                         {{ $application->updated_at }}
@@ -417,7 +417,7 @@
                                     <div class="mb-2">
                                         <span role="button" id="document-lampiran" data-type="{{ $file->ext }}"
                                             class="ms-2 text-capitalize fw-bold text-primary"
-                                            data-file="{{ asset('dokumen_bisnis/' . $file->file) }}"><i
+                                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($file->file)) }}"><i
                                             class="fas fa-file"></i>&nbsp; Dokumen {{ $file->title }} 
                                         </span> 
                                     </div>
@@ -531,7 +531,7 @@
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '3' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
                                         <i class="fa-solid fa-circle-check" style="color: #ffffff; font-size: 24px;"></i>                     
                                     </div>
-                                    <h6 style="margin-top: 13px;">Selesai Review</h6>
+                                    <h6 style="margin-top: 13px;">Review Selesai</h6>
                                     @if($application->approve_status == '3')
                                         {{ $application->statusAlias()['status'] }}<br>
                                         {{ $application->updated_at }}
@@ -588,7 +588,7 @@
                                         <span role="button" id="document-lampiran"
                                             class="ms-2 text-capitalize fw-bold text-primary"
                                             data-type="{{ $file->ext }}"
-                                            data-file="{{ asset('dokumen_bisnis/' . $file->file) }}"><i
+                                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($file->file)) }}"><i
                                             class="fas fa-file-pdf"></i>&nbsp; Dokumen {{ $file->title }} 
                                         </span>
                                     </div>
@@ -663,15 +663,15 @@
                                         @php
                                             $latestLog = $submissionLogs->sortByDesc('created_at')->first();
                                         @endphp
-                                            @if($application->approve_status == '2') 
-                                                #ffc107 /* kuning */
-                                            @elseif(in_array($application->approve_status, ['3'])) 
-                                                #198754 /* hijau */
-                                            @elseif($latestLog && $latestLog->status == 3 && $latestLog->approve_status == 0 && $latestLog->role_id == 3)
-                                                #dc3545 /* merah */
-                                            @else 
-                                                #018797 /* biru tua */
-                                            @endif; 
+                                        @if($application->approve_status == '2') 
+                                            #ffc107 
+                                        @elseif(in_array($application->approve_status, ['3'])) 
+                                            #198754
+                                        @elseif($latestLog && $latestLog->status == 3 && $latestLog->approve_status == 0 && $latestLog->role_id == 3)
+                                          #dc3545 
+                                        @else 
+                                            #018797 /* biru tua */
+                                        @endif; 
                                         display: flex; align-items: center; justify-content: center; margin: auto;">
                                         <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 24px;"></i>
                                     </div>
@@ -704,7 +704,7 @@
                                     <div style="width: 50px; height: 50px; border-radius: 50%; background-color: {{ $application->approve_status == '3' ? '#198754' : '#018797' }}; display: flex; align-items: center; justify-content: center; margin: auto;">
                                         <i class="fa-solid fa-circle-check" style="color: #ffffff; font-size: 24px;"></i>                     
                                     </div>
-                                    <h6 style="margin-top: 13px;">Selesai Review</h6>
+                                    <h6 style="margin-top: 13px;">Review Selesai</h6>
                                     @if($application->approve_status == '3')
                                         {{ $application->statusAlias()['status'] }} <br>
                                         {{ $application->updated_at }} 
@@ -759,7 +759,7 @@
                                         <span role="button" id="document-lampiran"
                                             class="ms-2 text-capitalize fw-bold text-primary"
                                             data-type="{{ $file->ext }}"
-                                            data-file="{{ asset('dokumen_bisnis/' . $file->file) }}"><i
+                                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($file->file)) }}""><i
                                             class="fas fa-file-pdf"></i>&nbsp; Dokumen {{ str_replace('lpj', 'Dokumentasi Kegiatan', $file->title) }} 
                                         </span>
                                     </div>
@@ -783,7 +783,7 @@
                                         <span role="button" id="document-lampiran"
                                             class="ms-2 text-capitalize fw-bold text-primary"
                                             data-type="{{ $file->ext }}"
-                                            data-file="{{ asset('dokumen_bisnis/' . $file->file) }}"><i
+                                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($file->file)) }}"><i
                                             class="fas fa-file-pdf"></i>&nbsp; Dokumen {{ $file->title }} 
                                         </span>
                                     </div>
@@ -795,7 +795,7 @@
             </div>
         @endif
 
-        <div class="col-xxl-8">
+        <div class="col-xxl-13">
             <div class="card card-body border shadow-sm">
                 <div class="d-flex">
                     <div class="ms-auto">
@@ -1095,8 +1095,17 @@
                 $('#document-preview-img .modal-title').text($(this).text());
                 $('#document-preview-img').modal('show');
             }
-
         });
+
+        $(document).ready(function() {
+        $('#document-preview').on('shown.bs.modal', function () {
+            $(this).removeAttr('aria-hidden');
+        });
+
+        $('#document-preview').on('hidden.bs.modal', function () {
+            $(this).attr('aria-hidden', 'true');
+        });
+    });
 
     </script>
 @endsection

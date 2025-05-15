@@ -47,7 +47,14 @@
                 </div>
                 <div class="sidebar-menu">
                     <ul class="menu p-0">
-                        @if (Auth::user()->role->alias != 'admin' && Auth::user()->role->alias != 'wadir4')
+                        @if (Auth::user()->role->alias != 'admin' && Auth::user()->role->alias != 'wadir4' && Auth::user()->role->alias != 'wadir2' && Auth::user()->role->alias != 'direktur')
+                            <li class="sidebar-item 
+                                {{ Request::route()->action['as'] == 'dashboard' ? 'active' : null }}">
+                                <a href="{{ route('dashboard') }}" class="sidebar-link">
+                                <i class="fa-solid fa-house"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>    
                             <li class="sidebar-item
                             {{ Request::route()->action['as'] == 'application.index' ? 'active' : null }}">
                                     <a href="{{ route('application.index') }}" class="sidebar-link">
@@ -56,23 +63,86 @@
                                 </a>
                             </li>
                         @endif
+                        <!-- Direktur -->
+                        @if (Auth::user()->role->alias == 'direktur'|| env('GOD-Mode'))
+                            <li class="sidebar-item 
+                                {{ Request::route()->action['as'] == 'dashboard' ? 'active' : null }}">
+                                <a href="{{ route('dashboard') }}" class="sidebar-link">
+                                <i class="fa-solid fa-house"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item
+                                {{ Request::route()->action['as'] == 'application.index' && request()->get('approve_status') == '3' ? 'active' : '' }}">
+                                <a href="{{ route('application.index', ['approve_status' => '3', 'status' => '1']) }}" class="sidebar-link">
+                                    <i class="fas fa-file-alt"></i>
+                                    <span>Pengajuan</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item {{ Request::get('type') === 'historydir' ? 'active' : null }}">
+                                <a href="{{ route('application.index', ['type' => 'historydir']) }}" class="sidebar-link">
+                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                    <span>Riwayat Pengajuan</span>
+                                </a>
+                            </li>
+                        @endif
                         <!-- sidebar wadir 2 -->
                         @if (Auth::user()->role->alias == 'wadir2' || env('GOD_MODE'))
+                            <li class="sidebar-item 
+                                {{ Request::route()->action['as'] == 'dashboard' ? 'active' : null }}">
+                                <a href="{{ route('dashboard') }}" class="sidebar-link">
+                                <i class="fa-solid fa-house"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item
+                                {{ Request::route()->action['as'] == 'application.index' && request()->get('approve_status') == '2' ? 'active' : '' }}">
+                                <a href="{{ route('application.index', ['approve_status' => '2']) }}" class="sidebar-link">
+                                    <i class="fas fa-file-alt"></i>
+                                    <span>Pengajuan</span>
+                                </a>
+                            </li>
                             <li class="sidebar-item
                             {{ Request::route()->action['as'] == 'application.tebusan' ? 'active' : null }}">
                                 <a href="{{ route('application.tebusan') }}" class="sidebar-link">
                                     <i class="fas fa-file-alt"></i>
                                     <span>Tebusan</span>
                                 </a>
+                            </li>   
+                            <li class="sidebar-item {{ Request::get('type') === 'historywd2' ? 'active' : null }}">
+                                <a href="{{ route('application.index', ['type' => 'historywd2']) }}" class="sidebar-link">
+                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                    <span>Riwayat Pengajuan</span>
+                                </a>
                             </li>
                         @endif
                         <!-- sidebar wadir 4 -->
                         @if (Auth::user()->role->alias == 'wadir4' || env('GOD_MODE'))
+                            <li class="sidebar-item 
+                                {{ Request::route()->action['as'] == 'dashboard' ? 'active' : null }}">
+                                <a href="{{ route('dashboard') }}" class="sidebar-link">
+                                <i class="fa-solid fa-house"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item 
+                                {{ Request::route()->action['as'] == 'application.report' ? 'active' : null }}">
+                                <a href="{{ route('application.report') }}" class="sidebar-link">
+                                <i class="fa-solid fa-money-bill"></i>
+                                    <span>Nilai Kontrak</span>
+                                </a>
+                            </li>
                             <li class="sidebar-item
-                            {{ Request::route()->action['as'] == 'application.index' ? 'active' : null }}">
+                                {{ Request::route()->action['as'] == 'application.index' && request()->get('approve_status') == '1,2' ? 'active' : '' }}">
                                 <a href="{{ route('application.index', ['approve_status' => '1,2']) }}" class="sidebar-link">
                                     <i class="fas fa-file-alt"></i>
                                     <span>Pengajuan</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item {{ Request::get('type') === 'historywd4' ? 'active' : null }}">
+                                <a href="{{ route('application.index', ['type' => 'historywd4']) }}" class="sidebar-link">
+                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                    <span>Riwayat Pengajuan</span>
                                 </a>
                             </li>
                         @endif
@@ -173,7 +243,7 @@
             <div class="page-heading">
                 <div class="page-title">
                     <div class="row">
-                        <div class="col-12 col-md-6 order-md-1 order-last">
+                        <div class="col-12 col-md-8 order-md-1 order-last">
                             <h3>@yield('page-title')</h3>
                         </div>
                     </div>

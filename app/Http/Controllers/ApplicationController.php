@@ -8,20 +8,23 @@ use App\Exports\ApplicationExport;
 use Illuminate\Http\Request;
 use App\Models\Application;
 use App\Models\User;
+use App\Mail\ReminderMail;
 use App\Models\Document;
 use App\Models\ExtraApplication;
 use App\Models\ExtraApplicationDocument;
 use App\Models\ApplicationStatusLog;
 use App\Models\RekapDana;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Unit;
 use DataTables;
 use Auth;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 class ApplicationController extends Controller
-{
+{           
     private function comment($application): bool
     {
         $comment = false;
@@ -68,8 +71,8 @@ class ApplicationController extends Controller
     {
         if ($request->ajax()) {
             $applications = Application::query();
+            
     
-            // Filter berdasarkan role
             // Filter berdasarkan role
             if (Auth::user()->role->id == 0) {
                 // Admin bisa melihat semua aplikasi
@@ -79,17 +82,64 @@ class ApplicationController extends Controller
                 $applications->where('user_id', Auth::user()->id)
                         ->orderBy('updated_at', 'desc');
             } else if (Auth::user()->role->id == 4) {
-                // Wakil Direktur 4: status = 1, approve_status = 2 atau status > 1, approve_status = 1
-                $applications->where(function($query) {
-                    $query->where("status", 1)->where("approve_status", 2)
-                        ->orWhere("status", ">", 1)->where("approve_status", 1);
-                })->orderBy('updated_at', 'desc');
+                $type = $request->input('type');
+                // Default query untuk Pengajuan
+                $applications = Application::query();
+                if ($type === 'historywd4') {
+                    // Logika untuk Riwayat Pengajuan
+                    $applications->where(function ($query) {
+                        $query->where('status', 1)->whereIn('approve_status', [3])
+                            ->orWhere('status', '>', 1)->whereIn('approve_status', [2]);
+                    });
+                }
+                else {
+                    // Logika untuk Pengajuan
+                    $applications->where(function ($query) {
+                        $query->where('status', 1)->whereIn('approve_status', [2])
+                            ->orWhere('status', '>', 1)->whereIn('approve_status', [1]);
+                    });
+                }
+
+                $applications->orderBy('updated_at', 'desc');
+            
             } else if (Auth::user()->role->id == 3) {
+                $type = $request->input('type');
                 // Wakil Direktur 2: status > 1, approve_status = 2
-                $applications->where("status", ">", 1)->where("approve_status", 2)->orderBy('updated_at', 'desc');
+                $applications = Application::query();
+                if ($type === 'historywd2') {
+                    // Logika untuk Riwayat Pengajuan
+                    $applications->where(function ($query) {
+                        $query->where('status', 2)->whereIn('approve_status', [3])
+                            ->orWhere('status', '>', 2)->whereIn('approve_status', [3]);
+                    });
+                }
+                else {
+                    // Logika untuk Pengajuan
+                    $applications->where(function ($query) {
+                        $query->where('status', 2)->whereIn('approve_status', [2])
+                            ->orWhere('status', '>', 2)->whereIn('approve_status', [2]);
+                    });
+                }
+
+                $applications->orderBy('updated_at', 'desc');
             } else if (Auth::user()->role->id == 5) {
                 // Direktur: status = 1, approve_status = 3
-                $applications->where("status", 1)->where("approve_status", 3)->orderBy('updated_at', 'desc');
+                $type = $request->input('type');
+                $applications = Application::query();
+                    if ($type === 'historydir') {
+                        // Logika untuk Riwayat Pengajuan
+                        $applications->where(function ($query) {
+                            $query->where('status', 1)->whereIn('approve_status', [4]);
+                        });
+                    }
+                    else {
+                        // Logika untuk Pengajuan
+                        $applications->where(function ($query) {
+                            $query->where('status', 1)->whereIn('approve_status', [3]);
+                        });
+                    }
+
+                $applications->orderBy('updated_at', 'desc');
             } else {
                 // Applicant: hanya aplikasi milik user sendiri
                 $applications = Auth::user()->application();
@@ -98,7 +148,6 @@ class ApplicationController extends Controller
             // Filter tambahan berdasarkan approve_status
             if ($request->has('approve_status') && $request->approve_status !== '') {
                 if ($request->approve_status === '1,2,3,4') {
-                    // Tidak ada filter tambahan
                 } elseif ($request->approve_status === '1,2') {
                     $applications->whereIn('approve_status', [1, 2]);
                 } elseif ($request->approve_status === '0') {
@@ -264,10 +313,8 @@ class ApplicationController extends Controller
         $submissionLogs = ApplicationStatusLog::where('application_id', $application->id)
         ->orderBy('created_at', 'desc')->get();
 
-        // Ambil data rekap dana terkait dengan application
         $rekapDana = RekapDana::where('application_id',$application->id)->get();
 
-        // Ambil data Note Wadir 2
         $extraApplication = ExtraApplication::where('application_id', $application->id)->latest()->first();
         $note = $extraApplication ? $extraApplication->note : null;
 
@@ -337,14 +384,29 @@ class ApplicationController extends Controller
     public function report(Request $request)
     {
         $year = $request->input('year', date('Y')); // Ambil tahun dari input, default ke tahun ini
-        $rekapDana = RekapDana::whereYear('created_at', $year)->get();
-
+        $rekapDana = RekapDana::with(['application.user', 'application.activity.unit', 'application.activity.category'])
+            ->whereYear('created_at', $year)
+            ->get();
+    
         // Hitung total nominal
         $totalNilaiKontrak = $rekapDana->sum('nilai_kontrak');
         $totalNominal = $rekapDana->sum('nominal');
-
-        return view('application.report', compact('rekapDana', 'totalNilaiKontrak','totalNominal', 'year'));
+    
+        // Olah data untuk menambahkan kolom yang diinginkan
+        $data = $rekapDana->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'title' => '<a href="' . route('application.detail', ['identifier' => $item->application->id]) . '"> ' . ($item->application->title ?? '-') . ' </a>',
+                'status_applicant' => '<span class="badge ' . $item->application->statusAlias()['class'] . '"> ' . $item->application->statusAlias()['status'] . ' </span>',
+                'nominal' => $item->nominal ?? 0,
+                'nilai_kontrak' => $item->nilai_kontrak ?? 0,
+                'created_at' => $item->created_at->translatedFormat('d F Y, H:i'),
+            ];
+        });
+    
+        return view('application.report', compact('data', 'totalNilaiKontrak', 'totalNominal', 'year'));
     }
+    
 
 
     public function applyExtra(Request $request, $id)
@@ -508,7 +570,6 @@ class ApplicationController extends Controller
     {
         $application = Application::find($id);
 
-        //checking logic
         $comment = $this->comment($application);
 
         if (!$comment) {
@@ -658,9 +719,8 @@ class ApplicationController extends Controller
                 \Mail::to($user->email)->send(new \App\Mail\tebusanMail($application));
             }
         }
-        $status = $application->status ?? 1;  // Gunakan nilai default jika null, misal 1
-         // Ambil nilai untuk kolom 'status'
-        $approve_status = $application->approve_status;  // Ambil nilai untuk kolom 'approve_status'
+        $status = $application->status ?? 1;  
+        $approve_status = $application->approve_status; 
 
         ApplicationStatusLog::create([
             'application_id' => $application->id,
@@ -736,8 +796,6 @@ class ApplicationController extends Controller
         // Redirect ke route 'application.detail' dengan menyertakan parameter 'id'
         return redirect()->route('application.detail', ['identifier' => $id])->with(['success' => 'Catatan berhasil ditambahkan dan Pengajuan disetujui.']);
     }
-
-    
 
     
     public function reject(Request $request, $id)
@@ -1040,6 +1098,7 @@ class ApplicationController extends Controller
             return redirect()->back()->with('fail', 'Gagal memperbaiki pengajuan');
         }
     }
+ 
 
     public function updateExtra(Request $request, $id)
     {

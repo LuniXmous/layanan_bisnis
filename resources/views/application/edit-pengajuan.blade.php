@@ -36,42 +36,107 @@
         <br>
         <textarea name="desc" id="summernote" class="form-control required" rows="3" required>{{ $application->description }}</textarea>
     </div>
-
+        <!-- pengajuan ke 1 jasa -->
     @if ($application->activity->category->id == 1)
         <div id="question-e76240de-80c2-4094-99be-b7783421b9a3" class="question">
             <div class="form-group mb-4">
-                <label class="mb-2 fw-bold text-dark">Ganti Surat Undangan (PDF) (<span role="button" id="document-lampiran"
-                        class="ms-2 text-capitalize fw-bold text-primary {{ $application->document->where('type', 'undangan')->first() ? '' : 'd-none' }} "
-                        data-type="doc"
-                        data-file="{{ $application->document->where('type', 'undangan')->first() ? asset('dokumen_bisnis/' . $application->document->where('type', 'undangan')->first()->file) : '' }}"><i
-                            class="fas fa-file-pdf"></i>&nbsp; Dokumen Surat Undangan </span>)</label>
+                <label class="mb-2 fw-bold text-dark">Surat Undangan (PDF)</label>
                 <br>
+                @php
+                    $docPU = $application->document->where('type', 'undangan')->first();
+                @endphp
+                @if($docPU)
+                    <div class="mt-2">
+                        <strong>Dokumen sebelumnya:</strong>
+                        <span role="button" id="document-lampiran"
+                            class="ms-2 text-capitalize fw-bold text-primary"
+                            data-type="doc"
+                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($docPU->file)) }}">
+                            <i class="fas fa-file-pdf"></i>&nbsp; Dokumen Permohonan dari Mitra sebelumnya
+                        </span>
+                    </div>
+                @else
+                    <p class="text"><strong>Dokumen sebelumnya:</strong> Tidak ada dokumen "undangan" yang anda ajukan sebelumnya.</p>
+                @endif
                 <input type="file" name="lampiran[undangan]" id="lampiran_undangan" class="form-control"
                     accept="application/pdf">
                 <small class="text-muted">Format file harus berupa PDF</small>
             </div>
             <div class="form-group mb-4">
-                <label class="mb-2 fw-bold text-dark">Ganti Surat Permohonan Ijin Kegiatan (PDF)(<span role="button"
-                        id="document-lampiran" class="ms-2 text-capitalize fw-bold text-primary"
-                        data-type="doc"
-                        data-file="{{ asset('dokumen_bisnis/' . $application->document->where('type', 'permohonan ijin kegiatan')->first()->file) }}"><i
-                            class="fas fa-file-pdf"></i>&nbsp; Dokumen Surat Permohonan Ijin Kegiatan</span>)</label>
+                <label class="mb-2 fw-bold text-dark">Surat Permohonan Ijin Kegiatan (PDF)</label>
                 <br>
                 Format surat permohonan ijin kegiatan dapat di download disini (link) Form perubahan dapat di download
                 disini (link) <a href="{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }}"
-                    target="_blank">{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }}</a>
+                target="_blank">{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }}</a>
+                @php
+                    $docPIK = $application->document->where('type', 'permohonan ijin kegiatan')->first();
+                @endphp
+                @if($docPIK)
+                    <div class="mt-2">
+                        <strong>Dokumen sebelumnya:</strong>
+                        <span role="button" id="document-lampiran"
+                            class="ms-2 text-capitalize fw-bold text-primary"
+                            data-type="doc"
+                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($docPIK->file)) }}">
+                            <i class="fas fa-file-pdf"></i>&nbsp; Dokumen Permohonan ijin kegiatan sebelumnya
+                        </span>
+                    </div>
+                @else
+                    <p class="text"><strong>Dokumen sebelumnya:</strong> Tidak ada dokumen "Surat permohonan ijin kegiatan" yang anda ajukan sebelumnya.</p>
+                @endif
                 <input type="file" name="lampiran[permohonan ijin kegiatan]" id="lampiran_permohonan"
                     class="form-control" accept="application/pdf">
                 <small class="text-muted">Format file harus berupa PDF</small>
             </div>
             <div class="form-group mb-4">
-                <label class="mb-2 fw-bold text-dark">Ganti TOR (PDF)(<span role="button" id="document-lampiran" class="ms-2 text-capitalize fw-bold text-primary" data-type="doc"
-                        data-file="{{ asset('dokumen_bisnis/' . $application->document->where('type', 'tor')->first()->file) }}"><i class="fas fa-file-pdf"></i>&nbsp; Dokumen TOR</span>)</label>
+                <label class="mb-2 fw-bold text-dark">Dokumen TOR (PDF)</label>
                 <br>
                 Format TOR dapat di download disini (link) Form perubahan dapat di download
                 disini (link) <a href="{{ url('/template/template-tor.doc') }}"
                     target="_blank">{{ url('/template/template-tor.doc') }}</a>
+                @php
+                    $docTOR = $application->document->where('type', 'tor')->first();
+                @endphp
+                @if($docTOR)
+                    <div class="mt-2">
+                        <strong>Dokumen sebelumnya:</strong>
+                        <span role="button" id="document-lampiran"
+                            class="ms-2 text-capitalize fw-bold text-primary"
+                            data-type="doc"
+                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($docTOR->file)) }}">
+                            <i class="fas fa-file-pdf"></i>&nbsp; Dokumen TOR sebelumnya
+                        </span>
+                    </div>
+                @else
+                    <p class="text"><strong>Dokumen sebelumnya:</strong> Tidak ada dokumen "TOR" yang anda ajukan sebelumnya.</p>
+                @endif
                 <input type="file" name="lampiran[tor]" id="lampiran_tor"
+                    class="form-control" accept="application/pdf">
+                <small class="text-muted">Format file harus berupa PDF</small>
+            </div>
+            <div class="form-group mb-4">
+                <label class="mb-2 fw-bold text-dark">Dokumen RAB (PDF)</label>
+                <br>
+                Format RAB dapat di download disini (link) Form perubahan dapat di download
+                disini (link) <a href="{{ url('/template/template-rab.xlsx') }}"
+                    target="_blank">{{ url('/template/template-rab.xlsx') }}</a>
+                @php
+                    $docRAB = $application->document->where('type', 'rab')->first();
+                @endphp
+                @if($docRAB)
+                    <div class="mt-2">
+                        <strong>Dokumen sebelumnya:</strong>
+                        <span role="button" id="document-lampiran"
+                            class="ms-2 text-capitalize fw-bold text-primary"
+                            data-type="doc"
+                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($docRAB->file)) }}">
+                            <i class="fas fa-file-pdf"></i>&nbsp; Dokumen RAB sebelumnya
+                        </span>
+                    </div>
+                @else
+                    <p class="text"><strong>Dokumen sebelumnya:</strong> Tidak ada dokumen "RAB" yang anda ajukan sebelumnya.</p>
+                @endif
+                <input type="file" name="lampiran[rab]" id="lampiran_rab"
                     class="form-control" accept="application/pdf">
                 <small class="text-muted">Format file harus berupa PDF</small>
             </div>
@@ -87,11 +152,13 @@
                         <div class="ms-4 col-10">
                             <div class="row">
                                 <div class="col-12">
-                                    (<span role="button" id="document-lampiran"
-                                        class="ms-2 text-capitalize fw-bold text-primary"
-                                        data-type="doc"
-                                        data-file="{{ asset('dokumen_bisnis/' . $file->file) }}"><i
-                                            class="fas fa-file-pdf"></i>&nbsp; Dokumen {{ $file->title }} </span>)
+                                    <strong>Dokumen sebelumnya:</strong>
+                                    <span role="button" id="document-lampiran"
+                                            class="ms-2 text-capitalize fw-bold text-primary"
+                                            data-type="{{ $file->ext }}"
+                                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($file->file)) }}"><i
+                                            class="fas fa-file-pdf"></i>&nbsp; Dokumen {{ $file->title }} sebelumnya
+                                    </span>
                                 </div>
                                 <div class="col-3">
                                     <input type="hidden" value="{{ $file->id }}"
@@ -113,43 +180,106 @@
                 @endforeach
             </div>
         </div>
-    @elseif ($application->activity->category->id == 2)
+        <!-- pengajuan ke 2 Pelatihan -->
+    @elseif ($application->activity->category->id == 2) 
         <div id="question-5d99567c-e2d9-4e48-8e77-85bee1a755de" class="question">
             <div class="form-group mb-4">
-                <label class="mb-2 fw-bold text-dark">Ganti Surat Permohonan dari Mitra (PDF) (<span role="button"
-                        id="document-lampiran"
-                        class="ms-2 text-capitalize fw-bold text-primary {{ $application->document->where('type', 'permohonan dari mitra')->first() ? '' : 'd-none' }} "
-                        data-type="doc"
-                        data-file="{{ $application->document->where('type', 'permohonan dari mitra')->first() ? asset('dokumen_bisnis/' . $application->document->where('type', 'permohonan dari mitra')->first()->file) : '' }}"><i
-                            class="fas fa-file-pdf"></i>&nbsp; Dokumen Surat Permohonan dari Mitra </span>)</label>
-                <br>
+                <label class="mb-2 fw-bold text-dark">Surat Permohonan dari Mitra (PDF)</label>
+                @php
+                    $docPM = $application->document->where('type', 'permohonan dari mitra')->first();
+                @endphp
+                @if($docPM)
+                    <div class="mt-2">
+                        <strong>Dokumen sebelumnya:</strong>
+                        <span role="button" id="document-lampiran"
+                            class="ms-2 text-capitalize fw-bold text-primary"
+                            data-type="doc"
+                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($docPM->file)) }}">
+                            <i class="fas fa-file-pdf"></i>&nbsp; Dokumen Permohonan dari Mitra sebelumnya
+                        </span>
+                    </div>
+                @else
+                    <p class="text">Tidak ada dokumen "permohonan dari mitra" yang anda ajukan.</p>
+                @endif
                 <input type="file" name="lampiran[permohonan dari mitra]" id="lampiran_undangan" class="form-control"
                     accept="application/pdf">
                 <small class="text-muted">Format file harus berupa PDF</small>
             </div>
             <div class="form-group mb-4">
-                <label class="mb-2 fw-bold text-dark">Ganti Surat Permohonan Ijin Kegiatan (PDF) (<span role="button"
-                        id="document-lampiran" class="ms-2 text-capitalize fw-bold text-primary"
-                        data-type="doc"
-                        data-file="{{ asset('dokumen_bisnis/' . $application->document->where('type', 'permohonan ijin kegiatan')->first()->file) }}"><i
-                            class="fas fa-file-pdf"></i>&nbsp; Dokumen Surat Permohonan Ijin Kegiatan</span>)</label>
+                <label class="text-dark mb-2 fw-bold" for="lampiran_permohonan">Surat Permohonan Ijin Kegiatan (PDF)</label>
                 <br>
-                Format surat permohonan ijin kegiatan dapat di download disini (link) Form perubahan dapat di download
-                disini (link) <a href="{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }}"
-                    target="_blank">{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }}</a>
+                Format surat permohonan ijin kegiatan dapat di-download disini:
+                <a href="{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }}" target="_blank">
+                    {{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }}
+                </a>
+                @php
+                    $docPIK = $application->document->where('type', 'permohonan ijin kegiatan')->first();
+                @endphp
+                @if($docPIK)
+                    <div class="mt-2">
+                        <strong>Dokumen sebelumnya:</strong>
+                        <span role="button" id="document-lampiran"
+                            class="ms-2 text-capitalize fw-bold text-primary"
+                            data-type="doc"
+                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($docPIK->file)) }}">
+                            <i class="fas fa-file-pdf"></i>&nbsp; Dokumen TOR sebelumnya
+                        </span>
+                    </div>
+                @else
+                    <p class="text">Tidak ada dokumen "permohonan dari mitra" yang anda ajukan.</p>
+                @endif
                 <input type="file" name="lampiran[permohonan ijin kegiatan]" id="lampiran_permohonan"
+                    class="form-control mt-2" accept="application/pdf">
+                <small class="text-muted">Format file harus berupa PDF</small>
+            </div>
+            <div class="form-group mb-4">
+                <label class="text-dark mb-2 fw-bold" for="tor">TOR (PDF)</label>
+                <br>
+                Format TOR dapat di-download disini:
+                <a href="{{ url('/template/template-tor.doc') }}"target="_blank">{{ url('/template/template-tor.doc') }}</a>
+                @php
+                    $docTOR = $application->document->where('type', 'tor')->first();
+                @endphp
+                @if($docTOR)
+                    <div class="mt-2">
+                        <strong>Dokumen sebelumnya:</strong>
+                        <span role="button" id="document-lampiran"
+                            class="ms-2 text-capitalize fw-bold text-primary"
+                            data-type="doc"
+                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($docTOR->file)) }}">
+                            <i class="fas fa-file-pdf"></i>&nbsp; Dokumen TOR sebelumnya
+                        </span>
+                    </div>
+                @else
+                    <p class="text">Tidak ada dokumen "TOR" yang anda ajukan.</p>
+                @endif
+                <input type="file" name="lampiran[tor]" id="lampiran_tor"
                     class="form-control" accept="application/pdf">
                 <small class="text-muted">Format file harus berupa PDF</small>
             </div>
-
             <div class="form-group mb-4">
-                <label class="mb-2 fw-bold text-dark">Ganti TOR (PDF)(<span role="button" id="document-lampiran" class="ms-2 text-capitalize fw-bold text-primary" data-type="doc"
-                        data-file="{{ asset('dokumen_bisnis/' . $application->document->where('type', 'tor')->first()->file) }}"><i class="fas fa-file-pdf"></i>&nbsp; Dokumen TOR</span>)</label>
+                <label class="mb-2 fw-bold text-dark">RAB (PDF)</label>
                 <br>
-                Format TOR dapat di download disini (link) Form perubahan dapat di download
-                disini (link) <a href="{{ url('/template/template-tor.doc') }}"
-                    target="_blank">{{ url('/template/template-tor.doc') }}</a>
-                <input type="file" name="lampiran[tor]" id="lampiran_tor"
+                Format RAB dapat di download disini (link) Form perubahan dapat di download
+                disini (link) <a href="{{ url('/template/template-rab.xlsx') }}"
+                    target="_blank">{{ url('/template/template-rab.xlsx') }}</a>
+                @php
+                    $docRAB = $application->document->where('type', 'rab')->first();
+                @endphp
+                @if($docRAB)
+                    <div class="mt-2">
+                        <strong>Dokumen sebelumnya:</strong>
+                        <span role="button" id="document-lampiran"
+                            class="ms-2 text-capitalize fw-bold text-primary"
+                            data-type="doc"
+                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($docRAB->file)) }}">
+                            <i class="fas fa-file-pdf"></i>&nbsp; Dokumen RAB sebelumnya
+                        </span>
+                    </div>
+                @else
+                    <p class="text">Tidak ada dokumen "RAB" yang anda ajukan.</p>
+                @endif
+                <input type="file" name="lampiran[rab]" id="lampiran_rab"
                     class="form-control" accept="application/pdf">
                 <small class="text-muted">Format file harus berupa PDF</small>
             </div>
@@ -165,12 +295,14 @@
                         </div>
                         <div class="ms-4 col-10">
                             <div class="row">
-                                <div class="col-12">
-                                    (<span role="button" id="document-lampiran"
-                                        class="ms-2 text-capitalize fw-bold text-primary"
-                                        data-type="doc"
-                                        data-file="{{ asset('dokumen_bisnis/' . $file->file) }}"><i
-                                            class="fas fa-file-pdf"></i>&nbsp; Dokumen {{ $file->title }} </span>)
+                            <div class="col-12">
+                                    <strong>Dokumen sebelumnya:</strong>
+                                    <span role="button" id="document-lampiran"
+                                            class="ms-2 text-capitalize fw-bold text-primary"
+                                            data-type="{{ $file->ext }}"
+                                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($file->file)) }}"><i
+                                            class="fas fa-file-pdf"></i>&nbsp; Dokumen {{ $file->title }} sebelumnya
+                                    </span>
                                 </div>
                                 <div class="col-3">
                                     <input type="hidden" value="{{ $file->id }}"
@@ -192,42 +324,107 @@
                 @endforeach
             </div>
         </div>
+    <!-- pengajuan ke 3 inovasi-->
     @elseif ($application->activity->category->id == 3)
         <div id="question-64abcd6b-af85-47a4-8b0a-c690fe36625f" class="question">
             <div class="form-group mb-4">
-                <label class="mb-2 fw-bold text-dark">Ganti Surat Permohonan dari Mitra (PDF) (<span role="button"
-                        id="document-lampiran"
-                        class="ms-2 text-capitalize fw-bold text-primary {{ $application->document->where('type', 'permohonan dari mitra')->first() ? '' : 'd-none' }} "
-                        data-type="doc"
-                        data-file="{{ $application->document->where('type', 'permohonan dari mitra')->first() ? asset('dokumen_bisnis/' . $application->document->where('type', 'permohonan dari mitra')->first()->file) : '' }}"><i
-                            class="fas fa-file-pdf"></i>&nbsp; Dokumen Surat Permohonan dari Mitra </span>)</label>
+                <label class="mb-2 fw-bold text-dark">Ganti Surat Permohonan dari Mitra (PDF)</label>
                 <br>
+                @php
+                    $docPM = $application->document->where('type', 'permohonan dari mitra')->first();
+                @endphp
+                @if($docPM)
+                    <div class="mt-2">
+                        <strong>Dokumen sebelumnya:</strong>
+                        <span role="button" id="document-lampiran"
+                            class="ms-2 text-capitalize fw-bold text-primary"
+                            data-type="doc"
+                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($docPM->file)) }}">
+                            <i class="fas fa-file-pdf"></i>&nbsp; Dokumen Permohonan dari Mitra sebelumnya
+                        </span>
+                    </div>
+                @else
+                    <p class="text">Tidak ada dokumen "permohonan dari mitra" yang anda ajukan.</p>
+                @endif
                 <input type="file" name="lampiran[permohonan dari mitra]" id="lampiran_undangan" class="form-control"
                     accept="application/pdf">
                 <small class="text-muted">Format file harus berupa PDF</small>
             </div>
             <div class="form-group mb-4">
-                <label class="mb-2 fw-bold text-dark">Ganti Surat Permohonan Ijin Kegiatan (PDF) (<span role="button"
-                        id="document-lampiran" class="ms-2 text-capitalize fw-bold text-primary"
-                        data-type="doc"
-                        data-file="{{ asset('dokumen_bisnis/' . $application->document->where('type', 'permohonan ijin kegiatan')->first()->file) }}"><i
-                            class="fas fa-file-pdf"></i>&nbsp; Dokumen Surat Permohonan Ijin Kegiatan</span>)</label>
+                <label class="mb-2 fw-bold text-dark">Ganti Surat Permohonan Ijin Kegiatan (PDF)</label>
                 <br>
                 Format surat permohonan ijin kegiatan dapat di download disini (link) Form perubahan dapat di download
                 disini (link) <a href="{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }}"
                     target="_blank">{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }}</a>
+                @php
+                    $docPIK = $application->document->where('type', 'permohonan ijin kegiatan')->first();
+                @endphp
+                @if($docPIK)
+                    <div class="mt-2">
+                        <strong>Dokumen sebelumnya:</strong>
+                        <span role="button" id="document-lampiran"
+                            class="ms-2 text-capitalize fw-bold text-primary"
+                            data-type="doc"
+                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($docPIK->file)) }}">
+                            <i class="fas fa-file-pdf"></i>&nbsp; Dokumen Permohonan ijin kegiatan sebelumnya
+                        </span>
+                    </div>
+                @else
+                    <p class="text">Tidak ada dokumen "permohonan ijin kegiatan" yang anda ajukan.</p>
+                @endif
                 <input type="file" name="lampiran[permohonan ijin kegiatan]" id="lampiran_permohonan"
                     class="form-control" accept="application/pdf">
                 <small class="text-muted">Format file harus berupa PDF</small>
             </div>
             <div class="form-group mb-4">
-                <label class="mb-2 fw-bold text-dark">Ganti TOR (PDF)(<span role="button" id="document-lampiran" class="ms-2 text-capitalize fw-bold text-primary" data-type="doc"
-                        data-file="{{ asset('dokumen_bisnis/' . $application->document->where('type', 'tor')->first()->file) }}"><i class="fas fa-file-pdf"></i>&nbsp; Dokumen TOR</span>)</label>
+                <label class="mb-2 fw-bold text-dark">Dokumen TOR (PDF)</label>
                 <br>
                 Format TOR dapat di download disini (link) Form perubahan dapat di download
                 disini (link) <a href="{{ url('/template/template-tor.doc') }}"
                     target="_blank">{{ url('/template/template-tor.doc') }}</a>
+                @php
+                    $docTOR = $application->document->where('type', 'tor')->first();
+                @endphp
+                @if($docTOR)
+                    <div class="mt-2">
+                        <strong>Dokumen sebelumnya:</strong>
+                        <span role="button" id="document-lampiran"
+                            class="ms-2 text-capitalize fw-bold text-primary"
+                            data-type="doc"
+                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($docTOR->file)) }}">
+                            <i class="fas fa-file-pdf"></i>&nbsp; Dokumen TOR sebelumnya
+                        </span>
+                    </div>
+                @else
+                    <p class="text">Tidak ada dokumen "TOR" yang anda ajukan.</p>
+                @endif
                 <input type="file" name="lampiran[tor]" id="lampiran_tor"
+                    class="form-control" accept="application/pdf">
+                <small class="text-muted">Format file harus berupa PDF</small>
+            </div>
+            <div class="form-group mb-4">
+                <label class="mb-2 fw-bold text-dark">Dokumen RAB (PDF)</label>
+                <br>
+                Format RAB dapat di download disini (link) Form perubahan dapat di download
+                disini (link) <a href="{{ url('/template/template-rab.xlsx') }}"
+                    target="_blank">{{ url('/template/template-rab.xlsx') }}</a>
+                @php
+                    $docRAB = $application->document->where('type', 'rab')->first();
+                @endphp
+                @if($docRAB)
+                    <div class="mt-2">
+                        <strong>Dokumen sebelumnya:</strong>
+                        <span role="button" id="document-lampiran"
+                            class="ms-2 text-capitalize fw-bold text-primary"
+                            data-type="doc"
+                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($docRAB->file)) }}">
+                            <i class="fas fa-file-pdf"></i>&nbsp; Dokumen RAB sebelumnya
+                        </span>
+                    </div>
+                @else
+                    <p class="text">Tidak ada dokumen "RAB" yang anda ajukan.</p>
+                @endif
+                <input type="file" name="lampiran[rab]" id="lampiran_rab"
                     class="form-control" accept="application/pdf">
                 <small class="text-muted">Format file harus berupa PDF</small>
             </div>
@@ -244,11 +441,13 @@
                         <div class="ms-4 col-10">
                             <div class="row">
                                 <div class="col-12">
-                                    (<span role="button" id="document-lampiran"
-                                        class="ms-2 text-capitalize fw-bold text-primary"
-                                        data-type="doc"
-                                        data-file="{{ asset('dokumen_bisnis/' . $file->file) }}"><i
-                                            class="fas fa-file-pdf"></i>&nbsp; Dokumen {{ $file->title }} </span>)
+                                    <strong>Dokumen sebelumnya:</strong> 
+                                    <span role="button" id="document-lampiran"
+                                            class="ms-2 text-capitalize fw-bold text-primary"
+                                            data-type="{{ $file->ext }}"
+                                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($file->file)) }}"><i
+                                            class="fas fa-file-pdf"></i>&nbsp; Dokumen {{ $file->title }} sebelumnya
+                                    </span>
                                 </div>
                                 <div class="col-3">
                                     <input type="hidden" value="{{ $file->id }}"
@@ -270,42 +469,107 @@
                 @endforeach
             </div>
         </div>
+        <!-- pengajuan ke 4 produk-->
     @elseif ($application->activity->category->id == 4)
         <div id="question-0c8ed87c-bede-429c-b64e-b1f6145be72a" class="question">
             <div class="form-group mb-4">
-                <label class="mb-2 fw-bold text-dark">Ganti Surat Permohonan dari Mitra (PDF) (<span role="button"
-                        id="document-lampiran"
-                        class="ms-2 text-capitalize fw-bold text-primary {{ $application->document->where('type', 'permohonan dari mitra')->first() ? '' : 'd-none' }} "
-                        data-type="doc"
-                        data-file="{{ $application->document->where('type', 'permohonan dari mitra')->first() ? asset('dokumen_bisnis/' . $application->document->where('type', 'permohonan dari mitra')->first()->file) : '' }}"><i
-                            class="fas fa-file-pdf"></i>&nbsp; Dokumen Surat Permohonan dari Mitra </span>)</label>
+                <label class="mb-2 fw-bold text-dark">Ganti Surat Permohonan dari Mitra (PDF)</label>
                 <br>
+                @php
+                    $docPM = $application->document->where('type', 'permohonan dari mitra')->first();
+                @endphp
+                @if($docPM)
+                    <div class="mt-2">
+                        <strong>Dokumen sebelumnya:</strong>
+                        <span role="button" id="document-lampiran"
+                            class="ms-2 text-capitalize fw-bold text-primary"
+                            data-type="doc"
+                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($docPM->file)) }}">
+                            <i class="fas fa-file-pdf"></i>&nbsp; Dokumen Permohonan dari Mitra sebelumnya
+                        </span>
+                    </div>
+                @else
+                    <p class="text">Tidak ada dokumen "permohonan dari mitra" yang anda ajukan.</p>
+                @endif
                 <input type="file" name="lampiran[permohonan dari mitra]" id="lampiran_undangan" class="form-control"
                     accept="application/pdf">
                 <small class="text-muted">Format file harus berupa PDF</small>
             </div>
             <div class="form-group mb-4">
-                <label class="mb-2 fw-bold text-dark">Ganti Surat Permohonan Ijin Kegiatan (PDF) (<span role="button"
-                        id="document-lampiran" class="ms-2 text-capitalize fw-bold text-primary"
-                        data-type="doc"
-                        data-file="{{ asset('dokumen_bisnis/' . $application->document->where('type', 'permohonan ijin kegiatan')->first()->file) }}"><i
-                            class="fas fa-file-pdf"></i>&nbsp; Dokumen Surat Permohonan Ijin Kegiatan</span>)</label>
+                <label class="mb-2 fw-bold text-dark">Ganti Surat Permohonan Ijin Kegiatan (PDF)</label>
                 <br>
                 Format surat permohonan ijin kegiatan dapat di download disini (link) Form perubahan dapat di download
                 disini (link) <a href="{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }}"
                     target="_blank">{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }}</a>
+                @php
+                    $docPIK = $application->document->where('type', 'permohonan ijin kegiatan')->first();
+                @endphp
+                @if($docPIK)
+                    <div class="mt-2">
+                        <strong>Dokumen sebelumnya:</strong>
+                        <span role="button" id="document-lampiran"
+                            class="ms-2 text-capitalize fw-bold text-primary"
+                            data-type="doc"
+                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($docPIK->file)) }}">
+                            <i class="fas fa-file-pdf"></i>&nbsp; Dokumen Permohonan ijin kegiatan sebelumnya
+                        </span>
+                    </div>
+                @else
+                    <p class="text">Tidak ada dokumen "permohonan ijin kegiatan" yang anda ajukan.</p>
+                @endif
                 <input type="file" name="lampiran[permohonan ijin kegiatan]" id="lampiran_permohonan"
                     class="form-control" accept="application/pdf">
                 <small class="text-muted">Format file harus berupa PDF</small>
             </div>
             <div class="form-group mb-4">
-                <label class="mb-2 fw-bold text-dark">Ganti TOR (PDF)(<span role="button" id="document-lampiran" class="ms-2 text-capitalize fw-bold text-primary" data-type="doc"
-                        data-file="{{ asset('dokumen_bisnis/' . $application->document->where('type', 'tor')->first()->file) }}"><i class="fas fa-file-pdf"></i>&nbsp; Dokumen TOR</span>)</label>
+                <label class="mb-2 fw-bold text-dark">Ganti TOR (PDF)</label>
                 <br>
                 Format TOR dapat di download disini (link) Form perubahan dapat di download
                 disini (link) <a href="{{ url('/template/template-tor.doc') }}"
                     target="_blank">{{ url('/template/template-tor.doc') }}</a>
+                @php
+                    $docTOR = $application->document->where('type', 'tor')->first();
+                @endphp
+                @if($docTOR)
+                    <div class="mt-2">
+                        <strong>Dokumen sebelumnya:</strong>
+                        <span role="button" id="document-lampiran"
+                            class="ms-2 text-capitalize fw-bold text-primary"
+                            data-type="doc"
+                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($docTOR->file)) }}">
+                            <i class="fas fa-file-pdf"></i>&nbsp; Dokumen TOR sebelumnya
+                        </span>
+                    </div>
+                @else
+                    <p class="text">Tidak ada dokumen "TOR" yang anda ajukan.</p>
+                @endif
                 <input type="file" name="lampiran[tor]" id="lampiran_tor"
+                    class="form-control" accept="application/pdf">
+                <small class="text-muted">Format file harus berupa PDF</small>
+            </div>
+            <div class="form-group mb-4">
+                <label class="mb-2 fw-bold text-dark">Ganti RAB (PDF)</label>
+                <br>
+                Format RAB dapat di download disini (link) Form perubahan dapat di download
+                disini (link) <a href="{{ url('/template/template-rab.xlsx') }}"
+                    target="_blank">{{ url('/template/template-rab.xlsx') }}</a>
+                @php
+                    $docRAB = $application->document->where('type', 'rab')->first();
+                @endphp
+                @if($docRAB)
+                    <div class="mt-2">
+                        <strong>Dokumen sebelumnya:</strong>
+                        <span role="button" id="document-lampiran"
+                            class="ms-2 text-capitalize fw-bold text-primary"
+                            data-type="doc"
+                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($docRAB->file)) }}">
+                            <i class="fas fa-file-pdf"></i>&nbsp; Dokumen RAB sebelumnya
+                        </span>
+                    </div>
+                @else
+                    <p class="text">Tidak ada dokumen "RAB" yang anda ajukan.</p>
+                @endif
+                <input type="file" name="lampiran[rab]" id="lampiran_rab"
                     class="form-control" accept="application/pdf">
                 <small class="text-muted">Format file harus berupa PDF</small>
             </div>
@@ -322,11 +586,13 @@
                         <div class="ms-4 col-10">
                             <div class="row">
                                 <div class="col-12">
-                                    (<span role="button" id="document-lampiran"
-                                        class="ms-2 text-capitalize fw-bold text-primary"
-                                        data-type="doc"
-                                        data-file="{{ asset('dokumen_bisnis/' . $file->file) }}"><i
-                                            class="fas fa-file-pdf"></i>&nbsp; Dokumen {{ $file->title }} </span>)
+                                    <strong>Dokumen sebelumnya:</strong> 
+                                    <span role="button" id="document-lampiran"
+                                            class="ms-2 text-capitalize fw-bold text-primary"
+                                            data-type="{{ $file->ext }}"
+                                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($file->file)) }}"><i
+                                            class="fas fa-file-pdf"></i>&nbsp; Dokumen {{ $file->title }} sebelumnya
+                                    </span>
                                 </div>
                                 <div class="col-3">
                                     <input type="hidden" required value="{{ $file->title }}"

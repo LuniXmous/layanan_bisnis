@@ -22,7 +22,7 @@ Route::get('/chat', function () {
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes(['verify' => true,
-                'register' => false, // Registration Routes...
+                'register' => false,
                 'reset' => false,
             ]);
 Route::get('/sso/login', [App\Http\Controllers\UserController::class, 'loginSSO'])->name('sso.login');

@@ -12,7 +12,6 @@ class ChartController extends Controller
 {
     public function chartData()
     {
-        // Count the number of activities per unit and category
         $data = Activity::join('units', 'activities.unit_id', '=', 'units.id')
             ->select(
                 'units.name as unit_name',
@@ -38,4 +37,6 @@ class ChartController extends Controller
 
     return response()->json(['data' => $data]);
     }
+
+    
 }

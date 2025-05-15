@@ -30,48 +30,83 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {
-    if (Auth::check()) {
-        if (Auth::user()->role->id == 0) {
+    public function index(){
+        if (Auth::check()) {
             return redirect()->route('dashboard');
         } else {
-            return redirect('/application');
+            return view('home');
         }
-    } else {
-        return view('home');
-    }
     }
 
     public function dashboard(Request $request)
-    {
-            $jumlahPengajuan = Application::count();
-            $jumlahSelesai = Application::where(function($query) {
+{
+    $user = auth()->user(); 
+    $year = $request->input('year', date('Y')); 
+
+    if ($user && $user->role->alias == 'applicant') { 
+        $jumlahPengajuan = Application::where('user_id', $user->id)->count();
+        $jumlahSelesai = Application::where('user_id', $user->id)
+            ->where(function($query) {
                 $query->where('status', 1)
                       ->where('approve_status', 4);
-            })->orWhere(function($query) {
+            })->orWhere(function($query) use ($user) {
                 $query->whereIn('status', [2, 3])
-                      ->where('approve_status', 3);
-            })->count();            
-            $jumlahOnProgress = Application::whereIn('approve_status', [1, 2])->count();
-            $jumlahDiTolak = Application::where(function($query) {
+                      ->where('approve_status', 3)
+                      ->where('user_id', $user->id); // Filter user_id
+            })->count();
+        $jumlahOnProgress = Application::where('user_id', $user->id) 
+            ->whereIn('approve_status', [1, 2])->count();
+        $jumlahDiTolak = Application::where('user_id', $user->id) 
+            ->where(function($query) {
                 $query->where('status', 0)
                       ->where('approve_status', 0);
-            })->orWhere(function($query) {
+            })->orWhere(function($query) use ($user) { 
                 $query->whereIn('status', [2, 3])
-                      ->where('approve_status', 0);
+                      ->where('approve_status', 0)
+                      ->where('user_id', $user->id); // Filter user_id
             })->count();
-            $jumlahPengguna = User::count();
+        $jumlahPengguna = 1;
 
-            $year = $request->input('year', date('Y')); 
-    
-            // Ambil rekapDana untuk tahun tersebut
-            $rekapDana = RekapDana::whereYear('created_at', $year)->get();
-            $totalNilaiKontrak = $rekapDana->sum('nilai_kontrak');
-            $totalNominal = $rekapDana->sum('nominal');
-        
-            return view('admin.index', compact('jumlahPengajuan', 'jumlahSelesai', 'jumlahOnProgress', 'jumlahDiTolak', 'jumlahPengguna','year', 'totalNilaiKontrak'));
+        $rekapDana = RekapDana::whereYear('created_at', $year)->get();
+
+    } else {
+        $jumlahPengajuan = Application::count();
+        $jumlahSelesai = Application::where(function($query) {
+            $query->where('status', 1)
+                  ->where('approve_status', 4);
+        })->orWhere(function($query) {
+            $query->whereIn('status', [2, 3])
+                  ->where('approve_status', 3);
+        })->count();
+        $jumlahOnProgress = Application::whereIn('approve_status', [1, 2])->count();
+        $jumlahDiTolak = Application::where(function($query) {
+            $query->where('status', 0)
+                  ->where('approve_status', 0);
+        })->orWhere(function($query) {
+            $query->whereIn('status', [2, 3])
+                  ->where('approve_status', 0);
+        })->count();
+        $jumlahPengguna = User::count();
+
+        $rekapDana = RekapDana::whereYear('created_at', $year)->get();
     }
+
+    $totalNilaiKontrak = $rekapDana->sum('nilai_kontrak');
+    $totalNominal = $rekapDana->sum('nominal');
+
+    return view('admin.index', compact(
+        'jumlahPengajuan', 
+        'jumlahSelesai', 
+        'jumlahOnProgress', 
+        'jumlahDiTolak', 
+        'jumlahPengguna', 
+        'year', 
+        'totalNilaiKontrak'
+    ));
+}
+
+
+
 
     
 }

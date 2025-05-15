@@ -6,8 +6,8 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body wizard-content">
-                    <form action="" class="tab-wizard validation-wizard wizard-circle" method="POST"
-                        enctype="multipart/form-data">
+                    <form action="" class="tab-wizard validation-wizard wizard-circle" method="POST" 
+                    enctype="multipart/form-data">
                         @csrf
                 {{-- STEP 1 --}}
                         <h6>Form Pengajuan</h6>
@@ -46,14 +46,16 @@
                                     <label class="text-dark mb-2 fw-bold text-capitalize" for="title"> Judul Permohonan
                                         <span class="text-danger">*</span></label>
                                     <input type="text"
-                                        placeholder="Permohonan menjadi narasumber di ….. pada tanggal ……." name="title"
+                                        placeholder="Judul Permohonan Kegiatan" name="title"
                                         id="title" class="form-control required" value="{{ old('title') }}" required>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label class="text-dark mb-2 fw-bold text-capitalize" for="nominal">Nominal Kontrak yang Di Ajukan <span class="text-danger">*</span></label>
                                     <div class="input-group">
-                                        <input type="number" id="nominal" placeholder="Masukkan Nominal" name="nominal" class="form-control" oninput="updateFormattedValue(this)">
+                                        <input type="number"  placeholder="Masukkan Nominal" name="nominal" 
+                                        id="nominal" class="form-control required" oninput="updateFormattedValue(this); validateInput(this);" required>
                                     </div>
+                                    <div id="validationMessage" class="text-danger mt-2"></div> <!-- Untuk pesan validasi -->
                                     <div id="formattedValue" class="mt-2" style="font-weight: bold;"></div> <!-- Untuk menampilkan nilai format -->
                                 </div>
                                 <div class="form-group mb-3">
@@ -64,21 +66,21 @@
                                 </div>
                         <!-- Pertanyaan 1 -->
                                 <div id="question-1" class="question" style="display: none">
-                                    <div class="form-group mb-4">
+                                    <!-- <div class="form-group mb-4">
                                         <label class="text-dark mb-2 fw-bold" for="lampiran_undangan">Surat Undangan (PDF)</label>
                                         <br>
                                         <input disabled type="file" name="lampiran[undangan]" id="lampiran_undangan"
                                             class="form-control" accept="application/pdf">
                                         <small class="text-muted">Format file harus berupa PDF</small>
-                                    </div>
+                                    </div> -->
                                     <div class="form-group mb-4">
-                                        <label class="text-dark mb-2 fw-bold" for="lampiran_permohonan">Surat permohonan ijin kegiatan (PDF)<span class="text-danger">*</span></label>
+                                        <label class="text-dark mb-2 fw-bold" for="lampiran_permohonan">Surat permohonan ijin kegiatan (PDF)<span class="text-danger"></span></label>
                                         <br>
                                         Format surat permohonan ijin kegiatan dapat di download disini (link) Form perubahan
                                         dapat di download disini (link)
                                         <a href="{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }}">{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }} </a>
-                                        <input disabled type="file" required name="lampiran[permohonan ijin kegiatan]"
-                                            id="lampiran_permohonan" class="form-control required" accept="application/pdf">
+                                        <input disabled type="file" name="lampiran[permohonan ijin kegiatan]"
+                                            id="lampiran_permohonan" class="form-control" accept="application/pdf">
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
                                     <div class="form-group">
@@ -117,18 +119,17 @@
                                         <label class="text-dark mb-2 fw-bold" for="lampiran_undangan">Surat Permohonan dari Mitra (PDF)</label>
                                         <br>
                                         <input disabled type="file" name="lampiran[permohonan dari mitra]" id="lampiran_undangan"
-                                        class="form-control" accept="application/pdf">
+                                            class="form-control" accept="application/pdf">
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
-
                                     <div class="form-group mb-4">
-                                        <label class="text-dark mb-2 fw-bold" for="lampiran_permohonan">Surat permohonan ijin kegiatan (PDF)<span class="text-danger">*</span></label>
+                                        <label class="text-dark mb-2 fw-bold" for="lampiran_permohonan">Surat permohonan ijin kegiatan (PDF)<span class="text-danger"></span></label>
                                         <br>
                                         Format surat permohonan ijin kegiatan dapat di download disini (link) Form perubahan
                                         dapat di download disini (link)
                                         <a href="{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }}">{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }} </a>
-                                        <input disabled type="file" required name="lampiran[permohonan ijin kegiatan]"
-                                            id="lampiran_permohonan" class="form-control required"
+                                        <input disabled type="file" name="lampiran[permohonan ijin kegiatan]"
+                                            id="lampiran_permohonan" class="form-control"
                                             accept="application/pdf">
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
@@ -171,13 +172,13 @@
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
                                     <div class="form-group mb-4">
-                                        <label class="text-dark mb-2 fw-bold" for="lampiran_permohonan">Surat permohonan ijin kegiatan (PDF)<span class="text-danger">*</span></label>
+                                        <label class="text-dark mb-2 fw-bold" for="lampiran_permohonan">Surat permohonan ijin kegiatan (PDF)<span class="text-danger"></span></label>
                                         <br>
                                         Format surat permohonan ijin kegiatan dapat di download disini (link) Form perubahan
                                         dapat di download disini (link)
                                         <a href="{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }}">{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }} </a>
-                                        <input disabled type="file" required name="lampiran[permohonan ijin kegiatan]"
-                                            id="lampiran_permohonan" class="form-control required"
+                                        <input disabled type="file" name="lampiran[permohonan ijin kegiatan]"
+                                            id="lampiran_permohonan" class="form-control"
                                             accept="application/pdf">
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
@@ -268,7 +269,7 @@
                             </div>
 
                             <div class="form-group mt-5">
-                                <button type="submit" class="btn btn-success">Submit</button>
+                                <button type="submit" id="submitButton" class="btn btn-success">Submit</button>
                             </div>
                         </section>
                     </form>
@@ -292,6 +293,26 @@
         .wizard-content .actions.clearfix {
             display: none !important;
         }
+
+        .btn-success {
+            background-color: #018797;
+            color: #fff;
+            border: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .btn-success:hover {
+            background-color: #00616C;
+            color: #fff; 
+            cursor: pointer;
+        }
+        #submitButton:disabled {
+            background-color: #00616C !important; 
+            cursor: not-allowed; 
+            border-color: #00616C; 
+        }
+        
+
     </style>
 @endsection
 
@@ -490,20 +511,33 @@
         });
 
         function updateFormattedValue(input) {
-            // Mengambil nilai dari input dan menghilangkan semua karakter non-digit
             let value = input.value.replace(/[^0-9]/g, '');
             
-            // Menambahkan titik pemisah ribuan
             let formattedValue = '';
             if (value) {
                 formattedValue = 'Rp. ' + parseInt(value).toLocaleString('id-ID'); // Format sebagai ID
             }
             
-            // Menampilkan nilai format di elemen lain
             document.getElementById('formattedValue').innerText = formattedValue;
             
-            // Menyimpan nilai bersih untuk dikirim ke server
-            input.value = value; // Mengupdate input value dengan nilai numerik
+            input.value = value;
+        }
+
+        function validateInput(inputElement) {
+            const maxLimit = 10 ** 13;
+            const validationMessageElement = document.getElementById("validationMessage");
+            const submitButton = document.getElementById("submitButton");
+
+            const value = parseInt(inputElement.value, 10);
+
+            if (value > maxLimit) {
+                validationMessageElement.textContent = "Nominal tidak bisa lebih dari Rp." + maxLimit.toLocaleString();
+                inputElement.value = maxLimit;
+                submitButton.disabled = true;
+            } else {
+                validationMessageElement.textContent = ""; 
+                submitButton.disabled = false;
+            }
         }
     </script>
 @endsection
