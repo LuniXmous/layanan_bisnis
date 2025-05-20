@@ -13,10 +13,6 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
-    protected function schedule(Schedule $schedule)
-    {
-        // $schedule->command('inspire')->hourly();
-    }
 
     /**
      * Register the commands for the application.
@@ -28,6 +24,15 @@ class Kernel extends ConsoleKernel
         $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
+    }
+
+    protected $commands = [
+        \App\Console\Commands\ReminderPengajuanAktor::class,
+    ];
+
+    protected function schedule(Schedule $schedule)
+    {
+        $schedule->command('reminder:pengajuan-aktor --minutes=5')->everyFiveMinutes();
     }
 
         

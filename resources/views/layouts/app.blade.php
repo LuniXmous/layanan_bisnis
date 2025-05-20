@@ -102,19 +102,19 @@
                                     <span>Pengajuan</span>
                                 </a>
                             </li>
-                            <li class="sidebar-item
-                            {{ Request::route()->action['as'] == 'application.tebusan' ? 'active' : null }}">
-                                <a href="{{ route('application.tebusan') }}" class="sidebar-link">
-                                    <i class="fas fa-file-alt"></i>
-                                    <span>Tebusan</span>
-                                </a>
-                            </li>   
                             <li class="sidebar-item {{ Request::get('type') === 'historywd2' ? 'active' : null }}">
                                 <a href="{{ route('application.index', ['type' => 'historywd2']) }}" class="sidebar-link">
                                     <i class="fa-solid fa-clock-rotate-left"></i>
                                     <span>Riwayat Pengajuan</span>
                                 </a>
                             </li>
+                            <li class="sidebar-item
+                                {{ Request::route()->action['as'] == 'application.tebusan' ? 'active' : null }}">
+                                <a href="{{ route('application.tebusan') }}" class="sidebar-link">
+                                    <i class="fas fa-file-alt"></i>
+                                    <span>Tebusan</span>
+                                </a>
+                            </li>   
                         @endif
                         <!-- sidebar wadir 4 -->
                         @if (Auth::user()->role->alias == 'wadir4' || env('GOD_MODE'))

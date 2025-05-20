@@ -8,39 +8,38 @@
 </head>
 <body>
     <p>Pengajuan Anda masih menunggu persetujuan. Silakan cek kembali status pengajuan Anda melalui sistem kami.</p>
-    <p>Jika ada pertanyaan lebih lanjut, silakan hubungi kami terima kasih.</p>
+    <p>Jika ada pertanyaan lebih lanjut, silakan hubungi kami. Terima kasih.</p>
     <p>Permintaan pengajuan dengan detail :</p>
     <table>
         <tr>
             <td>Judul</td>
             <td>:</td>
-            <td> {{$application->title}} </td>
+            <td>{{ $application->title }}</td>
         </tr>
         <tr>
-            <td> Deskripsi</td>
+            <td>Deskripsi</td>
             <td>:</td>
-            <td> {{$application->description}} </td>
+            <td>{{ $application->description }}</td>
         </tr>
         <tr>
             <td>Unit yang diajukan</td>
             <td>:</td>
-            <td> {{$application->activity->unit->name}} </td>
+            <td>{{ $application->activity->unit->name }}</td>
         </tr>
         <tr>
             <td>Kategori yang diajukan</td>
             <td>:</td>
-            <td> {{$application->activity->category->name}} </td>
+            <td>{{ $application->activity->category->name }}</td>
         </tr>
         <tr>
             <td>Layanan yang diajukan</td>
             <td>:</td>
-            <td> {{$application->activity->name}} </td>
+            <td>{{ $application->activity->name }}</td>
         </tr>
-        
     </table>
 
-    klik link dibawah untuk menuju permintaan terkait <br>
+    <br>
+    Klik link di bawah untuk menuju permintaan terkait:<br>
     <a href="#">http://inicontohEmail</a>
-    
 </body>
 </html>

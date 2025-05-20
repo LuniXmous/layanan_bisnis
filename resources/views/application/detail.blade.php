@@ -392,38 +392,58 @@
                             @endif
                         </div>
                     </div>
-                    <div class="card-body pt-4 fs-6">
-                        <div class="mb-3">
-                            <span class="fw-bold h6">Judul Permohonan: </span> &nbsp; <br>
-                            {{ $extra->title }}
-                        </div>
-                        <div class="mb-3">
-                            <span class="fw-bold h6">Deskripsi Permohonan: </span> &nbsp; <br>
-                            {!! $extra->description !!}
-                        </div>
-                        <div class="mb-3">
-                            @if (!empty($note))
-                            <span class="fw-bold h6">Catatan Dari Wadir 2: </span><br>
-                                {!! $note !!}
-                            @else
-                                <span class="text-muted" style="display:none;">Belum ada catatan.</span>
-                            @endif
-                        </div>
-                        </div>
-                        <div class="row border-top pt-4">
-                            <div class="col-xxl-4" style="margin-left:20px;">
-                                <div class="fw-bold h5">Lampiran </div>
-                                @foreach ($extra->document->whereNotIn('type', ['lainnya', 'extra']) as $file)
-                                    <div class="mb-2">
-                                        <span role="button" id="document-lampiran" data-type="{{ $file->ext }}"
-                                            class="ms-2 text-capitalize fw-bold text-primary"
-                                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($file->file)) }}"><i
-                                            class="fas fa-file"></i>&nbsp; Dokumen {{ $file->title }} 
-                                        </span> 
-                                    </div>
-                                @endforeach
+                        <div class="card-body pt-4 fs-6">
+                            <div class="mb-3">
+                                <span class="fw-bold h6">Judul Permohonan: </span> &nbsp; <br>
+                                {{ $extra->title }}
                             </div>
-                            <br/>
+                            <div class="mb-3">
+                                <span class="fw-bold h6">Deskripsi Permohonan: </span> &nbsp; <br>
+                                {!! $extra->description !!}
+                            </div>
+                            <div class="row border-top pt-4 fs-6">
+                                <div class="col-xxl-4">
+                                    <div class="fw-bold h6">Lampiran:</div>
+                                    @foreach ($extra->document->whereNotIn('type', ['lainnya', 'extra', 'pencairan dana']) as $file)
+                                        <div class="mb-2">
+                                            <span role="button" id="document-lampiran" data-type="{{ $file->ext }}"
+                                                class="ms-2 text-capitalize fw-bold text-primary"
+                                                data-file="{{ url('dokumen_bisnis/' . rawurlencode($file->file)) }}">
+                                                <i class="fas fa-file"></i>&nbsp; Dokumen {{ $file->title }} 
+                                            </span> 
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div><br>
+                            <div class="row border-top pt-4 fs-6">
+                                <div class="col-12 mb-3">
+                                    @if (!empty($note))
+                                        <span class="fw-bold h6">Catatan dari Wakil Direktur 2: </span><br>
+                                        {!! $note !!}
+                                    @else
+                                        <span class="text-muted" style="display:none;">Belum ada catatan.</span>
+                                    @endif
+                                </div>
+                                @php
+                                    $pencairanFiles = $extra->document->where('type', 'pencairan dana');
+                                @endphp 
+                                @if ($pencairanFiles->isNotEmpty())
+                                    <div class="col-12">
+                                        <div class="fw-bold h6">Lampiran:</div>
+                                        @foreach ($pencairanFiles as $file)
+                                            <div class="mb-2">
+                                                <span role="button" id="document-lampiran" data-type="{{ $file->ext }}"
+                                                    class="ms-2 text-capitalize fw-bold text-primary"
+                                                    data-file="{{ url('dokumen_bisnis/' . rawurlencode($file->file)) }}">
+                                                    <i class="fas fa-file"></i>&nbsp; Dokumen {{ $file->type }}
+                                                </span>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <div class="text-muted" style="display:none;">Belum ada lampiran</div>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -572,18 +592,10 @@
                             <span class="fw-bold h6">Deskripsi Permohonan: </span> &nbsp; <br>
                             {!! $extra->description !!}
                         </div>
-                        <div class="mb-3">
-                            @if (!empty($note))
-                            <span class="fw-bold h6">Catatan Dari Wadir 2: </span><br>
-                                {!! $note !!}
-                            @else
-                                <span class="text-muted" style="display:none;">Belum ada catatan.</span>
-                            @endif
-                        </div>
                         <div class="row border-top pt-4">
                             <div class="col-xl-4">
                                 <div class="fw-bold h5">Lampiran </div>
-                                @foreach ($extra->document->whereNotIn('type', ['lainnya', 'extra']) as $file)
+                                @foreach ($extra->document->whereNotIn('type', ['lainnya', 'extra', 'pencairan dana operasional']) as $file)
                                     <div class="mb-2">
                                         <span role="button" id="document-lampiran"
                                             class="ms-2 text-capitalize fw-bold text-primary"
@@ -594,6 +606,33 @@
                                     </div>
                                 @endforeach
                             </div>
+                        </div><br>
+                        <div class="row border-top pt-4">
+                            <div class="mb-3">
+                                <span class="fw-bold h6">Catatan dari Wakil Direktur 2: </span><br>
+                                @if (!empty($extra->note))
+                                    {!! $extra->note !!}
+                                @else
+                                    <span class="text-muted">Belum ada catatan.</span>
+                                @endif
+                            </div>
+                            @php
+                                $pencairanFiles = $extra->document->where('type', 'pencairan dana operasional');
+                            @endphp 
+                            @if ($pencairanFiles->isNotEmpty())
+                                <div class="fw-bold h6">Lampiran:</div>
+                                @foreach ($pencairanFiles as $file)
+                                    <div class="mb-2">
+                                        <span role="button" id="document-lampiran" data-type="{{ $file->ext }}"
+                                            class="ms-2 text-capitalize fw-bold text-primary"
+                                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($file->file)) }}">
+                                            <i class="fas fa-file"></i>&nbsp; Dokumen {{ $file->type }}
+                                        </span>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="text-muted">Belum ada lampiran</div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -745,26 +784,52 @@
                         </div>
                         <div class="mb-3">
                             @if (!empty($note))
-                            <span class="fw-bold h6">Catatan Dari Wadir 2: </span><br>
+                            <span class="fw-bold h6">Catatan dari Wakil Direktur 2: </span><br>
                                 {!! $note !!}
                             @else
                                 <span class="text-muted" style="display:none;">Belum ada catatan.</span>
                             @endif
-                        </div>
+                        </div>            
                         <div class="row border-top pt-4">
-                            <div class="col-xl-4">
-                                <div class="fw-bold h5">Lampiran </div>
-                                @foreach ($extra->document->whereNotIn('type', '!=', 'lainnya') as $file)
+                            <div class="fw-bold h5">Lampiran </div>
+                                @foreach ($extra->document->whereNotIn('type', ['lainnya', 'extra', 'pencairan dana kegiatan']) as $file)
                                     <div class="mb-2">
                                         <span role="button" id="document-lampiran"
                                             class="ms-2 text-capitalize fw-bold text-primary"
                                             data-type="{{ $file->ext }}"
-                                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($file->file)) }}""><i
-                                            class="fas fa-file-pdf"></i>&nbsp; Dokumen {{ str_replace('lpj', 'Dokumentasi Kegiatan', $file->title) }} 
+                                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($file->file)) }}"><i
+                                            class="fas fa-file-pdf"></i>&nbsp; Dokumen {{ $file->title }} 
                                         </span>
                                     </div>
                                 @endforeach
+                        </div><br>
+                        <div class="row border-top pt-4">
+                            <div class="mb-3">
+                                <span class="fw-bold h6">Catatan dari Wakil Direktur 2: </span><br>
+                                @if (!empty($extra->note))
+                                    {!! $extra->note !!}
+                                @else
+                                    <span class="text-muted">Belum ada catatan.</span>
+                                @endif
                             </div>
+                            @php
+                                $pencairanFiles = $extra->document->where('type', 'pencairan dana kegiatan');
+                            @endphp 
+                            @if ($pencairanFiles->isNotEmpty())
+                                <div class="fw-bold h6">Lampiran:</div>
+                                @foreach ($pencairanFiles as $file)
+                                    <div class="mb-2">
+                                        <span role="button" id="document-lampiran" data-type="{{ $file->ext }}"
+                                            class="ms-2 text-capitalize fw-bold text-primary"
+                                            data-file="{{ url('dokumen_bisnis/' . rawurlencode($file->file)) }}">
+                                            <i class="fas fa-file"></i>&nbsp; Dokumen {{ $file->type }}
+                                        </span>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="fw-bold h6">Lampiran:</div>
+                                <div class="text-muted">Belum ada lampiran</div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -912,12 +977,18 @@
                                 @elseif($application->status == 2)
                                     <div class="form-group">
                                         <label class="mb-2 fw-bold" for="role_id">Dokumentasi Kegiatan (PDF)</label>
-                                        {{-- <p>
+                                        <input type="file" name="lampiran[dokumentasi kegiatan]" class="form-control"
+                                        accept="application/pdf">
+                                        <small class="text-muted">Format file harus berupa PDF</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="mb-2 fw-bold" for="role_id">Laporan Pertanggung Jawaban (PDF)</label>
+                                        <p>
                                             Format surat LPJ dapat di download disini (link) Form perubahan dapat di
                                             download disini (link) <a href="{{ url('/template/template-lpj.doc') }}"
-                                                target="_blank">{{ url('/template/template-lpj.doc') }}</a>
-                                        </p> --}}
-                                        <input type="file" name="lampiran[dokumentasi kegiatan]" class="form-control"
+                                            target="_blank">{{ url('/template/template-lpj.doc') }}</a>
+                                        </p> 
+                                        <input type="file" name="lampiran[lpj]" class="form-control"
                                         accept="application/pdf">
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
@@ -995,7 +1066,7 @@
             </div>
         </div>
     @endif
-    @if (auth()->user()->role_id == 3 && $application->status == 2 && $application->approve_status == 2)
+    @if (auth()->user()->role_id == 3 && ($application->status == 2) && $application->approve_status == 2)
         <div class="modal fade" id="addNoteModal" tabindex="-1" aria-labelledby="addNoteModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
@@ -1004,12 +1075,55 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('application.approveWithNote', $application->id) }}" method="POST">
+                        <form action="{{ route('application.approveWithNote', $application->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            @php
+                                $extraType = $application->extra->first()?->type;
+                            @endphp
+                            <input type="hidden" name="tipe_pengajuan" value="operasional">
                             <div class="form-group">
-                                <textarea name="note" id="note" rows="10" class="form-control" required></textarea>
+                                <textarea name="note" id="note" rows="10" class="form-control" placeholder="Catatan untuk dana yang dicairkan..." required></textarea><br>
+                                <label class="mb-2 fw-bold" for="role_id">
+                                    Bukti Transfer Dana yang dicairkan (File berupa Gambar/Screenshot)
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="file" required name="lampiran" class="form-control" accept="image/*">
+                                <small class="text-muted">Format file harus berupa gambar</small>
                             </div>
-                            <div class="modal-footer">
+                            <div class="modal-footer" style="border: none;">
+                                <button type="submit" class="btn btn-primary">Terima Pengajuan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+    @if (auth()->user()->role_id == 3 && ($application->status == 3) && $application->approve_status == 2)
+        <div class="modal fade" id="addNoteModalkegiatan" tabindex="-1" aria-labelledby="addNoteModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Tambah Catatan</h5><span class="text-danger">*</span></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('application.approveWithNote', $application->id) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @php
+                                $extraType = $application->extra->first()?->type;
+                            @endphp
+                            <input type="hidden" name="tipe_pengajuan" value="kegiatan">
+                            <div class="form-group">
+                                <textarea name="note" id="note" rows="10" class="form-control" placeholder="Catatan untuk dana yang dicairkan..." required></textarea><br>
+                                <label class="mb-2 fw-bold" for="role_id">
+                                    Bukti Transfer Dana yang dicairkan (File berupa Gambar/Screenshot)
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="file" required name="lampiran" class="form-control" accept="image/*">
+                                <small class="text-muted">Format file harus berupa gambar</small>
+                            </div>
+                            <div class="modal-footer" style="border: none;">
                                 <button type="submit" class="btn btn-primary">Terima Pengajuan</button>
                             </div>
                         </form>
@@ -1074,8 +1188,10 @@
         function terimaPengajuan() {
             @if (Auth::user()->role_id == 5 || Auth::user()->role_id == 0 )
                 $("#approve-modal").modal("toggle");
-            @elseif (Auth::user()->role_id == 3 && $application->status == 2 && $application->approve_status == 2)
+            @elseif (Auth::user()->role_id == 3 && ($application->status == 2) && $application->approve_status == 2)
                 $("#addNoteModal").modal("toggle");
+            @elseif (Auth::user()->role_id == 3 && ($application->status == 3) && $application->approve_status == 2)
+                $("#addNoteModalkegiatan").modal("toggle");
             @else
                 $(location).prop('href', "{{ route('application.approve', ['id' => $application->id]) }}")
             @endif
