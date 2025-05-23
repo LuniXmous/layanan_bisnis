@@ -831,6 +831,18 @@
                                 <div class="text-muted">Belum ada lampiran</div>
                             @endif
                         </div>
+                        <div class="row border-top pt-4" style="margin-top: 1%;">
+                            <span class="fw-bold h6">Surat Keterangan Penyelesaian Kegiatan:</span><br>
+                            <br>
+                            <p style="margin-top: -20px">Surat di Print lalu di Tanda Tangani secara Manual sebagai pengesahan </p>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                                @if ($application->status == 3 && $application->approve_status == 3)
+                                    <a href="{{ route('application.pengajuan.generateSuratSelesai', $application->id) }}" class="btn btn-sm btn-primary " target="_blank">
+                                        Pernyataan Surat Selesai
+                                    </a>
+                                @endif                            
+                            </div>
+                        </div><br>
                     </div>
                 </div>
             </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PengajuanSuratSelesai;
 use App\Exports\rekapDanaExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ApplicationExport;
@@ -23,6 +24,10 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\View;
+
+
 
 
 class ApplicationController extends Controller
@@ -1117,6 +1122,29 @@ class ApplicationController extends Controller
         }
     }
  
+    public function generateSuratSelesai($id)
+    {
+        $application = Application::with([
+            'user',
+            'activity.unit',
+            'activity.category'
+        ])->findOrFail($id);
+
+        if ($application->status != 3 || $application->approve_status != 3) {
+            return redirect()->back()->with('error', 'Pengajuan belum selesai.');
+        }
+
+        $nama = 'Imam Syukron Hidayat, S.T';
+        $jabatan = 'Ketua Kompetensi Keahlian Multimedia';
+
+        $pdf = Pdf::loadView('surat.template_pengajuan_selesai', compact('application', 'nama', 'jabatan'));
+
+        return $pdf->download('surat_keterangan_'.$application->user->name.'.pdf');
+    }
+
+
+
+
 
     public function updateExtra(Request $request, $id)
     {

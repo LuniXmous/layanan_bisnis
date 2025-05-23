@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Models\Application;
+use App\Mail\ReminderAktor;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,29 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/preview-surat', function () {
+    $data = [
+        'nama' => 'Imam Syukron Hidayat, S.T',
+        'jabatan' => 'Ketua Kompetensi Keahlian Multimedia',
+        'nama_1' => 'Argiyan Dwi Pritama, S.Kom., M.MSI',
+        'nidn_1' => '0616019301',
+        'nama_2' => 'Reto Waluyo, S.Kom., M.MSI',
+        'nidn_2' => '0622038602',
+        'unit_kerja' => 'STMIK Amikom Purwokerto',
+        'judul_kegiatan' => 'Peningkatan Keterampilan Siswa Melalui Pelatihan Pembuatan Video Kreatif',
+        'tanggal_kegiatan' => '01 — 03 Agustus 2018',
+        'tanggal_surat' => now()->translatedFormat('d F Y'),
+    ];
+
+    return view('surat.template_pengajuan_selesai', $data);
+});
+
+Route::get('/test-email', function () {
+    $application = Application::first(); // ambil 1 pengajuan contoh
+    return new ReminderAktor($application, true); // set true agar reminder aktif
+});
+
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -108,6 +132,7 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
             // Route::post('/{id}/edit/extra', [App\Http\Controllers\ApplicationController::class, 'updateExtra'])->name('extra.update');
             Route::get('/{id}/done', [App\Http\Controllers\ApplicationController::class, 'done'])->name('done');
             Route::post('/{id}/applys', [App\Http\Controllers\ApplicationController::class, 'applyExtra'])->name('applyExtra');
+            Route::get('/pengajuan/{id}/generate-surat', [App\Http\Controllers\ApplicationController::class, 'generateSuratSelesai'])->name('pengajuan.generateSuratSelesai');
         });
         // ? MIDDLEWARE ROLE ADMIN, WADIR 4, DIREKTUR, ADMIN UNIT
         // Route::group(['middleware' => 'isAdmin', 'isAdminUnit', 'isWadir4', 'isDirektur'], function () {
