@@ -46,5 +46,15 @@ class RoleSeeder extends Seeder
             'name' => 'Direktur',
             'alias' => 'direktur',
         ]);
+        Role::create([
+            'id' => 6,
+            'name' => 'Wakil Direktur 1',
+            'alias' => 'wadir1',
+        ]);
+        Role::create([
+            'id' => 7,
+            'name' => 'Pejabat Pembuat Komitmen',
+            'alias' => 'ppk',
+        ]);
     }
 }

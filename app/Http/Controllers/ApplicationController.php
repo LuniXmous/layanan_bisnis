@@ -495,6 +495,18 @@ class ApplicationController extends Controller
                             'file' => $name,
                         ]);
                     }
+                        if (isset($request->lampiran["tor"])) {
+                        $lampiran = $request->lampiran["tor"];
+                        $name = time() . "_" . $lampiran->getClientOriginalName();
+                        Storage::disk('dokumen_bisnis')->put($name, file_get_contents($lampiran));
+                        $doc = ExtraApplicationDocument::create([
+                            'extra_application_id' => $extraApplication->id,
+                            'title' => "tor",
+                            'type' => "tor",
+                            'ext' => "doc",
+                            'file' => $name,
+                        ]);
+                        }
                     $application->update([
                         "status" => $application->status + 1,
                         "approve_status" => 1,

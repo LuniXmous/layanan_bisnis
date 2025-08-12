@@ -124,7 +124,7 @@
                                                     <div style="font-family:helvetica;font-size:16px;line-height:1;text-align:left;color:#292C33;"><strong>{{ $subject }}</strong></div>
                                                 </td>
                                             </tr>
-                                            @if ($reminder_pengajuan_aktor)
+                                            @if(isset($reminder_pengajuan_aktor) && $reminder_pengajuan_aktor)
                                             <tr>
                                                 <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                                                     <div style="font-family:helvetica;font-size:16px;line-height:1;text-align:left;color:#292C33;"><strong>PENGINGAT:</strong> Pengajuan Anda masih menunggu persetujuan. Silakan cek kembali status pengajuan Anda melalui sistem kami.</div><br>

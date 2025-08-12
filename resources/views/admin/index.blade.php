@@ -12,7 +12,7 @@
     <div class="container">
         <!-- Statistik Panel Admin-->
         <div class="row mt-3">
-            @if (Auth::user()->role->alias == 'admin' || Auth::user()->role->alias == 'wadir4'|| env('GOD_MODE'))
+            @if (Auth::user()->role->alias == 'wadir4'|| env('GOD_MODE'))
             <div class="col-md-13">
                 <div class="card">
                     <div class="card-body text-center">
@@ -56,6 +56,15 @@
                     <h3><i class="fa-solid fa-square-xmark"></i> {{ $jumlahDiTolak }}</h3>
                         <h6>JUMLAH DI TOLAK</h6><br>
                         <a href="{{ route('application.index', ['approve_status' => '0', 'status' => '0,2,3']) }}" class="btn btn-primary btn-sm">Lihat Detail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-13">
+                <div class="card">
+                    <div class="card-body text-center">
+                    <h3>Nilai Kontrak Di Cairkan Tahun {{ $year }}</h3>
+                        <h5>Total Nominal: Rp. {{ number_format($totalNilaiKontrak, 2, ',', '.') }}</h5><br>
+                        <a href="{{ route('application.report') }}" class="btn btn-primary btn-sm">Lihat Detail</a>
                     </div>
                 </div>
             </div>

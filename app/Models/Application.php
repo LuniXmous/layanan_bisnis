@@ -72,7 +72,7 @@ class Application extends Model
             } else if ($this->approve_status == 3) {
                 return ['status' => 'Menunggu Review Direktur', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 5)->get(), 'must_role' => [5, 0, 3, 4]];
             } else if ($this->approve_status == 4) {
-                return ['status' => 'Pengajuan Telah Disetujui', 'class' => 'bg-success', 'users' => [$this->user], 'must_role' => [0, 3]];
+                return ['status' => 'Pengajuan Telah Disetujui', 'class' => 'bg-success', 'users' => [$this->user], 'must_role' => [5,0, 3]];
             }
         } else if ($this->status == 2) {
             $latestExtraType = $this->extra()->orderBy('created_at', 'desc')->first()?->typeAlias();
