@@ -47,7 +47,7 @@
                 </div>
                 <div class="sidebar-menu">
                     <ul class="menu p-0">
-                        @if (Auth::user()->role->alias != 'admin' && Auth::user()->role->alias != 'wadir4' && Auth::user()->role->alias != 'wadir2' && Auth::user()->role->alias != 'direktur')
+                        @if (Auth::user()->role->alias != 'admin' && Auth::user()->role->alias != 'wadir4' && Auth::user()->role->alias != 'wadir2' && Auth::user()->role->alias != 'direktur' && Auth::user()->role->alias != 'wadir1')
                             <li class="sidebar-item 
                                 {{ Request::route()->action['as'] == 'dashboard' ? 'active' : null }}">
                                 <a href="{{ route('dashboard') }}" class="sidebar-link">
@@ -73,8 +73,8 @@
                                 </a>
                             </li>
                             <li class="sidebar-item
-                                {{ Request::route()->action['as'] == 'application.index' && request()->get('approve_status') == '3' ? 'active' : '' }}">
-                                <a href="{{ route('application.index', ['approve_status' => '3', 'status' => '1']) }}" class="sidebar-link">
+                                {{ Request::route()->action['as'] == 'application.index' && request()->get('approve_status') == '4' ? 'active' : '' }}">
+                                <a href="{{ route('application.index', ['approve_status' => '4', 'status' => '1']) }}" class="sidebar-link">
                                     <i class="fas fa-file-alt"></i>
                                     <span>Pengajuan</span>
                                 </a>
@@ -83,6 +83,23 @@
                                 <a href="{{ route('application.index', ['type' => 'historydir']) }}" class="sidebar-link">
                                     <i class="fa-solid fa-clock-rotate-left"></i>
                                     <span>Riwayat Pengajuan</span>
+                                </a>
+                            </li>
+                        @endif
+                        <!-- sidebar wadir 1 -->
+                        @if (Auth::user()->role->alias == 'wadir1' || env('GOD_MODE'))
+                            <li class="sidebar-item 
+                                {{ Request::route()->action['as'] == 'dashboard' ? 'active' : null }}">
+                                <a href="{{ route('dashboard') }}" class="sidebar-link">
+                                <i class="fa-solid fa-house"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item
+                                {{ Request::route()->action['as'] == 'application.index' && request()->get('approve_status') == '2' ? 'active' : '' }}">
+                                <a href="{{ route('application.index', ['approve_status' => '2', 'status' => '2']) }}" class="sidebar-link">
+                                    <i class="fas fa-file-alt"></i>
+                                    <span>Pengajuan</span>
                                 </a>
                             </li>
                         @endif
@@ -96,8 +113,8 @@
                                 </a>
                             </li>
                             <li class="sidebar-item
-                                {{ Request::route()->action['as'] == 'application.index' && request()->get('approve_status') == '2' ? 'active' : '' }}">
-                                <a href="{{ route('application.index', ['approve_status' => '2']) }}" class="sidebar-link">
+                                {{ Request::route()->action['as'] == 'application.index' && request()->get('approve_status') == '3' ? 'active' : '' }}">
+                                <a href="{{ route('application.index', ['approve_status' => '3', 'status' => '1']) }}" class="sidebar-link">
                                     <i class="fas fa-file-alt"></i>
                                     <span>Pengajuan</span>
                                 </a>

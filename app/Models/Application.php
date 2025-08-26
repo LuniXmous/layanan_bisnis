@@ -17,6 +17,7 @@ class Application extends Model
         'approve_status',
         'note',
         'checkpoint',
+        'income',
     ];
     use HasFactory;
     protected static function boot()
@@ -70,8 +71,10 @@ class Application extends Model
             } else if ($this->approve_status == 2) {
                 return ['status' => 'Menunggu Review Wakil Direktur 4', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 4)->get(), 'must_role' => [4, 0, 3]];
             } else if ($this->approve_status == 3) {
+                return ['status' => 'Menunggu Review Wakil Direktur 2', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 3)->get(), 'must_role' => [3]];
+            } else if ($this->approve_status == 4) {   
                 return ['status' => 'Menunggu Review Direktur', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 5)->get(), 'must_role' => [5, 0, 3, 4]];
-            } else if ($this->approve_status == 4) {
+            } else if ($this->approve_status == 5) {
                 return ['status' => 'Pengajuan Telah Disetujui', 'class' => 'bg-success', 'users' => [$this->user], 'must_role' => [5,0, 3]];
             }
         } else if ($this->status == 2) {
@@ -79,9 +82,9 @@ class Application extends Model
             if ($this->approve_status == 0) {
                 return ['status' => "Pengajuan $latestExtraType Telah Ditolak", 'class' => 'bg-danger', 'users' => [$this->user], 'must_role' => [0, 3]];
             } else if ($this->approve_status == 1) {
-                return ['status' => 'Menunggu Review Wakil Direktur 4 Permohonan Pencairan Dana Operasional', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 4)->get(), 'must_role' => [4, 0, 3]];
+                return ['status' => 'Menunggu Review Admin Layanan Bisnis Permohonan Pencairan Dana Operasional', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 0)->get(), 'must_role' => [0, 3, 4]];
             } else if ($this->approve_status == 2) {
-                return ['status' => 'Menunggu Review Wakil Direktur 2 Permohonan Pencairan Dana Operasional', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 3)->get(), 'must_role' => [3, 0, 4]];
+                return ['status' => 'Menunggu Review Wakil Direktur 2 Permohonan Pencairan Dana Operasional', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 6)->get(), 'must_role' => [6, 0]];
             } else if ($this->approve_status == 3) {
                 return ['status' => "Pengajuan $latestExtraType Telah Disetujui", 'class' => 'bg-success', 'users' => [$this->user], 'must_role' => [0, 3]];
             } else {

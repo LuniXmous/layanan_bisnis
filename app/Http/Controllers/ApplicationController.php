@@ -43,13 +43,15 @@ class ApplicationController extends Controller
                     $comment = true;
                 } else if ($application->approve_status == 2 && Auth::user()->role_id == 4) {
                     $comment = true;
-                } else if ($application->approve_status == 3 && Auth::user()->role_id == 5) {
+                } else if ($application->approve_status == 3 && Auth::user()->role_id == 3) {
+                    $comment = true;
+                } else if ($application->approve_status == 4 && Auth::user()->role_id == 5) {
                     $comment = true;
                 }
             } else {
-                if ($application->approve_status == 1 && Auth::user()->role_id == 4) {
+                if ($application->approve_status == 1 && Auth::user()->role_id == 0) {
                     $comment = true;
-                } else if ($application->approve_status == 2 && Auth::user()->role_id == 3) {
+                } else if ($application->approve_status == 2 && Auth::user()->role_id == 6) {
                     $comment = true;
                 }
             }
@@ -78,8 +80,7 @@ class ApplicationController extends Controller
     {
         if ($request->ajax()) {
             $applications = Application::query();
-            
-    
+        
             // Filter berdasarkan role
             if (Auth::user()->role->id == 0) {
                 // Admin bisa melihat semua aplikasi
@@ -116,14 +117,14 @@ class ApplicationController extends Controller
                 if ($type === 'historywd2') {
                     // Logika untuk Riwayat Pengajuan
                     $applications->where(function ($query) {
-                        $query->where('status', 2)->whereIn('approve_status', [3])
+                        $query->where('status', 1)->whereIn('approve_status', [4])
                             ->orWhere('status', '>', 2)->whereIn('approve_status', [3]);
                     });
                 }
                 else {
                     // Logika untuk Pengajuan
                     $applications->where(function ($query) {
-                        $query->where('status', 2)->whereIn('approve_status', [2])
+                        $query->where('status', 1)->whereIn('approve_status', [3])
                             ->orWhere('status', '>', 2)->whereIn('approve_status', [2]);
                     });
                 }
@@ -142,12 +143,32 @@ class ApplicationController extends Controller
                     else {
                         // Logika untuk Pengajuan
                         $applications->where(function ($query) {
-                            $query->where('status', 1)->whereIn('approve_status', [3]);
+                            $query->where('status', 1)->whereIn('approve_status', [4]);
                         });
                     }
 
                 $applications->orderBy('updated_at', 'desc');
-            } else {
+            }  else if (Auth::user()->role->id == 6) {
+                $type = $request->input('type');
+                $applications = Application::query();
+                if ($type === 'historywd1') {
+                    // Logika untuk Riwayat Pengajuan
+                    $applications->where(function ($query) {
+                        $query->where('status', 2)->whereIn('approve_status', [1])
+                            ->orWhere('status', '>', 2)->whereIn('approve_status', [3]);
+                    });
+                }
+                else {
+                    // Logika untuk Pengajuan
+                    $applications->where(function ($query) {
+                        $query->where('status', 2)->whereIn('approve_status', [2])
+                            ->orWhere('status', '>', 2)->whereIn('approve_status', [2]);
+                    });
+                }
+
+                $applications->orderBy('updated_at', 'desc');
+            }
+            else {
                 // Applicant: hanya aplikasi milik user sendiri
                 $applications = Auth::user()->application();
             }
@@ -170,7 +191,7 @@ class ApplicationController extends Controller
                 } elseif ($request->approve_status === '3,4' && $request->has('status')) {
                     $applications->where(function ($query) use ($request) {
                         $query->where(function ($q) {
-                            $q->where('status', 1)->where('approve_status', 4);
+                            $q->where('status', 1)->where('approve_status', 3);
                         })->orWhere(function ($q) {
                             $q->where('status', 2)->where('approve_status', 3);
                         })->orWhere(function ($q) {
@@ -307,11 +328,11 @@ class ApplicationController extends Controller
         }
         $extraApp = "";
         if ($application->activity->category_id == 1) { //pengajuan dana
-            if ($application->approve_status == 4) {
+            if ($application->approve_status == 5) {
                 $extraApp = "Pencairan Dana";
             }
         } else {
-            if ($application->status == 1 && $application->approve_status == 4) { // pengajuan kegiatan untuk selain jasa
+            if ($application->status == 1 && $application->approve_status == 5) { // pengajuan kegiatan untuk selain jasa
                 $extraApp = "Pencairan Dana Operasional";
             } else if ($application->status == 2 && $application->approve_status == 3) {
                 $extraApp = "Pengajuan Pemberitahuan Kegiatan Selesai Dilaksanakan";
@@ -692,7 +713,7 @@ class ApplicationController extends Controller
             "note" => null,
         ]);
 
-        if ($application->status == 1 && $application->approve_status == 4) {
+        if ($application->status == 1 && $application->approve_status == 5) {
             $rekapDana = RekapDana::where('application_id', $application->id)->get(); // ambil data dlu
             $dataRekap = RekapDana::where('application_id', $application->id); // data untuk di update
             if ($rekapDana->isNotEmpty()) {
@@ -713,8 +734,10 @@ class ApplicationController extends Controller
             } else if ($application->approve_status == 2) {
                 $users = User::where("role_id", 4)->get();
             } else if ($application->approve_status == 3) {
-                $users = User::where("role_id", 5)->get();
+                $users = User::where("role_id", 3)->get();
             } else if ($application->approve_status == 4) {
+                $users = User::where("role_id", 5)->get();
+            } else if ($application->approve_status == 5) {
                 $users2 = User::where("role_id", 3)->get();
                 \Mail::to($application->user->email)->send(new \App\Mail\approveApplicationMail($application));
             }
@@ -764,75 +787,22 @@ class ApplicationController extends Controller
         return redirect()->route('application.index')->with(["success" => "Permintaan telah disetujui"]);
     }
 
-    public function approveWithNote(Request $request, $id)
+        public function approveWithIncome(Request $request, $id)
     {
-        $request->validate([
-            'note' => 'required|string|max:1000',
-            'lampiran' => 'nullable|image|max:2048',
-            'tipe_pengajuan' => 'required|string|in:dana,operasional,kegiatan',
-        ]);
-
         $application = Application::findOrFail($id);
 
-        // Cari extra application berdasarkan tipe pengajuan yang benar
-        $extraApplication = ExtraApplication::where('application_id', $application->id)
-            ->where('type', $request->tipe_pengajuan)
-            ->first();
+        // isi income dari form
+        $application->income = $request->input('income');
 
-        if (!$extraApplication) {
-            return redirect()->route('application.detail', ['identifier' => $id])
-                ->with(['error' => 'Pengajuan tipe ' . $request->tipe_pengajuan . ' tidak ditemukan.']);
-        }
+        // ubah approve_status jadi 4 (approved)
+        $application->approve_status = 4;
 
-        // Simpan catatan ke baris yang sesuai tipe-nya
-        $extraApplication->update([
-            'note' => $request->note,
-        ]);
+        $application->save();
 
-        // Update status aplikasi
-        $application->increment('approve_status');
-
-        ApplicationStatusLog::create([
-            'application_id' => $application->id,
-            'status' => $application->status ?? 2,
-            'approve_status' => $application->approve_status,
-            'user_id' => Auth::id(),
-            'role_id' => Auth::user()->role_id,
-        ]);
-
-        // Jika ada file lampiran
-        if ($request->hasFile('lampiran')) {
-            $file = $request->file('lampiran');
-            $filename = time() . '_' . Str::random(8) . '.' . 'img';
-            $file->move(public_path('dokumen_bisnis'), $filename);
-
-            // Mapping tipe untuk dokumen
-            $tipeMap = [
-                'dana' => 'pencairan dana',
-                'operasional' => 'pencairan dana operasional',
-                'kegiatan' => 'pencairan dana kegiatan',
-            ];
-
-            $tipe = $tipeMap[$request->tipe_pengajuan] ?? 'pencairan dana';
-
-            // Simpan dokumen ke extra_application_documents dengan ID yang sesuai
-            ExtraApplicationDocument::create([
-                'id' => Str::uuid(),
-                'extra_application_id' => $extraApplication->id,
-                'title' => 'transfer',
-                'type' => $tipe,
-                'ext' => $file->getClientOriginalExtension(),
-                'file' => $filename,
-            ]);
-        }
-
-        return redirect()->route('application.detail', ['identifier' => $id])
-            ->with(['success' => 'Pengajuan berhasil disetujui dengan catatan dan lampiran.']);
+        return redirect()->route('application.index')->with('success', 'Pengajuan Diterima!');
     }
 
 
-
-    
     public function reject(Request $request, $id)
     {
         $request->validate([

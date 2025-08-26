@@ -100,9 +100,9 @@
                                 @endif
                             </div>
                         </div>
-                        <!-- Garis Horizontal -->
+                         <!-- Garis Horizontal -->
                         <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 10px; margin-bottom: 4%;"></div>
-                        <!-- Icon 3: Review Direktur -->
+                        <!-- Icon 3: Review WD 2 -->
                         <div>
                             <div style="width: 50px; height: 50px; border-radius: 50%; 
                                 background-color: 
@@ -123,9 +123,54 @@
                                 display: flex; align-items: center; justify-content: center; margin: auto;">
                                 <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 24px;"></i>
                             </div>
-                            <h6 style="margin-top: 13px;">Direktur</h6>
+                            <h6 style="margin-top: 13px;">Wakil Direktur 2</h6>
                             <div>
                                 @if($application->approve_status == '3')
+                                    {{ $application->statusAlias()['status'] }}<br>
+                                    {{ $application->updated_at }}
+                                @else
+                                    @foreach ($submissionLogs as $log)
+                                        @if ($log->status == 1 && $log->approve_status == 4)
+                                            {{ $log->StatusAlias()['status'] }} <br>
+                                            {{ $log->created_at }}
+                                            &nbsp;
+                                            @break 
+                                        @elseif ($log->status == 0 && $log->approve_status == 0 && $log->role_id == 3)
+                                            {{ $log->StatusAlias()['status'] }} <br>
+                                            {{ $log->created_at }}
+                                            &nbsp;
+                                            @break
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+                        <!-- Garis Horizontal -->
+                        <div style="flex-grow: 1; height: 1px; background-color: #018797; margin: 10px; margin-bottom: 4%;"></div>
+                        <!-- Icon 4: Review Direktur -->
+                        <div>
+                            <div style="width: 50px; height: 50px; border-radius: 50%; 
+                                background-color: 
+                                    @if($application->approve_status == '4') 
+                                        #ffc107 
+                                    @elseif(in_array($application->approve_status, ['3', '4'])) 
+                                        #198754 
+                                    @elseif(
+                                        isset($submissionLogs) && 
+                                        $submissionLogs->where('status', 0)
+                                                    ->where('approve_status', 0)
+                                                    ->where('role_id', 5)
+                                                    ->isNotEmpty()) 
+                                        #dc3545 /* merah */
+                                    @else 
+                                        #018797 /* biru tua */
+                                    @endif; 
+                                display: flex; align-items: center; justify-content: center; margin: auto;">
+                                <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 24px;"></i>
+                            </div>
+                            <h6 style="margin-top: 13px;">Direktur</h6>
+                            <div>
+                                @if($application->approve_status == '4')
                                     {{ $application->statusAlias()['status'] }}<br>
                                     {{ $application->updated_at }}
                                 @else
@@ -153,7 +198,7 @@
                                 <i class="fa-solid fa-circle-check" style="color: #ffffff; font-size: 24px;"></i>                     
                             </div>
                             <h6 style="margin-top: 13px;">Review Selesai</h6>
-                            @if($application->approve_status == '4')
+                            @if($application->approve_status == '5')
                                 {{ $application->statusAlias()['status'] }}<br>
                                 {{ $application->updated_at }}
                             @endif
@@ -161,7 +206,7 @@
                     </div>
 {{-- jika status != 1 && approveStatus !0--}}
                     @else
-                    <div>
+                    <div> 
                         <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
                             <i class="fa-solid fa-user" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
                         </div>
@@ -1078,7 +1123,7 @@
             </div>
         </div>
     @endif
-    @if (auth()->user()->role_id == 3 && ($application->status == 2) && $application->approve_status == 2)
+    @if (auth()->user()->role_id == 3 && ($application->status == 1) && $application->approve_status == 3)
         <div class="modal fade" id="addNoteModal" tabindex="-1" aria-labelledby="addNoteModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
@@ -1087,57 +1132,17 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('application.approveWithNote', $application->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('application.approveWithIncome', $application->id) }}" method="POST">
                             @csrf
-                            @php
-                                $extraType = $application->extra->first()?->type;
-                            @endphp
-                            <input type="hidden" name="tipe_pengajuan" value="operasional">
-                            <div class="form-group">
-                                <textarea name="note" id="note" rows="10" class="form-control" placeholder="Catatan untuk dana yang dicairkan..." required></textarea><br>
-                                <label class="mb-2 fw-bold" for="role_id">
-                                    Bukti Transfer Dana yang dicairkan (File berupa Gambar/Screenshot)
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="file" required name="lampiran" class="form-control" accept="image/*">
-                                <small class="text-muted">Format file harus berupa gambar</small>
+                            <div class="mb-3">
+                                <label for="income" class="form-label">Pilih Jenis</label>
+                                <select class="form-select" id="income" name="income" required>
+                                    <option value="" disabled selected>-- Pilih --</option>
+                                    <option value="income">Income Generate</option>
+                                    <option value="non_income">Non Income Generate</option>
+                                </select>
                             </div>
-                            <div class="modal-footer" style="border: none;">
-                                <button type="submit" class="btn btn-primary">Terima Pengajuan</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
-    @if (auth()->user()->role_id == 3 && ($application->status == 3) && $application->approve_status == 2)
-        <div class="modal fade" id="addNoteModalkegiatan" tabindex="-1" aria-labelledby="addNoteModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Tambah Catatan</h5><span class="text-danger">*</span></h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{ route('application.approveWithNote', $application->id) }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            @php
-                                $extraType = $application->extra->first()?->type;
-                            @endphp
-                            <input type="hidden" name="tipe_pengajuan" value="kegiatan">
-                            <div class="form-group">
-                                <textarea name="note" id="note" rows="10" class="form-control" placeholder="Catatan untuk dana yang dicairkan..." required></textarea><br>
-                                <label class="mb-2 fw-bold" for="role_id">
-                                    Bukti Transfer Dana yang dicairkan (File berupa Gambar/Screenshot)
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="file" required name="lampiran" class="form-control" accept="image/*">
-                                <small class="text-muted">Format file harus berupa gambar</small>
-                            </div>
-                            <div class="modal-footer" style="border: none;">
-                                <button type="submit" class="btn btn-primary">Terima Pengajuan</button>
-                            </div>
+                            <button type="submit" class="btn btn-primary">Approve</button>
                         </form>
                     </div>
                 </div>
@@ -1200,10 +1205,8 @@
         function terimaPengajuan() {
             @if (Auth::user()->role_id == 5 || Auth::user()->role_id == 0 )
                 $("#approve-modal").modal("toggle");
-            @elseif (Auth::user()->role_id == 3 && ($application->status == 2) && $application->approve_status == 2)
+            @elseif (Auth::user()->role_id == 3 && ($application->status == 1) && $application->approve_status == 3)
                 $("#addNoteModal").modal("toggle");
-            @elseif (Auth::user()->role_id == 3 && ($application->status == 3) && $application->approve_status == 2)
-                $("#addNoteModalkegiatan").modal("toggle");
             @else
                 $(location).prop('href', "{{ route('application.approve', ['id' => $application->id]) }}")
             @endif
@@ -1235,5 +1238,19 @@
         });
     });
 
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        let value = this.getAttribute('data-value'); 
+        let text = this.textContent; 
+        
+        // ubah teks tombol
+        document.getElementById('dropdownMenuButton').textContent = text;
+
+        // isi hidden input
+        document.getElementById('incomeInput').value = value;
+        });
+    });
     </script>
 @endsection
