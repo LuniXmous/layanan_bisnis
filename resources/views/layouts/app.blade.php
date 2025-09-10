@@ -43,11 +43,12 @@
                 <div class="sidebar-header position-relative pb-0">
                     <div class="logo text-center">
                         <img src="{{ asset('assets/images/logo.webp') }}" alt="Logo" />
+                        <img src="{{ asset('assets/images/logo_rtpu.png') }}" alt="Logo">
                     </div>
                 </div>
                 <div class="sidebar-menu">
                     <ul class="menu p-0">
-                        @if (Auth::user()->role->alias != 'admin' && Auth::user()->role->alias != 'wadir4' && Auth::user()->role->alias != 'wadir2' && Auth::user()->role->alias != 'direktur' && Auth::user()->role->alias != 'wadir1')
+                        @if (Auth::user()->role->alias != 'admin' && Auth::user()->role->alias != 'wadir4' && Auth::user()->role->alias != 'wadir2' && Auth::user()->role->alias != 'direktur' && Auth::user()->role->alias != 'wadir1' && Auth::user()->role->alias != 'ppk')
                             <li class="sidebar-item 
                                 {{ Request::route()->action['as'] == 'dashboard' ? 'active' : null }}">
                                 <a href="{{ route('dashboard') }}" class="sidebar-link">
@@ -73,8 +74,8 @@
                                 </a>
                             </li>
                             <li class="sidebar-item
-                                {{ Request::route()->action['as'] == 'application.index' && request()->get('approve_status') == '4' ? 'active' : '' }}">
-                                <a href="{{ route('application.index', ['approve_status' => '4', 'status' => '1']) }}" class="sidebar-link">
+                                {{ Request::route()->action['as'] == 'application.index' && request()->get('type') == 'pengajuandir' ? 'active' : null }}">
+                                <a href="{{ route('application.index', ['type' => 'pengajuandir']) }}" class="sidebar-link">
                                     <i class="fas fa-file-alt"></i>
                                     <span>Pengajuan</span>
                                 </a>
@@ -96,8 +97,8 @@
                                 </a>
                             </li>
                             <li class="sidebar-item
-                                {{ Request::route()->action['as'] == 'application.index' && request()->get('approve_status') == '2' ? 'active' : '' }}">
-                                <a href="{{ route('application.index', ['approve_status' => '2', 'status' => '2']) }}" class="sidebar-link">
+                                {{ Request::route()->action['as'] == 'application.index' && request()->get('type') == 'pengajuanwd1' ? 'active' : null }}">
+                                <a href="{{ route('application.index', ['type' => 'pengajuanwd1']) }}" class="sidebar-link">
                                     <i class="fas fa-file-alt"></i>
                                     <span>Pengajuan</span>
                                 </a>
@@ -113,8 +114,8 @@
                                 </a>
                             </li>
                             <li class="sidebar-item
-                                {{ Request::route()->action['as'] == 'application.index' && request()->get('approve_status') == '3' ? 'active' : '' }}">
-                                <a href="{{ route('application.index', ['approve_status' => '3', 'status' => '1']) }}" class="sidebar-link">
+                                {{ Request::route()->action['as'] == 'application.index' && request()->get('type') == 'pengajuanwd2' ? 'active' : null }}">
+                                <a href="{{ route('application.index', ['type' => 'pengajuanwd2']) }}" class="sidebar-link">
                                     <i class="fas fa-file-alt"></i>
                                     <span>Pengajuan</span>
                                 </a>
@@ -150,14 +151,37 @@
                                 </a>
                             </li>
                             <li class="sidebar-item
-                                {{ Request::route()->action['as'] == 'application.index' && request()->get('approve_status') == '1,2' ? 'active' : '' }}">
-                                <a href="{{ route('application.index', ['approve_status' => '1,2']) }}" class="sidebar-link">
+                                {{ Request::route()->action['as'] == 'application.index' && request()->get('type') == 'pengajuanwd4' ? 'active' : null }}">
+                                <a href="{{ route('application.index', ['type' => 'pengajuanwd4']) }}" class="sidebar-link">
                                     <i class="fas fa-file-alt"></i>
                                     <span>Pengajuan</span>
                                 </a>
                             </li>
                             <li class="sidebar-item {{ Request::get('type') === 'historywd4' ? 'active' : null }}">
                                 <a href="{{ route('application.index', ['type' => 'historywd4']) }}" class="sidebar-link">
+                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                    <span>Riwayat Pengajuan</span>
+                                </a>
+                            </li>
+                        @endif
+                        <!-- sidebar ppk -->
+                        @if (Auth::user()->role->alias == 'ppk'|| env('GOD-Mode'))
+                            <li class="sidebar-item 
+                                {{ Request::route()->action['as'] == 'dashboard' ? 'active' : null }}">
+                                <a href="{{ route('dashboard') }}" class="sidebar-link">
+                                <i class="fa-solid fa-house"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item
+                                {{ Request::route()->action['as'] == 'application.index' && request()->get('type') == 'pengajuanppk' ? 'active' : null }}">
+                                <a href="{{ route('application.index', ['type' => 'pengajuanppk']) }}" class="sidebar-link">
+                                    <i class="fas fa-file-alt"></i>
+                                    <span>Pengajuan</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item {{ Request::get('type') === 'historyppk' ? 'active' : null }}">
+                                <a href="{{ route('application.index', ['type' => 'historyppk']) }}" class="sidebar-link">
                                     <i class="fa-solid fa-clock-rotate-left"></i>
                                     <span>Riwayat Pengajuan</span>
                                 </a>
@@ -186,7 +210,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('application.index', ['approve_status' => '1,2']) }}" class="dropdown-item">
+                                        <a href="{{ route('application.index', ['type' => 'pengajuanadmin']) }}" class="dropdown-item">
                                         <i class="fa-solid fa-clock"></i>
                                             Menunggu Review
                                         </a>
@@ -198,7 +222,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('application.index', ['approve_status' => '3,4', 'status' => '1,2,3']) }}" class="dropdown-item">
+                                        <a href="{{ route('application.index', ['approve_status' => [3,5], 'status' => [1,2,3]]) }}" class="dropdown-item">
                                             <i class="fa-solid fa-circle-check"></i>
                                             Review Selesai
                                         </a>

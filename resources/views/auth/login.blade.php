@@ -10,6 +10,7 @@
             </a>
                 <div class="auth-logo">
                     <img src="{{ asset('assets/images/logo.webp') }}" alt="Logo">
+                    <img src="{{ asset('assets/images/logo_rtpu.png') }}" alt="Logo">
                 </div>
                 @if (session('error'))
                     <div class="alert alert-danger">

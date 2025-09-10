@@ -137,6 +137,7 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
         // ? MIDDLEWARE ROLE ADMIN, WADIR 4, DIREKTUR, ADMIN UNIT
         // Route::group(['middleware' => 'isAdmin', 'isAdminUnit', 'isWadir4', 'isDirektur'], function () {
         // Route::post('application/{id}/addNote', action: [App\Http\Controllers\ApplicationController::class, 'addNote'])->name('addNote');
+        Route::get('/application', [App\Http\Controllers\ApplicationController::class, 'index'])->name('application.index');
         Route::post('/{id}/approvewithincome', [App\Http\Controllers\ApplicationController::class, 'approveWithIncome'])->name('approveWithIncome');
         Route::get('/{id}/approve', [App\Http\Controllers\ApplicationController::class, 'approve'])->name('approve');
         Route::post('/{id}/approve', [App\Http\Controllers\ApplicationController::class, 'approveWithFile'])->name('approveWithFile');

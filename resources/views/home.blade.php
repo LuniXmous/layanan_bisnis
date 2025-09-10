@@ -46,8 +46,6 @@
     .navbar .navbar-brand img {
       width: 60px;
       height: auto;
-      background-color: white;
-      border-radius: 50%;
       padding: 5px;
     }
 
@@ -216,7 +214,10 @@
     <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
         <a class="navbar-brand">
-          <img src="{{ asset('assets/images/logo.webp') }}" alt="Logo">
+          <img src="{{ asset('assets/images/logo-pnj.png') }}" alt="Logo" style="width: 80px; height: 80px;">
+        </a>
+        <a class="navbar-brand">
+          <img src="{{ asset('assets/images/logo_rtpu.png') }}" alt="Logo">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -236,8 +237,8 @@
   <div class="hero-content">
     <h2 style="font-size: 40px; color: white;">Selamat Datang di Situs Resmi</h2>
     <hr>
-    <h2 style="font-size: 50px; color: white;">Layanan Bisnis</h2>
-    <h3 style="font-size: 25px; color: white; margin-top: 15px;">Unit Rekayasa Teknologi dan Produk Unggulan (RTPU)</h3>
+    <h3 style="font-size: 50px; color: white;">Layanan Bisnis</h3>
+    <h2 style="font-size: 40px; color: white; margin-top: 15px;">Unit Rekayasa Teknologi dan Produk Unggulan (RTPU)</h2   >
     <h4 style="font-size: 70px; color: white;">Politeknik Negeri Jakarta</h4>
 
   </div>

@@ -48,7 +48,27 @@ class ApplicationController extends Controller
                 } else if ($application->approve_status == 4 && Auth::user()->role_id == 5) {
                     $comment = true;
                 }
-            } else {
+            } elseif ($application->status == 2) {
+                if ($application->approve_status == 1 && Auth::user()->role_id == 0) {
+                    $comment = true;
+                } else if ($application->approve_status == 2 && Auth::user()->role_id == 6) {
+                    $comment = true;
+                } else if ($application->approve_status == 3 || $application->approve_status == 4) {
+                    if ($application->income === 'income') {
+                        if ($application->approve_status == 3 && Auth::user()->role_id == 3) {
+                            $comment = true;
+                        } else if ($application->approve_status == 4 && Auth::user()->role_id == 7) {
+                            $comment = true;
+                        }
+                    } elseif ($application->income === 'non_income') {
+                        if ($application->approve_status == 3 && Auth::user()->role_id == 5) {
+                            $comment = true;
+                        } else if ($application->approve_status == 4 && Auth::user()->role_id == 3) {
+                            $comment = true;
+                        }
+                    }
+                }
+            } elseif ($application->status == 3) {
                 if ($application->approve_status == 1 && Auth::user()->role_id == 0) {
                     $comment = true;
                 } else if ($application->approve_status == 2 && Auth::user()->role_id == 6) {
@@ -79,86 +99,87 @@ class ApplicationController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $applications = Application::query();
-        
+            $applications = Application::query();       
             // Filter berdasarkan role
             if (Auth::user()->role->id == 0) {
-                // Admin bisa melihat semua aplikasi
+                $type = $request->input('type');
                 $applications->orderBy('updated_at', 'desc');
+                if ($type === 'pengajuanadmin') {
+                    $applications->where(function ($query) {
+                        $query->where('status', 1)->whereIn('approve_status', [1])
+                            ->orWhere('status', '>', 1 )->whereIn('approve_status', [1]);
+                    });
+                }
             } else if (Auth::user()->role->id == 1) {
-                // Admin Unit: hanya aplikasi dengan user_id pengguna
                 $applications->where('user_id', Auth::user()->id)
                         ->orderBy('updated_at', 'desc');
-            } else if (Auth::user()->role->id == 4) {
+            } else if (Auth::user()->role->id == 4) { //wadir 4
                 $type = $request->input('type');
-                // Default query untuk Pengajuan
                 $applications = Application::query();
                 if ($type === 'historywd4') {
-                    // Logika untuk Riwayat Pengajuan
                     $applications->where(function ($query) {
                         $query->where('status', 1)->whereIn('approve_status', [3])
                             ->orWhere('status', '>', 1)->whereIn('approve_status', [2]);
                     });
                 }
-                else {
-                    // Logika untuk Pengajuan
+                elseif ($type === 'pengajuanwd4'){
                     $applications->where(function ($query) {
                         $query->where('status', 1)->whereIn('approve_status', [2])
                             ->orWhere('status', '>', 1)->whereIn('approve_status', [1]);
                     });
                 }
-
                 $applications->orderBy('updated_at', 'desc');
             
-            } else if (Auth::user()->role->id == 3) {
+            } else if (Auth::user()->role->id == 3) { //wadir 2
                 $type = $request->input('type');
-                // Wakil Direktur 2: status > 1, approve_status = 2
                 $applications = Application::query();
                 if ($type === 'historywd2') {
-                    // Logika untuk Riwayat Pengajuan
                     $applications->where(function ($query) {
-                        $query->where('status', 1)->whereIn('approve_status', [4])
-                            ->orWhere('status', '>', 2)->whereIn('approve_status', [3]);
+                        $query->where('status', 1)->whereIn('approve_status', [4]);
+                    });
+                } elseif ($type === 'pengajuanwd2') {
+                    $applications->where(function ($query) {
+                        $query->where('status', 1)->whereIn('approve_status', [3]);
+                    })->orWhere(function ($query) {
+                        $query->where('status', 2)
+                            ->where('approve_status', 3)
+                            ->where('income', 'income');
+                    })->orWhere(function ($query) {
+                        $query->where('status', 2)
+                            ->where('approve_status', 4)
+                            ->where('income', 'non_income');
                     });
                 }
-                else {
-                    // Logika untuk Pengajuan
-                    $applications->where(function ($query) {
-                        $query->where('status', 1)->whereIn('approve_status', [3])
-                            ->orWhere('status', '>', 2)->whereIn('approve_status', [2]);
-                    });
-                }
-
                 $applications->orderBy('updated_at', 'desc');
-            } else if (Auth::user()->role->id == 5) {
-                // Direktur: status = 1, approve_status = 3
+            } else if (Auth::user()->role->id == 5) { // direktur
                 $type = $request->input('type');
                 $applications = Application::query();
                     if ($type === 'historydir') {
-                        // Logika untuk Riwayat Pengajuan
                         $applications->where(function ($query) {
                             $query->where('status', 1)->whereIn('approve_status', [4]);
                         });
                     }
-                    else {
-                        // Logika untuk Pengajuan
+                    elseif ($type === 'pengajuandir') {
                         $applications->where(function ($query) {
-                            $query->where('status', 1)->whereIn('approve_status', [4]);
+                        $query->where('status', 1)->whereIn('approve_status', [4]);
+                        })
+                        ->orWhere(function ($query) {
+                            $query->where('status', 2)
+                                ->where('approve_status', 3)
+                                ->where('income', 'non_income');
                         });
                     }
-
                 $applications->orderBy('updated_at', 'desc');
-            }  else if (Auth::user()->role->id == 6) {
+            } else if (Auth::user()->role->id == 6) {
                 $type = $request->input('type');
                 $applications = Application::query();
                 if ($type === 'historywd1') {
-                    // Logika untuk Riwayat Pengajuan
                     $applications->where(function ($query) {
                         $query->where('status', 2)->whereIn('approve_status', [1])
                             ->orWhere('status', '>', 2)->whereIn('approve_status', [3]);
                     });
                 }
-                else {
+                elseif ($type === 'pengajuanwd1') {
                     // Logika untuk Pengajuan
                     $applications->where(function ($query) {
                         $query->where('status', 2)->whereIn('approve_status', [2])
@@ -167,9 +188,21 @@ class ApplicationController extends Controller
                 }
 
                 $applications->orderBy('updated_at', 'desc');
-            }
-            else {
-                // Applicant: hanya aplikasi milik user sendiri
+            } else if (Auth::user()->role->id == 7) {
+                $type = $request->input('type');
+                $applications = Application::query();
+                    if ($type === 'historyppk') {
+                        $applications->where(function ($query) {
+                            $query->where('status', 2)->whereIn('approve_status', [5]);
+                        });
+                    }
+                    elseif ($type === 'pengajuanppk') {
+                        $applications->where(function ($query) {
+                        $query->where('status', 2)->where('approve_status', [4])->where('income', 'income');
+                        });
+                    }
+                $applications->orderBy('updated_at', 'desc');
+            } else {
                 $applications = Auth::user()->application();
             }
     
@@ -334,7 +367,7 @@ class ApplicationController extends Controller
         } else {
             if ($application->status == 1 && $application->approve_status == 5) { // pengajuan kegiatan untuk selain jasa
                 $extraApp = "Pencairan Dana Operasional";
-            } else if ($application->status == 2 && $application->approve_status == 3) {
+            } else if ($application->status == 2 && $application->approve_status == 5) {
                 $extraApp = "Pengajuan Pemberitahuan Kegiatan Selesai Dilaksanakan";
             }
         }
@@ -690,17 +723,30 @@ class ApplicationController extends Controller
             'role_id'=> Auth::User()->role_id,
         ]);
 
-        return redirect()->route('application.index')->with(["success" => "Permintaan telah disetujui"]);
+        $roleToType = [
+            3 => 'pengajuanwd2',
+            4 => 'pengajuanwd4',
+            5 => 'pengajuandir',
+            6 => 'pengajuanwd1',
+            7 => 'pengajuanppk',
+        ];
+
+        $type = $roleToType[Auth::user()->role_id] ?? 'pengajuan';
+
+        return redirect()
+            ->route('application.index', ['type' => $type])->with(["success" => "Permintaan telah disetujui"]);    
     }
 
     public function approveWithFile(Request $request, $id)
     {
         $application = Application::find($id);
 
-        if(Auth::user()->role_id != 5){
-            if(Auth::user()->role_id != 0){
+        if (
+            Auth::user()->role_id != 5 &&
+            Auth::user()->role_id != 0 &&
+            Auth::user()->role_id != 6
+        ) {
             return redirect()->back()->with(["error" => "invalid action"]);
-            }
         }
         //checking logic
         $comment = $this->comment($application);
@@ -783,8 +829,17 @@ class ApplicationController extends Controller
             'user_id' => Auth::user()->id,
             'role_id' => Auth::user()->role_id,
         ]);
+        $roleToType = [
+            0 => 'pengajuanadmin',
+            5 => 'pengajuandir',
+            6 => 'pengajuanwd1',
+        ];
 
-        return redirect()->route('application.index')->with(["success" => "Permintaan telah disetujui"]);
+        $type = $roleToType[Auth::user()->role_id] ?? 'pengajuan';
+
+        return redirect()
+            ->route('application.index', ['type' => $type])->with(["success" => "Permintaan telah disetujui"]);    
+    
     }
 
         public function approveWithIncome(Request $request, $id)
@@ -799,8 +854,24 @@ class ApplicationController extends Controller
 
         $application->save();
 
-        return redirect()->route('application.index')->with('success', 'Pengajuan Diterima!');
-    }
+        // Tambahkan log status
+        ApplicationStatusLog::create([
+            'application_id' => $application->id,
+            'status' => $application->status,
+            'approve_status' => $application->approve_status,
+            'user_id' => Auth::user()->id,
+            'role_id' => Auth::user()->role_id,
+        ]); 
+        
+        $roleToType = [
+            3 => 'pengajuanwd2',
+        ];
+
+        $type = $roleToType[Auth::user()->role_id] ?? 'pengajuan';
+
+        return redirect()
+            ->route('application.index', ['type' => $type])->with(["success" => "Permintaan telah disetujui"]);    
+        }
 
 
     public function reject(Request $request, $id)
