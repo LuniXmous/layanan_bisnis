@@ -1,15 +1,23 @@
 @extends('layouts.app')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-@section('page-title', 
-    Auth::user()->role->alias == 'admin' ? 'Selamat Datang Admin ' . Auth::user()->name . '!' :
-    (Auth::user()->role->alias == 'applicant' ? 'Selamat Datang ' . Auth::user()->name . '!' :
-    (Auth::user()->role->alias == 'direktur' ? 'Selamat Datang Direktur ' . Auth::user()->name . '!' :
-    (Auth::user()->role->alias == 'wadir2' ? 'Selamat Datang Wakil Direktur 2 ' . Auth::user()->name . '!' :
-    (Auth::user()->role->alias == 'wadir4' ? 'Selamat Datang Wakil Direktur 4 ' . Auth::user()->name . '!' : 
-    'Selamat Datang, ' . Auth::user()->name . '!')))))
-    @section('content')
+@section('content')
     <div class="container">
+        <h2 class="page-title-text" style="margin-bottom:1%;">
+            @if(Auth::user()->role->alias == 'admin')
+                Selamat Datang Admin {{ Auth::user()->name }}!
+            @elseif(Auth::user()->role->alias == 'applicant')
+                Selamat Datang {{ Auth::user()->name }}!
+            @elseif(Auth::user()->role->alias == 'direktur')
+                Selamat Datang Direktur {{ Auth::user()->name }}!
+            @elseif(Auth::user()->role->alias == 'wadir2')
+                Selamat Datang Wakil Direktur 2 {{ Auth::user()->name }}!
+            @elseif(Auth::user()->role->alias == 'wadir4')
+                Selamat Datang Wakil Direktur 4 {{ Auth::user()->name }}!
+            @else
+                Selamat Datang, {{ Auth::user()->name }}!
+            @endif
+        </h2>
         <!-- Statistik Panel Admin-->
         <div class="row mt-3">
             @if (Auth::user()->role->alias == 'wadir4'|| env('GOD_MODE'))
@@ -114,7 +122,7 @@
                 <div class="card">
                     <div class="card-body text-center">
                         <h3><i class="fa-solid fa-bars-progress"></i> {{ $jumlahOnProgress }}</h3>
-                        <h6>JUMLAH PENGAJUAN ON PROGRESS</h6><br>
+                        <h6>JUMLAH PENGAJUAN ON PROGRESS</h6>
                     </div>
                 </div>
             </div>
