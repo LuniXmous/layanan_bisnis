@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
     }
 
     protected $commands = [
-        \App\Console\Commands\ReminderPengajuanAktor::class,
+        \App\Console\commands\ReminderPengajuanAktor::class,
     ];
 
     protected function schedule(Schedule $schedule)
