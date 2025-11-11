@@ -135,7 +135,9 @@ class ApplicationController extends Controller
                 $applications = Application::query();
                 if ($type === 'historywd2') {
                     $applications->where(function ($query) {
-                        $query->where('status', 1)->whereIn('approve_status', [4]);
+                    $query->where('status', 1)->whereIn('approve_status', [4]);
+                    })->orWhere(function($query){
+                        $query->where('status', 2)->whereIn('approve_status', [4]);
                     });
                 } elseif ($type === 'pengajuanwd2') {
                     $applications->where(function ($query) {
@@ -149,6 +151,10 @@ class ApplicationController extends Controller
                             ->where('approve_status', 4)
                             ->where('income', 'non_income');
                     });
+                } elseif ($type === 'memowd2'){
+                    $applications->where(function($query) {
+                        $query->where('status', 3)->whereIn('approve_status', [3]);
+                    });
                 }
                 $applications->orderBy('updated_at', 'desc');
             } else if (Auth::user()->role->id == 5) { // direktur
@@ -156,7 +162,7 @@ class ApplicationController extends Controller
                 $applications = Application::query();
                     if ($type === 'historydir') {
                         $applications->where(function ($query) {
-                            $query->where('status', 1)->whereIn('approve_status', [4]);
+                            $query->where('status', 1)->whereIn('approve_status', [5]);
                         });
                     }
                     elseif ($type === 'pengajuandir') {
@@ -175,7 +181,7 @@ class ApplicationController extends Controller
                 $applications = Application::query();
                 if ($type === 'historywd1') {
                     $applications->where(function ($query) {
-                        $query->where('status', 2)->whereIn('approve_status', [1])
+                        $query->where('status', 2)->whereIn('approve_status', [3])
                             ->orWhere('status', '>', 2)->whereIn('approve_status', [3]);
                     });
                 }
@@ -743,8 +749,7 @@ class ApplicationController extends Controller
 
         if (
             Auth::user()->role_id != 5 &&
-            Auth::user()->role_id != 0 &&
-            Auth::user()->role_id != 6
+            Auth::user()->role_id != 0
         ) {
             return redirect()->back()->with(["error" => "invalid action"]);
         }
@@ -831,8 +836,7 @@ class ApplicationController extends Controller
         ]);
         $roleToType = [
             0 => 'pengajuanadmin',
-            5 => 'pengajuandir',
-            6 => 'pengajuanwd1',
+            5 => 'pengajuandir'
         ];
 
         $type = $roleToType[Auth::user()->role_id] ?? 'pengajuan';
@@ -872,6 +876,95 @@ class ApplicationController extends Controller
         return redirect()
             ->route('application.index', ['type' => $type])->with(["success" => "Permintaan telah disetujui"]);    
         }
+
+    public function approveWithMemo(Request $request, $id)
+    {
+        $application = Application::find($id);
+
+        if (
+            Auth::user()->role_id != 6
+        ) {
+            return redirect()->back()->with(["error" => "invalid action"]);
+        }
+        //checking logic
+        $comment = $this->comment($application);
+
+        if (!$comment) {
+            return redirect()->back()->with(["error" => "invalid action"]);
+        }
+        $application->update([
+            "approve_status" => $application->approve_status + 1,
+            "note" => null,
+        ]);
+
+        //kirim email
+        $users = [];
+        $users2 = [];
+        if ($application->status == 1) {
+            if ($application->approve_status == 1) {
+                $users = User::where("role_id", 0)->get();
+            } else if ($application->approve_status == 2) {
+                $users = User::where("role_id", 4)->get();
+            } else if ($application->approve_status == 3) {
+                $users = User::where("role_id", 3)->get();
+            } else if ($application->approve_status == 4) {
+                $users = User::where("role_id", 5)->get();
+            } else if ($application->approve_status == 5) {
+                $users2 = User::where("role_id", 3)->get();
+                \Mail::to($application->user->email)->send(new \App\Mail\approveApplicationMail($application));
+            }
+        } else {
+            if ($application->approve_status == 2) {
+                $users = User::where("role_id", 3)->get();
+            } else if ($application->approve_status == 3) {
+                \Mail::to($application->user->email)->send(new \App\Mail\approveExtraApplicationMail($application, ExtraApplication::where("application_id", $application->id)->latest("created_at")->first()));
+            }
+        }
+
+        if (isset($request->lampiran)) {
+            foreach ($request->lampiran as $key2 => $lampiran2) {
+                if ($lampiran2['document'] != null && $lampiran2['title'] != null) {
+                    $name = time() . "_" . $lampiran2['document']->getClientOriginalName();
+                    Storage::disk('dokumen_bisnis')->put($name, file_get_contents($lampiran2['document']));
+                    Document::create([
+                        'application_id' => $application->id,
+                        'type' => "memo",
+                        'ext' => 'doc',
+                        'title' => $lampiran2["title"],
+                        'file' => $name,
+                    ]);
+                }
+            }
+        }
+
+        foreach ($users as $user) {
+            \Mail::to(users: $user->email)->send(new \App\Mail\reviewMail($application));
+        }
+        if ($users2) {
+            foreach ($users2 as $user) {
+                \Mail::to($user->email)->send(new \App\Mail\tebusanMail($application));
+            }
+        }
+        $status = $application->status ?? 1;  
+        $approve_status = $application->approve_status; 
+
+        ApplicationStatusLog::create([
+            'application_id' => $application->id,
+            'status' => $application->status,
+            'approve_status' => $approve_status,  // Masukkan nilai approve_status
+            'user_id' => Auth::user()->id,
+            'role_id' => Auth::user()->role_id,
+        ]);
+        $roleToType = [
+            6 => 'pengajuanwd1',
+        ];
+
+        $type = $roleToType[Auth::user()->role_id] ?? 'pengajuan';
+
+        return redirect()
+            ->route('application.index', ['type' => $type])->with(["success" => "Permintaan telah disetujui"]);    
+    
+    }
 
 
     public function reject(Request $request, $id)
