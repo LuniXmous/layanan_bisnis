@@ -80,7 +80,7 @@
                                         dapat di download disini (link)
                                         <a href="{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }}">{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }} </a>
                                         <input disabled type="file" name="lampiran[permohonan ijin kegiatan]"
-                                            id="lampiran_permohonan" class="form-control" accept="application/pdf">
+                                            id="lampiran_permohonan" class="form-control" accept="application/pdf" onchange="validateFileSize(this)>
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
                                     <div class="form-group">
@@ -92,7 +92,7 @@
                                                 target="_blank">{{ url('/template/template-tor.doc') }}</a> 
                                         </p>
                                         <input type="file" required name="lampiran[tor]" class="form-control"
-                                            accept="application/pdf">
+                                            accept="application/pdf" onchange="validateFileSize(this)>
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
 
@@ -105,7 +105,7 @@
                                                 target="_blank">{{ url('/template/template-rab.xlsx') }}</a>
                                         </p>
                                         <input type="file" required name="lampiran[rab]" class="form-control"
-                                            accept="application/pdf">
+                                            accept="application/pdf" onchange="validateFileSize(this)>
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
 
@@ -119,7 +119,7 @@
                                         <label class="text-dark mb-2 fw-bold" for="lampiran_undangan">Surat Permohonan dari Mitra (PDF)</label>
                                         <br>
                                         <input disabled type="file" name="lampiran[permohonan dari mitra]" id="lampiran_undangan"
-                                            class="form-control" accept="application/pdf">
+                                            class="form-control" accept="application/pdf" onchange="validateFileSize(this)>
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
                                     <div class="form-group mb-4">
@@ -130,7 +130,7 @@
                                         <a href="{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }}">{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }} </a>
                                         <input disabled type="file" name="lampiran[permohonan ijin kegiatan]"
                                             id="lampiran_permohonan" class="form-control"
-                                            accept="application/pdf">
+                                            accept="application/pdf" onchange="validateFileSize(this)>
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
                                     <div class="form-group">
@@ -142,7 +142,7 @@
                                                 target="_blank">{{ url('/template/template-tor.doc') }}</a>
                                         </p>
                                         <input type="file" required name="lampiran[tor]" class="form-control"
-                                            accept="application/pdf">
+                                            accept="application/pdf" onchange="validateFileSize(this)>
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
                                     <div class="form-group">
@@ -154,7 +154,7 @@
                                                 target="_blank">{{ url('/template/template-rab.xlsx') }}</a>
                                         </p>
                                         <input type="file" required name="lampiran[rab]" class="form-control"
-                                            accept="application/pdf">
+                                            accept="application/pdf" onchange="validateFileSize(this)>
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
 
@@ -168,7 +168,7 @@
                                         <label class="text-dark mb-2 fw-bold" for="lampiran_undangan">Surat Permohonan dari Mitra (PDF)</label>
                                         <br>
                                         <input disabled type="file" name="lampiran[permohonan dari mitra]" id="lampiran_undangan"
-                                            class="form-control" accept="application/pdf">
+                                            class="form-control" accept="application/pdf" onchange="validateFileSize(this)>
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
                                     <div class="form-group mb-4">
@@ -179,7 +179,7 @@
                                         <a href="{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }}">{{ url('/template/template-surat-permohonan-ijin-kegiatan.docx') }} </a>
                                         <input disabled type="file" name="lampiran[permohonan ijin kegiatan]"
                                             id="lampiran_permohonan" class="form-control"
-                                            accept="application/pdf">
+                                            accept="application/pdf" onchange="validateFileSize(this)>
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
                                     <div class="form-group">
@@ -191,7 +191,7 @@
                                                 target="_blank">{{ url('/template/template-tor.doc') }}</a>
                                         </p>
                                         <input type="file" required name="lampiran[tor]" class="form-control"
-                                            accept="application/pdf">
+                                            accept="application/pdf" onchange="validateFileSize(this)>
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
                                     <div class="form-group">
@@ -203,7 +203,7 @@
                                                 target="_blank">{{ url('/template/template-rab.xlsx') }}</a>
                                         </p>
                                         <input type="file" required name="lampiran[rab]" class="form-control"
-                                            accept="application/pdf">
+                                            accept="application/pdf" onchange="validateFileSize(this)>
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
 
@@ -217,7 +217,7 @@
                                         <label class="text-dark mb-2 fw-bold" for="lampiran_undangan">Surat Permohonan dari Mitra (PDF)</label>
                                         <br>
                                         <input disabled type="file" name="lampiran[permohonan dari mitra]" id="lampiran_undangan"
-                                            class="form-control" accept="application/pdf">
+                                            class="form-control" accept="application/pdf" onchange="validateFileSize(this)>
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
                                     <div class="form-group mb-4">
@@ -230,7 +230,7 @@
                                         </a>
                                         <input disabled type="file" required name="lampiran[permohonan ijin kegiatan]"
                                             id="lampiran_permohonan" class="form-control required"
-                                            accept="application/pdf">
+                                            accept="application/pdf" onchange="validateFileSize(this)>
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
                                     <div class="form-group">
@@ -242,7 +242,7 @@
                                                 target="_blank">{{ url('/template/template-tor.doc') }}</a>
                                         </p>
                                         <input type="file" required name="lampiran[tor]" class="form-control"
-                                            accept="application/pdf">
+                                            accept="application/pdf" onchange="validateFileSize(this)>
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
                                     <div class="form-group">
@@ -254,7 +254,7 @@
                                                 target="_blank">{{ url('/template/template-rab.xlsx') }}</a>
                                         </p>
                                         <input type="file" required name="lampiran[rab]" class="form-control"
-                                            accept="application/pdf">
+                                            accept="application/pdf" onchange="validateFileSize(this)>
                                         <small class="text-muted">Format file harus berupa PDF</small>
                                     </div>
 
@@ -268,8 +268,11 @@
                                 <p class="text-danger">Kategori yang anda pilih belum tersedia pada unit ini</p>
                             </div>
 
-                            <div class="form-group mt-5">
-                                <button type="submit" id="submitButton" class="btn btn-success">Submit</button>
+                            <div class="form-group mt-5 text-end">
+                                <button type="submit" id="submitButton" class="btn btn-success" 
+                                        onclick="this.disabled=true; this.innerHTML='<i class=\'fas fa-spinner fa-spin\'></i> Mengirim...'; this.form.submit();">
+                                    Submit
+                                </button>                            
                             </div>
                         </section>
                     </form>
@@ -339,28 +342,28 @@
                     finish: "Submit",
                 },
                 onStepChanging: function(event, currentIndex, newIndex) {
-                    // return (
-                    //     currentIndex > newIndex ||
-                    //     ( !(3 === newIndex && Number($("#age-2").val()) < 18) &&
-                    //         (currentIndex < newIndex && (
-                    //                 form.find(".body:eq(" + newIndex + ") label.error").remove(),
-                    //                 form.find(".body:eq(" + newIndex + ") .error").removeClass("error")
-                    //             ),
-                    //             (form.validate().settings.ignore = ":disabled,:hidden"),
-                    //             form.valid()
-                    //         )
-                    //     )
-                    // );
+                    return (
+                        currentIndex > newIndex ||
+                        ( !(3 === newIndex && Number($("#age-2").val()) < 18) &&
+                            (currentIndex < newIndex && (
+                                    form.find(".body:eq(" + newIndex + ") label.error").remove(),
+                                    form.find(".body:eq(" + newIndex + ") .error").removeClass("error")
+                                ),
+                                (form.validate().settings.ignore = ":disabled,:hidden"),
+                                form.valid()
+                            )
+                        )
+                    );
                 },
                 onFinishing: function(event, currentIndex) {
-                    // return (form.validate().settings.ignore = ":disabled"), form.valid();
+                    return (form.validate().settings.ignore = ":disabled"), form.valid();
                 },
                 onFinished: function(event, currentIndex) {
-                    // alert('Form Submitted.')
-                    // swal(
-                    //     "Form Submitted!",
-                    //     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lorem erat eleifend ex semper, lobortis purus sed."
-                    // );
+                    alert('Form Submitted.')
+                    swal(
+                        "Form Submitted!",
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lorem erat eleifend ex semper, lobortis purus sed."
+                    );
                 },
             }),
             $(".validation-wizard").validate({
@@ -524,20 +527,145 @@
         }
 
         function validateInput(inputElement) {
-            const maxLimit = 10 ** 13;
+            const maxLimit = 10 ** 13; // Maksimal 10 triliun
             const validationMessageElement = document.getElementById("validationMessage");
             const submitButton = document.getElementById("submitButton");
 
             const value = parseInt(inputElement.value, 10);
 
-            if (value > maxLimit) {
-                validationMessageElement.textContent = "Nominal tidak bisa lebih dari Rp." + maxLimit.toLocaleString();
-                inputElement.value = maxLimit;
+            // Jika nilai kosong
+            if (!value) {
+                validationMessageElement.textContent = "Nominal tidak boleh kosong.";
                 submitButton.disabled = true;
-            } else {
-                validationMessageElement.textContent = ""; 
+                return;
+            }
+
+            // Jika nominal melebihi batas
+            if (value >= maxLimit) {
+                validationMessageElement.textContent = "Nominal terlalu besar. Maksimal Rp 10 triliun.";
+                submitButton.disabled = true;
+            } 
+            // Jika nominal kurang dari 0
+            else if (value < 0) {
+                validationMessageElement.textContent = "Nominal tidak boleh negatif.";
+                submitButton.disabled = true;
+            } 
+            // Jika valid
+            else {
+                validationMessageElement.textContent = "";
                 submitButton.disabled = false;
             }
         }
+
+        // Fungsi untuk validasi ukuran file
+        function validateFileSize(input) {
+            const file = input.files[0];
+            
+            if (!file) {
+                return true; // Jika tidak ada file, lewati validasi
+            }
+            
+            const fileSize = file.size; // dalam bytes
+            const fileType = file.type;
+            const fileName = file.name;
+            const fileExtension = fileName.split('.').pop().toLowerCase();
+            
+            // Validasi untuk gambar (maksimal 500KB = 512000 bytes)
+            const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+            const maxImageSize = 512000; // 500KB dalam bytes
+            
+            // Validasi untuk PDF (maksimal 2MB = 2097152 bytes)
+            const maxPdfSize = 2097152; // 2MB dalam bytes
+            
+            if (imageExtensions.includes(fileExtension) || fileType.startsWith('image/')) {
+                if (fileSize > maxImageSize) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'File Terlalu Besar',
+                        text: `Ukuran gambar tidak boleh lebih dari 500KB. Ukuran file Anda: ${(fileSize / 1024).toFixed(2)}KB`,
+                        confirmButtonColor: '#018797',
+                        confirmButtonText: 'OK'
+                    });
+                    input.value = ''; // Reset input file
+                    return false;
+                }
+            } else if (fileExtension === 'pdf' || fileType === 'application/pdf') {
+                if (fileSize > maxPdfSize) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'File Terlalu Besar',
+                        text: `Ukuran PDF tidak boleh lebih dari 2MB. Ukuran file Anda: ${(fileSize / 1024 / 1024).toFixed(2)}MB`,
+                        confirmButtonColor: '#018797',
+                        confirmButtonText: 'OK'
+                    });
+                    input.value = ''; // Reset input file
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        // Fungsi untuk menambahkan event listener ke semua input file
+        function initFileValidation() {
+            // Tambahkan event listener ke semua input file yang ada
+            $('input[type="file"]').on('change', function() {
+                validateFileSize(this);
+            });
+        }
+
+        // Panggil fungsi saat dokumen siap
+        $(document).ready(function() {
+            initFileValidation();
+        });
+
+        // Update fungsi addExtraFile untuk menyertakan validasi
+        function addExtraFile(param) {
+            target = $(`#question-${param}-extra-file`);
+            let count = 1;
+            if ($(`#question-${param}-extra-file .document:last-child`).data('number')) {
+                count = $(`#question-${param}-extra-file .document:last-child`).data('number') + 1;
+            }
+            target.append(`
+                <div class="d-flex document mb-2" data-number="${count}">
+                    <div>
+                        <button type="button" class="btn btn-outline-danger" onclick="removeThis(this)"> <i class="fas fa-times-circle"></i></button>
+                    </div>
+                    <div class="ms-4 col-10">
+                        <div class="row">
+                            <div class="col-3">
+                                <input type="text" required name="lampiran[lainnya][${count}][title]" class="form-control required" placeholder="Judul Dokumen">
+                            </div>
+                            <div class="col-9">
+                                <input type="file" required name="lampiran[lainnya][${count}][document]" class="form-control required file-input" placeholder="Dokumen" accept="application/pdf" onchange="validateFileSize(this)" />
+                                <small class="text-muted">Format file harus berupa PDF (Maksimal 2MB)</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+        }
+
+        // Validasi sebelum submit form
+        $('.validation-wizard').on('submit', function(e) {
+            let isValid = true;
+            
+            // Cek semua input file
+            $(this).find('input[type="file"]').each(function() {
+                if (this.files.length > 0) {
+                    if (!validateFileSize(this)) {
+                        isValid = false;
+                        return false; // Break loop
+                    }
+                }
+            });
+            
+            if (!isValid) {
+                e.preventDefault();
+                return false;
+            }
+            
+            return (form.validate().settings.ignore = ":disabled"), form.valid();
+        });
     </script>
 @endsection
