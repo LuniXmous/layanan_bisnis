@@ -93,12 +93,12 @@ class UserController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $html = '
-                        <a href="' . route('user.edit', ['id' => $row->id]) . '" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="' . route('user.edit', ['id' => $row->id]) . '" class="btn btn-sm"><i class="fa-solid fa-pen fa-lg" style="color: #ffc800;"></i></a>
                     ';
                     if (Auth::user()->role_id != $row->role_id) {
                         $html .= '
-                            <a href="#" onclick="nonactiveUser(\'' . $row->id . '\')" class="btn btn-sm btn-' . ($row->status == 1 ? 'danger' : 'success') . '">' . ($row->status == 1 ? 'Nonaktifkan' : 'Aktifkan') . '</a>
-                        ';
+                        <a href="#" style="margin-left:10px;" onclick="nonactiveUser(\''.$row->id.'\')" title="'.($row->status == 1 ? 'Nonaktifkan Pengguna' : 'Aktifkan Pengguna').'">'.($row->status == 1 ? '<i class="fa-solid fa-user-slash fa-lg" style="color:#dc3545;"></i>' : '<i class="fa-solid fa-user-check fa-lg" style="color:#198754;"></i>').'</a>                        
+                    ';
                     }
 
                     if (env('GOD_MODE') && Auth::user()->id != $row->id) {
@@ -155,6 +155,19 @@ class UserController extends Controller
         }
     }
 
+    // Tambahkan method private untuk validasi ukuran file
+    private function validateFileSize($file, $type = 'document')
+    {
+        if (!$file) {
+            return true;
+        }
+        
+        $maxSize = $type === 'image' ? 500 : 2048; // 500KB untuk image, 2MB untuk document
+        $fileSizeKB = $file->getSize() / 1024;
+        
+        return $fileSizeKB <= $maxSize;
+    }
+
     public function create()
     {
         $roles = Role::all();
@@ -209,6 +222,7 @@ class UserController extends Controller
         } else {
             return redirect()->route($redirect, $data)->with('error', 'Gagal ditambah');
         }
+        
     }
     
 

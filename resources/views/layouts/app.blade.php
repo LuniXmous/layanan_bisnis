@@ -12,34 +12,163 @@
     <link rel="stylesheet" href="{{ asset('assets/extensions/sweetalert2/sweetalert2.min.css') }}" />
     <script src="{{ asset('assets/extensions/jquery/jquery.min.js') }}"></script>
     @yield('css')
-    <style>
+<style>
+    /* Variabel CSS untuk mempermudah pengaturan */
+    :root {
+        --sidebar-width: 230px;
+        --transition-speed: 0.3s;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        overflow-x: hidden;
+    }
+
+    /* Sidebar Styles - DEFAULT TERBUKA UNTUK DESKTOP */
+    .sidebar-wrapper {
+        width: var(--sidebar-width);
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1001;
+        background: #fff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        transition: transform var(--transition-speed) ease;
+        overflow-y: auto;
+        /* DEFAULT: SIDEBAR TERBUKA */
+        transform: translateX(0);
+    }
+
+    /* Konten utama - DEFAULT DENGAN MARGIN UNTUK DESKTOP */
+    #main {
+        margin-left: var(--sidebar-width);
+        transition: margin-left var(--transition-speed) ease;
+        min-height: 100vh;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Styling untuk burger button - BIRU (Primary) */
+    .burger-btn {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 1002;
+        background: #018797!important;
+        border: none;
+        border-radius: 4px;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .burger-btn i {
+        color: white;
+        font-size: 18px;
+    }
+
+    /* ========== MOBILE STYLES ========== */
+    @media (max-width: 1023px) {
+        /* Sidebar tersembunyi di mobile */
         .sidebar-wrapper {
-            width: 230px;
+            transform: translateX(-100%);
         }
+        
+        /* Sidebar terbuka di mobile */
+        .sidebar-wrapper.active,
+        .sidebar-wrapper.ps.active {
+            transform: translateX(0);
+        }
+        
+        /* Konten utama tanpa margin di mobile */
         #main {
-            margin-left: 215px;
+            margin-left: 0;
         }
-        /* Menggunakan font Open Sans */
-        body {
-            font-family: 'Arial', sans-serif;
+        
+        /* Overlay saat sidebar aktif di mobile */
+        .sidebar-wrapper.active ~ #main::before,
+        .sidebar-wrapper.ps.active ~ #main::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.5);
+            cursor: pointer;
         }
 
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Arial', sans-serif;
-            font-weight: 600;
+        #page-start{
+            margin-top: 20px;
         }
 
-        p, li, span {
-            font-family: 'Arial', sans-serif;
-            font-weight: 400;
+        .modal-backdrop{
+            display: none !important;
         }
-    </style>
-</head>
+    }
+
+    /* ========== DESKTOP STYLES ========== */
+    @media (min-width: 1024px) {
+        .sidebar-wrapper,
+        .sidebar-wrapper.active,
+        .sidebar-wrapper.ps,
+        .sidebar-wrapper.ps.active {
+            transform: translateX(0) !important;
+        }
+        
+        #main {
+            margin-left: var(--sidebar-width) !important;
+        }
+        
+        /* Tombol burger disembunyikan di desktop */
+        .burger-btn {
+            display: none !important;
+        }
+    }
+
+    /* Prevent dropdown from closing sidebar */
+    .sidebar-item.dropdown .dropdown-menu {
+        position: absolute !important;
+        transform: none !important;
+        margin-top: 0;
+    }
+
+    .dropdown-toggle::after {
+        display: inline-block;
+        margin-left: auto;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Arial', sans-serif;
+        font-weight: 600;
+    }
+
+    p, li, span {
+        font-family: 'Arial', sans-serif;
+        font-weight: 400;
+    }
+
+</style>
+
 <body>
     <div id="app">
-    @if(Auth::check())
-        <div id="sidebar" class="{{ Route::is('application.create') || Route::is('application.edit') ? '' : 'active' }}">
-            <div class="sidebar-wrapper active">
+        @if(Auth::check())
+        <div id="mai">
+            <div class="sidebar-wrapper">
                 <div class="sidebar-header position-relative pb-0">
                     <div class="logo text-center">
                         <img src="{{ asset('assets/images/logo.webp') }}" alt="Logo" />
@@ -48,6 +177,7 @@
                 </div>
                 <div class="sidebar-menu">
                     <ul class="menu p-0">
+                        <!-- Menu items -->
                         @if (Auth::user()->role->alias != 'admin' && Auth::user()->role->alias != 'wadir4' && Auth::user()->role->alias != 'wadir2' && Auth::user()->role->alias != 'direktur' && Auth::user()->role->alias != 'wadir1' && Auth::user()->role->alias != 'ppk')
                             <li class="sidebar-item 
                                 {{ Request::route()->action['as'] == 'dashboard' ? 'active' : null }}">
@@ -103,6 +233,12 @@
                                     <span>Pengajuan</span>
                                 </a>
                             </li>
+                            <li class="sidebar-item {{ Request::get('type') === 'historywd1' ? 'active' : null }}">
+                                <a href="{{ route('application.index', ['type' => 'historywd1']) }}" class="sidebar-link">
+                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                    <span>Riwayat Pengajuan</span>
+                                </a>
+                            </li>
                         @endif
                         <!-- sidebar wadir 2 -->
                         @if (Auth::user()->role->alias == 'wadir2' || env('GOD_MODE'))
@@ -126,13 +262,19 @@
                                     <span>Riwayat Pengajuan</span>
                                 </a>
                             </li>
-                            <li class="sidebar-item
+                            <!-- <li class="sidebar-item
                                 {{ Request::route()->action['as'] == 'application.tebusan' ? 'active' : null }}">
                                 <a href="{{ route('application.tebusan') }}" class="sidebar-link">
                                     <i class="fas fa-file-alt"></i>
                                     <span>Tebusan</span>
                                 </a>
-                            </li>   
+                            </li>  -->
+                            <li class="sidebar-item {{ Request::get('type') === 'memowd2' ? 'active' : null }}">
+                                <a href="{{ route('application.index', ['type' => 'memowd2']) }}" class="sidebar-link">
+                                    <i class="fas fa-file-alt"></i>
+                                    <span>Memo</span>
+                                </a>
+                            </li>
                         @endif
                         <!-- sidebar wadir 4 -->
                         @if (Auth::user()->role->alias == 'wadir4' || env('GOD_MODE'))
@@ -275,16 +417,15 @@
         </div>
         <div id="main">
             <header class="mb-xl-4 mb-3">
-                <a href="#" class="burger-btn {{ Route::is('application.create') || Route::is('application.edit') ? 'd-block' : 'd-block d-xl-none' }}">
-                    <div class="btn btn-primary">
-                        <i class="fa-solid fa-bars"></i>
-                    </div>
+                <!-- Hanya satu tombol burger dengan warna biru (primary) -->
+                <a href="#" class="burger-btn" id="burgerBtn">
+                    <i class="fa-solid fa-bars"></i>
                 </a>
             </header>
             <div class="page-heading">
                 <div class="page-title">
                     <div class="row">
-                        <div class="col-12 col-md-8 order-md-1 order-last">
+                        <div class="col-12 col-md-8 order-md-1 order-last" id="page-start">
                             <h3>@yield('page-title')</h3>
                         </div>
                     </div>
@@ -325,7 +466,130 @@
     <script src="{{ asset('assets/js/bootstrap.js') }}"></script>
     <script src="{{ asset('assets/js/app.js') }}"></script>
     <script src="{{ asset('assets/extensions/sweetalert2/sweetalert2.min.js') }}"></script>
+    
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const burgerBtn = document.getElementById('burgerBtn');
+        const sidebarWrapper = document.querySelector('.sidebar-wrapper');
+        let isSidebarOpen = false;
+
+        // Fungsi untuk mendeteksi perangkat mobile
+        function isMobileDevice() {
+            return window.innerWidth < 1024;
+        }
+
+        // Fungsi untuk membuka sidebar (hanya di mobile)
+        function openSidebar() {
+            if (!isSidebarOpen && isMobileDevice()) {
+                isSidebarOpen = true;
+                sidebarWrapper.classList.add('active');
+                // Tambahkan juga class ps active jika diperlukan
+                sidebarWrapper.classList.add('ps', 'active');
+                document.body.style.overflow = 'hidden';
+                
+                // Tambahkan event listener untuk klik di luar sidebar
+                setTimeout(() => {
+                    document.addEventListener('click', handleOutsideClick);
+                }, 10);
+            }
+        }
+        
+        // Fungsi untuk menutup sidebar (hanya di mobile)
+        function closeSidebar() {
+            if (isSidebarOpen && isMobileDevice()) {
+                isSidebarOpen = false;
+                sidebarWrapper.classList.remove('active');
+                // Hapus juga class ps active jika ada
+                sidebarWrapper.classList.remove('ps', 'active');
+                document.body.style.overflow = '';
+                
+                // Hapus event listener untuk klik di luar sidebar
+                document.removeEventListener('click', handleOutsideClick);
+            }
+        }
+        
+        // Fungsi untuk menangani klik di luar sidebar
+        function handleOutsideClick(event) {
+            if (isSidebarOpen && !sidebarWrapper.contains(event.target) && !burgerBtn.contains(event.target)) {
+                closeSidebar();
+            }
+        }
+        
+        // Inisialisasi sidebar berdasarkan ukuran layar
+        function initializeSidebar() {
+            if (isMobileDevice()) {
+                // Di mobile: sidebar default tertutup
+                closeSidebar();
+                // Tampilkan tombol burger
+                if (burgerBtn) burgerBtn.style.display = 'flex';
+            } else {
+                // Di desktop: sidebar default terbuka
+                sidebarWrapper.classList.add('active', 'ps');
+                isSidebarOpen = true;
+                // Sembunyikan tombol burger
+                if (burgerBtn) burgerBtn.style.display = 'none';
+            }
+        }
+        
+        // Toggle sidebar di mobile/tablet
+        if (burgerBtn) {
+            burgerBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (!isSidebarOpen) {
+                    openSidebar();
+                } else {
+                    closeSidebar();
+                }
+            });
+        }
+        
+        // Mencegah dropdown menutup sidebar
+        const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+        dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+        
+        // Tutup sidebar saat item menu biasa diklik di mobile/tablet
+        const sidebarLinks = document.querySelectorAll('.sidebar-link:not(.dropdown-toggle)');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                if (isMobileDevice()) {
+                    closeSidebar();
+                }
+            });
+        });
+        
+        // Handle resize event
+        window.addEventListener('resize', function() {
+            initializeSidebar();
+        });
+        
+        // Handle escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && isSidebarOpen && isMobileDevice()) {
+                closeSidebar();
+            }
+        });
+        
+        // Inisialisasi awal
+        initializeSidebar();
+        
+        // Force sidebar terbuka di desktop (safety measure)
+        if (!isMobileDevice()) {
+            setTimeout(() => {
+                sidebarWrapper.style.transform = 'translateX(0)';
+                sidebarWrapper.style.display = 'block';
+                document.getElementById('main').style.marginLeft = '230px';
+            }, 100);
+        }
+    });
+</script>
+    
     @yield('script')
     @yield('scripts')
-</body>
+</body> 
 </html>

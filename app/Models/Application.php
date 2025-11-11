@@ -87,40 +87,44 @@ class Application extends Model
                 return ['status' => 'Menunggu Review Wakil Direktur 1 Permohonan Pencairan Dana Operasional', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 6)->get(), 'must_role' => [6, 0]];
             } else if ($this->approve_status == 3) {
                 if ($this->income === 'income') {
+                    $mustRole = [0, 3, 6];
                     return [
                         'status'    => 'Menunggu Review Wakil Direktur 2 Permohonan Pencairan Dana Operasional (Income)',
                         'class'     => 'bg-warning text-dark',
                         'users'     => User::select('email')->where('role_id', 3)->get(),
-                        'must_role' => [3],
+                        'must_role' => $mustRole,
                     ];
                 } else {
+                    $mustRole = [5, 3, 6];
                     return [
                         'status'    => 'Menunggu Review Direktur Permohonan Pencairan Dana Operasional (Non Income)',
                         'class'     => 'bg-warning text-dark',
                         'users'     => User::select('email')->where('role_id', 5)->get(),
-                        'must_role' => [5],
+                        'must_role' => $mustRole,
                     ];
                 }
             }
 
             else if ($this->approve_status == 4) {
                 if ($this->income === 'income') {
+                    $mustRole = [7, 0, 3, 6];
                     return [
                         'status'    => 'Menunggu PPK Review Pencairan Dana Operasional (Income)',
                         'class'     => 'bg-warning text-dark',
                         'users'     => User::select('email')->where('role_id', 7)->get(),
-                        'must_role' => [7],
+                        'must_role' => $mustRole,
                     ];
                 } else {
+                    $mustRole = [0, 3];
                     return [
                         'status'    => 'Menunggu Review Wakil Direktur 2 Pencairan Dana Operasional (Non Income)',
                         'class'     => 'bg-warning text-dark',
                         'users'     => User::select('email')->where('role_id', 3)->get(),
-                        'must_role' => [3],
+                        'must_role' => $mustRole,
                     ];
                 }
             } else if ($this->approve_status == 5) {
-                return ['status' => "Pengajuan $latestExtraType Telah Disetujui", 'class' => 'bg-success', 'users' => [$this->user], 'must_role' => [0, 3]];
+                return ['status' => "Pengajuan $latestExtraType Telah Disetujui", 'class' => 'bg-success', 'users' => [$this->user], 'must_role' => [0, 3, 7]];
             } else {
                 return ['status' => '', 'class' => '', 'users' => null, 'must_role' => []];
             }
@@ -133,7 +137,7 @@ class Application extends Model
             } else if ($this->approve_status == 2) {
                 return ['status' => 'Menunggu Review Wakil Direktur 1: Pemberitahuan Kegiatan Selesai Dilaksanakan', 'class' => 'bg-warning text-dark', 'users' => User::select('email')->where('role_id', 3)->get(), 'must_role' => [6, 0, 3]];
             } else if ($this->approve_status == 3) {
-                return ['status' => "Pengajuan $latestExtraType Telah Disetujui", 'class' => 'bg-success', 'users' => [$this->user], 'must_role' => [0, 3]];
+                return ['status' => "Pengajuan $latestExtraType Telah Disetujui", 'class' => 'bg-success', 'users' => [$this->user], 'must_role' => [0, 3, 6]];
             } else {
                 return ['status' => '', 'class' => '', 'users' => null, 'must_role' => []];
             }

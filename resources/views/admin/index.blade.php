@@ -3,7 +3,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @section('content')
     <div class="container">
-        <h2 class="page-title-text" style="margin-bottom:1%;">
+        <h2 class="page-title-text">
             @if(Auth::user()->role->alias == 'admin')
                 Selamat Datang Admin {{ Auth::user()->name }}!
             @elseif(Auth::user()->role->alias == 'applicant')
@@ -19,7 +19,7 @@
             @endif
         </h2>
         <!-- Statistik Panel Admin-->
-        <div class="row mt-3">
+        <div class="row mt-4">
             @if (Auth::user()->role->alias == 'wadir4'|| env('GOD_MODE'))
             <div class="col-md-13">
                 <div class="card">
@@ -188,7 +188,7 @@
                                             </div>
                                             <h6 style="margin-top: 13px;">Admin Layanan Bisnis</h6>
                                         </div>
-                                        <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                                        <div style="flex-grow: 1; height: 2px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
 
                                         <div>
                                             <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
@@ -196,7 +196,16 @@
                                             </div>
                                             <h6 style="margin-top: 13px;">Wakil Direktur 4</h6>
                                         </div>
-                                            <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                                            <div style="flex-grow: 1; height: 2px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+
+                                        <div>
+                                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                                <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
+                                            </div>
+                                            <h6 style="margin-top: 13px;">Wakil Direktur 2</h6>
+                                        </div>
+                                    
+                                        <div style="flex-grow: 1; height: 2px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
 
                                         <div>
                                             <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
@@ -204,7 +213,7 @@
                                             </div>
                                             <h6 style="margin-top: 13px;">Direktur</h6>
                                         </div>
-                                            <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                                            <div style="flex-grow: 1; height: 2px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
 
                                         <div>
                                             <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
@@ -220,53 +229,130 @@
                                 <li>
                                     <h5>2. Permohonan Pencairan Dana/Dana operasional </h5>
                                     <p>Tahap yang ke dua anda bisa melakukan pengajuan pencairan dana/pencairan dana operasional saat pengajuan kegiatan anda telah disetujui oleh direktur, lalu saat pengajuan sudah selesai anda akan mendapatkan notifikasi email pengajuan anda telah selesai.</p>
-                                    <div style="display: flex; align-items: center; justify-content: space-between; text-align: center;">
-                                    <div>
-                                        <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                                <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
+                                    <div style="display: flex; flex-direction: column; align-items: center; margin-top: 20px; padding: 130px 0px 130px 0px">
+                                        
+                                        <!-- Garis utama horizontal -->
+                                        <div style="display: flex; align-items: center; justify-content: center; position: relative;">
+                                            <div style="text-align: center;">
+                                                <div style="width: 55px; height: 55px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                                    <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 28px;"></i>
+                                                </div>
+                                                <h6 style="margin-top: 8px;">Admin Layanan Bisnis</h6>
                                             </div>
-                                            <h6 style="margin-top: 13px;">Wakil Direktur 4</h6>
-                                        </div>
-                                            <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
 
-                                        <div>
-                                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                                <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
-                                            </div>
-                                            <h6 style="margin-top: 13px;">Review Wakil Direktur 2</h6>
-                                        </div>
-                                            <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                                            <div style="width: 60px; height: 3px; background-color: #018797;"></div>
 
-                                        <div>
-                                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
-                                                <i class="fa-solid fa-circle-check" style="color: #ffffff; font-size: 27px;margin: 10px;"></i>                     
+                                            <!-- Wakil Direktur 4 -->
+                                            <div style="text-align: center;">
+                                                <div style="width: 55px; height: 55px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                                    <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 28px;"></i>
+                                                </div>
+                                                <h6 style="margin-top: 8px;">Wakil Direktur 1</h6>
                                             </div>
-                                            <h6 style="margin-top: 13px;">Review Selesai</h6>
+
+                                            <!-- Garis horizontal -->
+                                            <div style="width: 80px; height: 3px; background-color: #018797; margin: 0 10px;"></div>
+
+                                            <!-- Titik percabangan -->
+                                            <div style="width: 20px; height: 20px; border-radius: 50%; background-color: #018797; position: relative; margin-right: 180px;">
+                                                <!-- Garis ke atas (Income) -->
+                                                <div style="position: absolute; top: -80px; left: 9px; width: 2px; height: 60px; background-color: #018797;"></div>
+                                                <!-- Garis ke bawah (Non-Income) -->
+                                                <div style="position: absolute; bottom: -80px; left: 9px; width: 2px; height: 60px; background-color: #018797;"></div>
+                                            </div>
+
+                                            <!-- Jalur Income (atas) -->
+                                            <div style="position: absolute; top: -130px; left: 340px; display: flex; align-items: center;">
+                                                <h6 style="color: #018797; margin-right: 10px;">Income</h6>
+
+                                                <!-- Icon: Wakil Direktur 2 -->
+                                                <div style="text-align: center; margin-right: 20px;">
+                                                    <div style="width: 55px; height: 55px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                                        <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 28px;"></i>
+                                                    </div>
+                                                    <h6 style="margin-top: 8px;">Wakil Direktur 2</h6>
+                                                </div>
+
+                                                <!-- Garis horizontal -->
+                                                <div style="width: 60px; height: 2px; background-color: #018797;"></div>
+
+                                                <!-- Icon: PPK -->
+                                                <div style="text-align: center; margin-left: 20px;">
+                                                    <div style="width: 55px; height: 55px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                                        <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 28px;"></i>
+                                                    </div>
+                                                    <h6 style="margin-top: 8px;">PPK</h6>
+                                                </div>
+                                            </div>
+
+                                            <!-- Jalur Non-Income (bawah) -->
+                                            <div style="position: absolute; bottom: -150px; left: 340px; display: flex; align-items: center;">
+                                                <h6 style="color: #018797; margin-right: 10px;">Non-Income</h6>
+
+                                                <!-- Icon: Direktur -->
+                                                <div style="text-align: center; margin-right: 20px;">
+                                                    <div style="width: 55px; height: 55px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                                        <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 28px;"></i>
+                                                    </div>
+                                                    <h6 style="margin-top: 8px;">Direktur</h6>
+                                                </div>
+
+                                                <!-- Garis horizontal -->
+                                                <div style="width: 60px; height: 2px; background-color: #018797;"></div>
+
+                                                <!-- Icon: Wakil Direktur 2 -->
+                                                <div style="text-align: center; margin-right: 20px;">
+                                                    <div style="width: 55px; height: 55px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                                        <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 28px;"></i>
+                                                    </div>
+                                                    <h6 style="margin-top: 8px;">Wakil Direktur 2</h6>
+                                                </div>
+                                            </div>
+
+                                            <!-- Titik percabangan -->
+                                            <div style="width: 20px; height: 20px; border-radius: 50%; background-color: #018797; position: relative;">
+                                                <!-- Garis ke atas (Income) -->
+                                                <div style="position: absolute; top: -80px; left: 9px; width: 2px; height: 60px; background-color: #018797;"></div>
+                                                <!-- Garis ke bawah (Non-Income) -->
+                                                <div style="position: absolute; bottom: -80px; left: 9px; width: 2px; height: 60px; background-color: #018797;"></div>
+                                            </div>
+
+                                            <div style="width: 60px; height: 3px; background-color: #018797;"></div>
+
+                                            <!-- Review Selesai -->
+                                            <div style="text-align: center;">
+                                                <div style="width: 55px; height: 55px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                                    <i class="fa-solid fa-circle-check" style="color: #ffffff; font-size: 27px;"></i>
+                                                </div>
+                                                <h6 style="margin-top: 8px;">Review Selesai</h6>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </li>
                             </ul>
+
                             <br>
                             <ul>
-                                <li>
+                                <li>                                    
                                     <h5>3. Pengajuan Pemberitahuan Kegiatan Selesai </h5>
                                     <p>Tahap yang ke tiga yaitu tahap akhir adalah melaporkan kegiatan anda telah selesai dilaksanakan anda bisa mengajukan pengajuan ini setelah pengajuan pencairan dana/dana operasional sudah disetujui agar petinggi bisa tau bahwa kegiatan anda sudah selesai dilaksanakan, lalu saat pengajuan sudah selesai anda akan mendapatkan notifikasi email pengajuan anda telah selesai.</p>
-                                    <div style="display: flex; align-items: center; justify-content: space-between; text-align: center;">
+                                 <div style="display: flex; align-items: center; justify-content: space-between; text-align: center; width: 700px; margin-left: 100px;">
                                     <div>
                                         <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
                                                 <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
                                             </div>
-                                            <h6 style="margin-top: 13px;">Wakil Direktur 4</h6>
+                                            <h6 style="margin-top: 13px;">Admin Layanan Bisnis</h6>
                                         </div>
-                                            <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                                            <div style="flex-grow: 1; height: 2px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
 
                                         <div>
                                             <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
                                                 <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
                                             </div>
-                                            <h6 style="margin-top: 13px;">Review Wakil Direktur 2</h6>
+                                            <h6 style="margin-top: 13px;">Wakil Direktur 1</h6>
                                         </div>
-                                            <div style="flex-grow: 1; height: 0.5px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
+                                            <div style="flex-grow: 1; height: 2px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
 
                                         <div>
                                             <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
@@ -281,7 +367,7 @@
                             <li>
                                 <h5>4. Mapping Warna Icon</h5>
                                 <p>Warna Pada icon akan berubah hijau saat telah di review dan disetujui oleh petinggi,<br> Warna icon kuning akan menjadi kuning saat surat sedang berada di petinggi sesuai dengan aktor pada icon, <br>Warna merah pada icon akan menjadi merah jika pengajuan anda di tolak pada salah satu petinggi dan anda bisa memperbaiki nya, jangan lupa liat catatannya ya!.</p>
-                                <div style="display: flex; justify-content: center; align-items: center; gap: 20px; text-align: center;">
+                                 <div style="display: flex; justify-content: center; align-items: center; gap: 20px; text-align: center;">
                                     <div style="display: flex; flex-direction: column; align-items: center;">
                                         <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #198754 ; display: flex; align-items: center; justify-content: center;">
                                             <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>

@@ -6,19 +6,21 @@
         <div class="card-body">
             <a class="btn btn-md btn-primary mb-4" href="{{ route('user.create') }}"><i class="fas fa-plus"></i>&nbsp; Tambah</a>
             <br>
-            <table class="table table-striped w-100 table-bordered table-xs" id="datatable-ajax">
-                <thead>
-                    <tr>
-                        <th width="4%">No</th>
-                        <th>Nama Pengguna</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Status</th>
-                        <th width="15%">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-striped w-100 table-bordered table-xs" id="datatable-ajax">
+                    <thead>
+                        <tr>
+                            <th width="4%">No</th>
+                            <th>Nama Pengguna</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th width="9%">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
 @endsection

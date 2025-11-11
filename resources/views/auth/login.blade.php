@@ -1,5 +1,75 @@
 @extends('layouts.app-auth')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+
+<style>
+    .auth-logo {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 15px;
+        flex-wrap: nowrap;
+        margin-bottom: 2rem;
+    }
+    
+    .auth-logo img {
+        max-width: 100%;
+        height: auto;
+        max-height: 100px;
+        object-fit: contain;
+    }
+    
+    /* Responsif untuk layar kecil */
+    @media (max-width: 576px) {
+        .auth-logo {
+            gap: 10px;
+        }
+        
+        .auth-logo img {
+            max-height: 60px;
+        }
+    }
+
+    .auth-title {
+        font-size: 2rem !important;
+    }
+    
+    @media (max-width: 400px) {
+        .auth-logo {
+            gap: 8px;
+        }
+        
+        .auth-logo img {
+            max-height: 50px;
+        }
+    }
+
+    #auth-right {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: url("{{ asset('assets/images/background_homepage.jpg') }}") center/cover no-repeat !important;
+    overflow: hidden;
+    }
+
+    #auth-right::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.2); /* ubah opacity sesuai selera */
+    }
+
+    #auth-right img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* ⬅️ Penting agar gambar memenuhi area */
+
+    }
+
+</style>
+
 @section('content')
 
     <div class="row h-100">
@@ -31,7 +101,7 @@
                         </ul>
                     </div>
                 @endif
-                <h1 class="auth-title">Log in.</h1>
+                <h1 class="auth-title">Login.</h1>
 
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
@@ -50,9 +120,16 @@
                     <div class="form-group position-relative has-icon-left mb-4">
                         <input type="password" id="password" class="form-control form-control-xl" placeholder="Password"
                             name="password" required autocomplete="current-password">
+
                         <div class="form-control-icon">
                             <i class="fa-solid fa-lock" style="margin-top:5px;"></i>
                         </div>
+
+                        <!-- 👁️ Ikon toggle password -->
+                        <span class="position-absolute top-50 end-0 translate-middle-y me-3" id="togglePassword" style="cursor:pointer;">
+                            <i class="fa-solid fa-eye-slash"></i>
+                        </span>
+
                         @error('password')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -89,7 +166,25 @@
             </div>
         </div>
         <div class="col-lg-7 d-none d-lg-block">
-            <div id="auth-right"></div>
+            <div id="auth-right">
+            </div>
         </div>
     </div>
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordInput = document.getElementById('password');
+        const togglePassword = document.getElementById('togglePassword');
+        const icon = togglePassword.querySelector('i');
+
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            // Ubah icon eye / eye-slash
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
+        });
+    });
+</script>

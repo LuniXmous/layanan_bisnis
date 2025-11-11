@@ -43,6 +43,23 @@
       background-color: transparent;
     }
 
+    .navbar .container-fluid {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar-logos {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .navbar .navbar-brand {
+      margin: 0;
+      padding: 0;
+    }
+
     .navbar .navbar-brand img {
       width: 60px;
       height: auto;
@@ -50,7 +67,7 @@
     }
 
     .navbar-collapse {
-      text-align: right;
+      display: block !important;
     }
 
     .ms-auto {
@@ -58,15 +75,7 @@
     }
 
     .navbar-toggler {
-      background-color: white;
-      border: none;
-      border-radius: 5px;
-    }
-
-    .navbar-toggler-icon {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba%280,0,0,0.7%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
-      width: 24px;
-      height: 24px;
+      display: none;
     }
 
     .hero-content {
@@ -77,10 +86,14 @@
       color: white;
       text-align: center;
       z-index: 2;
+      padding: 0 20px;
+      width: 90%;
     }
 
-    .hero-content h2, .hero-content h4 {
+    .hero-content h2, .hero-content h3, .hero-content h4 {
       margin: 0;
+      line-height: 1.3;
+      color: white;
     }
 
     .arrow-down {
@@ -91,46 +104,8 @@
       cursor: pointer;
       z-index: 3;
       transition: all 0.3s ease;
-    }
-
-    /* Ukuran panah di mobile */
-    @media (max-width: 855px) {
-      .arrow-down {
-        bottom: 5%;
-        font-size: 40px;
-      }
-    }
-
-    /* Ukuran panah di desktop */
-    @media (min-width: 856px) {
-      .arrow-down {
-        bottom: 15%;
-        font-size: 80px;
-      }
-
-      .arrow-down:hover {
-        bottom: 10%;
-        font-size: 100px;
-        transform: translateX(-50%) translateY(10px);
-      }
-    }
-
-    /* Untuk mobile */
-    @media (max-width: 855px) {
-      .hero-content h2, 
-      .hero-content h4 {
-        font-size: 20px;
-        white-space: normal;
-        overflow: visible;
-      }
-    }
-
-    /* Untuk desktop */
-    @media (min-width: 855px) {
-      .hero-content h2, h4 {
-        white-space: nowrap;
-        overflow: hidden;
-      }
+      bottom: 5%;
+      font-size: 40px;
     }
 
     .hero-content hr {
@@ -149,16 +124,17 @@
       padding: 40px;
       display: flex;
       align-items: center;
+      gap: 40px;
     }
 
     .content {
       flex: 1;
       text-align: left;
-      margin-right: 40px;
     }
 
     .content p {
       text-align: justify;
+      line-height: 1.6;
     }
 
     .image {
@@ -194,17 +170,352 @@
     }
 
     .btn {
-      border: 1px solid white !important;
+      border: none !important;
+      font-size: 18px;
+      padding: 12px 24px;
     }
 
     .content h1 {
       color: #018797;
     }
 
-    .btn {
-      border: 1px solid white !important;
-      font-size: 18px;
-      padding: 12px 24px; 
+    /* Desktop Large (1024px and above) */
+    @media (min-width: 1024px) {
+      .hero {
+        height: 730px;
+      }
+
+      .navbar .navbar-brand img {
+        width: 80px;
+        height: 85px;
+      }
+
+      .hero-content h2 {
+        font-size: 40px;
+      }
+
+      .hero-content h3 {
+        font-size: 50px;
+      }
+
+      .hero-content h4 {
+        font-size: 70px;
+      }
+
+      .arrow-down {
+        bottom: 15%;
+        font-size: 80px;
+      }
+
+      .arrow-down:hover {
+        bottom: 10%;
+        font-size: 100px;
+        transform: translateX(-50%) translateY(10px);
+      }
+
+      .container {
+        flex-direction: row;
+        padding: 60px 40px;
+      }
+
+      .content {
+        margin-right: 40px;
+      }
+
+      .content h1 {
+        font-size: 36px;
+      }
+
+      .content p {
+        font-size: 16px;
+      }
+    }
+
+    /* Tablet (768px - 1023px) */
+    @media (max-width: 1023px) and (min-width: 768px) {
+      .hero {
+        height: 600px;
+      }
+
+      .navbar .navbar-brand img {
+        width: 60px;
+        height: 65px;
+      }
+
+      .hero-content h2 {
+        font-size: 28px;
+      }
+
+      .hero-content h3 {
+        font-size: 36px;
+      }
+
+      .hero-content h4 {
+        font-size: 48px;
+      }
+
+      .hero-content hr {
+        margin: 15px auto;
+        height: 3px;
+      }
+
+      .arrow-down {
+        bottom: 8%;
+        font-size: 50px;
+      }
+
+      .container {
+        flex-direction: column;
+        padding: 40px 30px;
+        gap: 30px;
+      }
+
+      .content {
+        margin-right: 0;
+        text-align: center;
+      }
+
+      .content h1 {
+        font-size: 32px;
+      }
+
+      .content p {
+        font-size: 15px;
+        text-align: center;
+      }
+
+      .image {
+        text-align: center;
+        width: 100%;
+      }
+
+      .image img {
+        max-width: 80%;
+      }
+
+      .btn {
+        font-size: 16px;
+        padding: 10px 20px;
+      }
+    }
+
+    /* Mobile Large (425px - 767px) */
+    @media (max-width: 767px) and (min-width: 425px) {
+      .hero {
+        height: 500px;
+      }
+
+      .navbar .navbar-brand img {
+        width: 50px;
+        height: 55px;
+      }
+
+      .hero-content {
+        width: 95%;
+      }
+
+      .hero-content h2 {
+        font-size: 20px;
+      }
+
+      .hero-content h3 {
+        font-size: 26px;
+      }
+
+      .hero-content h4 {
+        font-size: 32px;
+      }
+
+      .hero-content hr {
+        margin: 12px auto;
+        height: 2px;
+      }
+
+      .arrow-down {
+        bottom: 5%;
+        font-size: 40px;
+      }
+
+      .container {
+        flex-direction: column;
+        padding: 30px 20px;
+        gap: 25px;
+      }
+
+      .content {
+        margin-right: 0;
+        text-align: center;
+      }
+
+      .content h1 {
+        font-size: 28px;
+      }
+
+      .content p {
+        font-size: 14px;
+        text-align: justify;
+      }
+
+      .image {
+        text-align: center;
+        width: 100%;
+      }
+
+      .image img {
+        max-width: 90%;
+      }
+
+      .btn {
+        font-size: 15px;
+        padding: 10px 18px;
+      }
+
+      .floating-headset {
+        width: 50px;
+        height: 50px;
+        bottom: 15px;
+        right: 15px;
+      }
+
+      .floating-headset i {
+        font-size: 20px;
+      }
+    }
+
+    /* Mobile Small (below 425px) */
+    @media (max-width: 424px) {
+      .hero {
+        height: 450px;
+      }
+
+      .navbar .navbar-brand img {
+        width: 50px;
+        height: 55px;
+      }
+
+      .hero-content {
+        width: 95%;
+      }
+
+      .hero-content h2 {
+        font-size: 16px;
+      }
+
+      .hero-content h3 {
+        font-size: 22px;
+      }
+
+      .hero-content h4 {
+        font-size: 26px;
+      }
+
+      .hero-content hr {
+        margin: 10px auto;
+        height: 2px;
+      }
+
+      .arrow-down {
+        bottom: 5%;
+        font-size: 35px;
+      }
+
+      .container {
+        flex-direction: column;
+        padding: 25px 15px;
+        gap: 20px;
+      }
+
+      .content {
+        margin-right: 0;
+        text-align: center;
+      }
+
+      .content h1 {
+        font-size: 24px;
+      }
+
+      .content p {
+        font-size: 13px;
+        text-align: justify;
+      }
+
+      .image {
+        text-align: center;
+        width: 100%;
+      }
+
+      .image img {
+        max-width: 100%;
+      }
+
+      .btn {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+
+      .floating-headset {
+        width: 45px;
+        height: 45px;
+        bottom: 12px;
+        right: 12px;
+      }
+
+      .floating-headset i {
+        font-size: 18px;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes scaleLine {
+      from {
+        transform: scaleX(0);
+        opacity: 0;
+      }
+      to {
+        transform: scaleX(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Apply animations */
+    .hero-content h2:first-of-type {
+      animation: fadeInDown 1.2s ease-out forwards;
+      opacity: 0;
+    }
+
+    .hero-content hr {
+      transform-origin: center;
+      animation: scaleLine 1s ease-out forwards;
+      animation-delay: 0.7s;
+      opacity: 0;
+    }
+
+    .hero-content h3,
+    .hero-content h4,
+    .hero-content h2:last-of-type {
+      animation: fadeIn 1.4s ease-out forwards;
+      animation-delay: 1.2s;
+      opacity: 0;
     }
 
   </style>
@@ -213,37 +524,29 @@
     <div class="hero-overlay"></div>
     <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
-        <a class="navbar-brand">
-          <img src="{{ asset('assets/images/logo-pnj.png') }}" alt="Logo" style="width: 80px; height: 80px;">
-        </a>
-        <a class="navbar-brand">
-          <img src="{{ asset('assets/images/logo_rtpu.png') }}" alt="Logo">
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
-          <div class="ms-auto">
-            <a href="{{ route('login') }}" class="btn btn-primary" style="background-color: #018797;">
-              Login
-            </a>
-          </div>
+        <div class="navbar-logos">
+          <a class="navbar-brand">
+            <img src="{{ asset('assets/images/logo_pnj.png') }}" alt="Logo">
+          </a>
+          <a class="navbar-brand">
+            <img src="{{ asset('assets/images/logo_rtpu.png') }}" alt="Logo">
+          </a>
+        </div>
+        <div class="ms-auto">
+          <a href="{{ route('login') }}" class="btn btn-primary" style="background-color: #018797;">
+            Login
+          </a>
         </div>
       </div>
     </nav>
   
   <img src="{{ asset('assets/images/background_homepage.jpg') }}" alt="Background">
   <div class="hero-content">
-    <h2 style="font-size: 40px; color: white;">Selamat Datang di Situs Resmi</h2>
+    <h2>Selamat Datang di Situs Resmi</h2>
     <hr>
-    <h3 style="font-size: 50px; color: white;">Layanan Bisnis</h3>
-    <h2 style="font-size: 40px; color: white; margin-top: 15px;">Unit Rekayasa Teknologi dan Produk Unggulan (RTPU)</h2   >
-    <h4 style="font-size: 70px; color: white;">Politeknik Negeri Jakarta</h4>
-
-  </div>
-  <div class="arrow-down" onclick="document.getElementById('enterprise').scrollIntoView({ behavior: 'smooth' });">
-    &#x25BC;
+    <h3>Layanan Bisnis</h3>
+    <h4 style="margin-top: 15px;">Unit Rekayasa Teknologi dan Produk Unggulan (RTPU)</h4>
+    <h2>Politeknik Negeri Jakarta</h2>
   </div>
   </div>
   <div class="container">

@@ -23,8 +23,8 @@ class UnitController extends Controller
             })
             ->addColumn('action', function ($row) {
                 $html = '
-                    <a href="' . route('unit.detail', ['id' => $row->id]) . '" class="btn btn-warning">Edit</a>
-                    <button class="btn btn-danger delete-unit" data-id="' . $row->id . '">Hapus</button>
+                    <a href="' . route('unit.detail', ['id' => $row->id]) . '"class="btn"><i class="fa-solid fa-pen" style="color: #ffc800;"></i></a>
+                    <button class="btn delete-unit" data-id="' . $row->id . '"><i class="fa-solid fa-trash" style="color: #ff0000;"></i></button>
                 ';
                 if (env('GOD_MODE')) {
                     $html .= '
@@ -55,8 +55,8 @@ class UnitController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $html = '
-                        <button type="button" onclick="updateActivity(' . $row->id . ',' . $row->category_id . ',\'' . $row->name . '\')" class="btn btn-warning">Edit</button>
-                        <button class="btn btn-danger delete-activities" data-id="' . $row->id . '">Hapus</button>
+                        <button type="button" onclick="updateActivity(' . $row->id . ',' . $row->category_id . ',\'' . $row->name . '\')" class="btn"><i class="fa-solid fa-pen" style="color: #ffc800;"></i></button>
+                        <button class="btn delete-activities" data-id="' . $row->id . '"><i class="fa-solid fa-trash" style="color: #ff0000;"></i></button>
                     ';
                     return $html;
                 })

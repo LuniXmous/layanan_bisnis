@@ -8,16 +8,18 @@
                 <div class="card-body">
                     <a id="btnUnit" class="btn btn-md btn-primary mb-4" href="#"><i class="fas fa-plus"></i>&nbsp; Tambah</a>
                     <br>
-                    <table class="table table-striped w-100 table-bordered table-xs" id="datatable">
-                        <thead>
-                            <tr>
-                                <th width="3%">No</th>
-                                <th>Nama</th>
-                                <th>Total Kegiatan</th>
-                                <th width="20%">Aksi</th>
-                            </tr>
-                        </thead>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-striped w-100 table-bordered table-xs" id="datatable">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama</th>
+                                    <th>Total Kegiatan</th>
+                                    <th width="12%">Aksi</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

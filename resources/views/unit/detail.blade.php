@@ -12,7 +12,7 @@
                 <table class="table table-striped w-100 table-bordered table-xs" id="datatable">
                     <thead>
                         <tr>
-                            <th width="3%">No</th>
+                            <th>No</th>
                             <th>Kategori</th>
                             <th>Kegiatan</th>
                             <th>Aksi</th>
@@ -178,7 +178,7 @@
         function newActivity(){
             $('#activityModal').modal('toggle');
             $('#activityModal .modal-title').text('Tambah Layanan');
-            $('#activityModal button').text('Tambah');
+            $('#activityModal submit').text('Tambah');
             $('#activityId').val('');
             $('#activityCategory').val('');
             $('#activityCategory').removeAttr('disabled');
@@ -187,7 +187,7 @@
         function updateActivity(id,category,name){
             $('#activityId').val(id);
             $('#activityModal .modal-title').text('Edit Layanan');
-            $('#activityModal button').text('Edit');
+            $('#activityModal submit').text('Edit');
             $('#activityCategory').val(category);
             $('#activityCategory').attr('disabled',true);
             $('#activityName').val(name);
@@ -220,7 +220,7 @@
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, hapus!'
+                confirmButtonText: 'Hapus'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
