@@ -13,7 +13,6 @@
     <script src="{{ asset('assets/extensions/jquery/jquery.min.js') }}"></script>
     @yield('css')
 <style>
-    /* Variabel CSS untuk mempermudah pengaturan */
     :root {
         --sidebar-width: 230px;
         --transition-speed: 0.3s;

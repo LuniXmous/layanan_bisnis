@@ -1008,7 +1008,7 @@
                                         <div class="status-icon" style="width: 50px; height: 50px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
                                             <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 30px; margin: 10px;"></i>
                                         </div>
-                                        <h6 class="status-title-alt" style="margin-top: 13px;">Penjabar Pembuat Komitmen</h6>
+                                        <h6 class="status-title-alt" style="margin-top: 13px;">Penjabat Pembuat Komitmen</h6>
                                     </div>
                                         <div style="flex-grow: 1; height: 1px; background-color: #018797; margin:10px; margin-bottom: 5%;"></div>
                                     <div>
