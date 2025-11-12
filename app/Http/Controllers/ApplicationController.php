@@ -55,9 +55,9 @@ class ApplicationController extends Controller
                     $comment = true;
                 } else if ($application->approve_status == 3 || $application->approve_status == 4) {
                     if ($application->income === 'income') {
-                        if ($application->approve_status == 3 && Auth::user()->role_id == 3) {
+                        if ($application->approve_status == 3 && Auth::user()->role_id == 7) {
                             $comment = true;
-                        } else if ($application->approve_status == 4 && Auth::user()->role_id == 7) {
+                        } else if ($application->approve_status == 4 && Auth::user()->role_id == 3) {
                             $comment = true;
                         }
                     } elseif ($application->income === 'non_income') {
@@ -144,7 +144,7 @@ class ApplicationController extends Controller
                         $query->where('status', 1)->whereIn('approve_status', [3]);
                     })->orWhere(function ($query) {
                         $query->where('status', 2)
-                            ->where('approve_status', 3)
+                            ->where('approve_status', 4)
                             ->where('income', 'income');
                     })->orWhere(function ($query) {
                         $query->where('status', 2)
@@ -204,7 +204,7 @@ class ApplicationController extends Controller
                     }
                     elseif ($type === 'pengajuanppk') {
                         $applications->where(function ($query) {
-                        $query->where('status', 2)->where('approve_status', [4])->where('income', 'income');
+                        $query->where('status', 2)->where('approve_status', [3])->where('income', 'income');
                         });
                     }
                 $applications->orderBy('updated_at', 'desc');

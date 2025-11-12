@@ -66,7 +66,7 @@ class ApplicationStatusLog extends Model
                 $income = $this->income ?? ($this->application ? $this->application->income : null);
                 if ($income === 'income') {
                     return [
-                        'status'    => 'Permohonan Pencairan Dana Operasional Disetujui Oleh Wakil Direktur 2',
+                        'status'    => 'Permohonan Pencairan Dana Operasional Disetujui Oleh Penjabat Pembuat Komitmen',
                         'class'     => 'bg-warning text-dark',
                         'users'     => User::select('email')->where('role_id', 3)->get(),
                         'must_role' => [3],
@@ -83,7 +83,7 @@ class ApplicationStatusLog extends Model
                 $income = $this->income ?? ($this->application ? $this->application->income : null);
                 if ($income === 'income') {
                     return [
-                        'status'    => 'Permohonan Pencairan Dana Operasional Disetujui Oleh PPK',
+                        'status'    => 'Permohonan Pencairan Dana Operasional Disetujui Oleh Wakil Direktur 2',
                         'class'     => 'bg-warning text-dark',
                         'users'     => User::select('email')->where('role_id', 7)->get(),
                         'must_role' => [7],
