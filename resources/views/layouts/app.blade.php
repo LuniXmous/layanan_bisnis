@@ -68,6 +68,10 @@
         border-left: 4px solid #018797 !important;
     }
 
+    .sidebar-link:hover {
+        background-color: #0f5757 !important;
+        border-color: #0f5757 !important;
+    }
 
     /* Konten utama - DEFAULT DENGAN MARGIN UNTUK DESKTOP */
     #main {
