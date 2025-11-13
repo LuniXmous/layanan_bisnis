@@ -526,7 +526,7 @@
       <div class="container-fluid">
         <div class="navbar-logos">
           <a class="navbar-brand">
-            <img src="{{ asset('assets/images/logo_pnj.png') }}" alt="Logo">
+            <img src="{{ asset('assets/images/logo-pnj.png') }}" alt="Logo">
           </a>
           <a class="navbar-brand">
             <img src="{{ asset('assets/images/logo_rtpu.png') }}" alt="Logo">
