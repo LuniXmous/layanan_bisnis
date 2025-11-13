@@ -59,6 +59,7 @@
       #logo-pnj img {
         width: 110px; /* Lebih besar dari RTPU */
         height: auto; 
+        color: #018797;
       }
 
       #logo_rtpu img {
