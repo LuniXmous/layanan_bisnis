@@ -64,14 +64,15 @@
     }
 
     .sidebar-item.active > .sidebar-link {
-        background-color: rgba(1, 135, 151, 0.1) !important;
+        background-color: #018797 !important;
         border-left: 4px solid #018797 !important;
     }
 
     .sidebar-link:hover {
-        background-color: #0f5757 !important;
-        border-color: #0f5757 !important;
+        color: #018797 !important;
+        background-color: rgba(1, 135, 151, 0.05) !important;
     }
+
 
     /* Konten utama - DEFAULT DENGAN MARGIN UNTUK DESKTOP */
     #main {
