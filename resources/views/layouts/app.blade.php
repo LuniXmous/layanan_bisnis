@@ -55,6 +55,20 @@
         transform: translateX(0);
     }
 
+    /* === Active Sidebar Item Styling === */
+    .sidebar-item.active > .sidebar-link,
+    .sidebar-item.active > .sidebar-link i,
+    .sidebar-item.active > .sidebar-link span {
+        color: #018797 !important;
+        font-weight: 600;
+    }
+
+    .sidebar-item.active > .sidebar-link {
+        background-color: rgba(1, 135, 151, 0.1) !important;
+        border-left: 4px solid #018797 !important;
+    }
+
+
     /* Konten utama - DEFAULT DENGAN MARGIN UNTUK DESKTOP */
     #main {
         margin-left: var(--sidebar-width);
@@ -118,7 +132,7 @@
             z-index: 1000;
             background: rgba(0, 0, 0, 0.5);
             cursor: pointer;
-            background-color: #018797 !important;
+            
         }
 
         #page-start{
@@ -136,8 +150,7 @@
         .sidebar-wrapper.active,
         .sidebar-wrapper.ps,
         .sidebar-wrapper.ps.active {
-        transform: translateX(0) !important;
-        background-color: #018797 !important;   
+            transform: translateX(0) !important;
         }
         
         #main {
