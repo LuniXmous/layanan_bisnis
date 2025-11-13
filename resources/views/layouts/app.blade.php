@@ -118,6 +118,7 @@
             z-index: 1000;
             background: rgba(0, 0, 0, 0.5);
             cursor: pointer;
+            background-color: #018797 !important;
         }
 
         #page-start{
@@ -135,7 +136,8 @@
         .sidebar-wrapper.active,
         .sidebar-wrapper.ps,
         .sidebar-wrapper.ps.active {
-            transform: translateX(0) !important;
+        transform: translateX(0) !important;
+        background-color: #018797 !important;   
         }
         
         #main {
