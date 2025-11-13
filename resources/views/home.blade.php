@@ -59,7 +59,6 @@
       #logo-pnj img {
         width: 110px; /* Lebih besar dari RTPU */
         height: auto; 
-        color: #018797;
       }
 
       #logo_rtpu img {
@@ -254,6 +253,17 @@
           height: 65px;
         }
 
+        /* Tambahan styling khusus logo */
+        #logo-pnj img {
+          width: 110px; /* Lebih besar dari RTPU */
+          height: auto; 
+        }
+
+        #logo_rtpu img {
+          width: 80px; /* Ukuran tetap / lebih kecil */
+          height: auto;
+        }
+
         .hero-content h2 {
           font-size: 28px;
         }
@@ -320,6 +330,18 @@
         .navbar .navbar-brand img {
           width: 50px;
           height: 55px;
+        }
+
+                /* Tambahan styling khusus logo */
+        #logo-pnj img {
+          width: 70px; /* Lebih besar dari RTPU */
+          height: auto; 
+        }
+
+        #logo_rtpu img {
+          width: 50px; /* Ukuran tetap / lebih kecil */
+          height: auto;
+          margin-left: -50px;
         }
 
         .hero-content {
@@ -400,9 +422,16 @@
           height: 450px;
         }
 
-        .navbar .navbar-brand img {
-          width: 50px;
-          height: 55px;
+        /* Tambahan styling khusus logo */
+        #logo-pnj img {
+          width: 70px; /* Lebih besar dari RTPU */
+          height: auto; 
+        }
+
+        #logo_rtpu img {
+          width: 50px; /* Ukuran tetap / lebih kecil */
+          height: auto;
+          margin-left: -50px;
         }
 
         .hero-content {
