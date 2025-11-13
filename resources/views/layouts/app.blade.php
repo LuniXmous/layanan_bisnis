@@ -29,6 +29,16 @@
         overflow-x: hidden;
     }
 
+    .btn-primary {
+    background-color: #018797 !important;
+    border-color: #018797 !important;
+    }
+
+    .btn-primary:hover {
+    background-color: #0f5757 !important;
+    border-color: #0f5757 !important;
+    }
+
     /* Sidebar Styles - DEFAULT TERBUKA UNTUK DESKTOP */
     .sidebar-wrapper {
         width: var(--sidebar-width);
