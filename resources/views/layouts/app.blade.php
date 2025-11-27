@@ -59,12 +59,12 @@
     .sidebar-item.active > .sidebar-link,
     .sidebar-item.active > .sidebar-link i,
     .sidebar-item.active > .sidebar-link span {
-        color: #018797 !important;
+        color: #ffffffff !important;
         font-weight: 600;
     }
 
     .sidebar-item.active > .sidebar-link {
-        background-color: rgba(1, 135, 151, 0.1) !important;
+        background-color: rgba(255, 255, 255, 0.1) !important;
         border-left: 4px solid #018797 !important;
     }
 
