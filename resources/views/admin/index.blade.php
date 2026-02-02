@@ -262,26 +262,26 @@
                                             </div>
 
                                             <!-- Jalur Income (atas) -->
-                                            <div style="position: absolute; top: -130px; left: 340px; display: flex; align-items: center;">
+                                            <div style="position: absolute; top: -130px; left: 370px; display: flex; align-items: center;">
                                                 <h6 style="color: #018797; margin-right: 10px;">Income</h6>
 
                                                 <!-- Icon: Wakil Direktur 2 -->
-                                                <div style="text-align: center; margin-right: 20px;">
+                                                <div style="text-align: center; margin-right: 40px;">
                                                     <div style="width: 55px; height: 55px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
                                                         <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 28px;"></i>
                                                     </div>
-                                                    <h6 style="margin-top: 8px;">Wakil Direktur 2</h6>
+                                                    <h6 style="margin-top: 8px;">PPK</h6>
                                                 </div>
 
                                                 <!-- Garis horizontal -->
                                                 <div style="width: 60px; height: 2px; background-color: #018797;"></div>
 
                                                 <!-- Icon: PPK -->
-                                                <div style="text-align: center; margin-left: 20px;">
+                                                <div style="text-align: center; margin-left: 10px;">
                                                     <div style="width: 55px; height: 55px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
                                                         <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 28px;"></i>
                                                     </div>
-                                                    <h6 style="margin-top: 8px;">PPK</h6>
+                                                    <h6 style="margin-top: 8px;">Wakil Direktur 2</h6>
                                                 </div>
                                             </div>
 
@@ -290,7 +290,7 @@
                                                 <h6 style="color: #018797; margin-right: 10px;">Non-Income</h6>
 
                                                 <!-- Icon: Direktur -->
-                                                <div style="text-align: center; margin-right: 20px;">
+                                                <div style="text-align: center; margin-right: 30px;">
                                                     <div style="width: 55px; height: 55px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
                                                         <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 28px;"></i>
                                                     </div>
@@ -298,10 +298,10 @@
                                                 </div>
 
                                                 <!-- Garis horizontal -->
-                                                <div style="width: 60px; height: 2px; background-color: #018797;"></div>
+                                                <div style="width: 60px; height: 2.5px; background-color: #018797;"></div>
 
                                                 <!-- Icon: Wakil Direktur 2 -->
-                                                <div style="text-align: center; margin-right: 20px;">
+                                                <div style="text-align: center; margin-left: 10px;">
                                                     <div style="width: 55px; height: 55px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
                                                         <i class="fa-solid fa-user-tie" style="color: #ffffff; font-size: 28px;"></i>
                                                     </div>
@@ -317,11 +317,11 @@
                                                 <div style="position: absolute; bottom: -80px; left: 9px; width: 2px; height: 60px; background-color: #018797;"></div>
                                             </div>
 
-                                            <div style="width: 60px; height: 3px; background-color: #018797;"></div>
+                                            <div style="width: 60px; height: 3px; background-color: #018797;  margin-left: 10px;"></div>
 
                                             <!-- Review Selesai -->
                                             <div style="text-align: center;">
-                                                <div style="width: 55px; height: 55px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                                <div style="width: 55px; height: 55px; border-radius: 50%; background-color: #018797; display: flex; align-items: center; justify-content: center; margin: auto;  margin-top: 10px;">
                                                     <i class="fa-solid fa-circle-check" style="color: #ffffff; font-size: 27px;"></i>
                                                 </div>
                                                 <h6 style="margin-top: 8px;">Review Selesai</h6>

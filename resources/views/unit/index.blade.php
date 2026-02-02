@@ -15,7 +15,7 @@
                                     <th>No</th>
                                     <th>Nama</th>
                                     <th>Total Kegiatan</th>
-                                    <th width="12%">Aksi</th>
+                                    <th width="12   %">Aksi</th>
                                 </tr>
                             </thead>
                         </table>

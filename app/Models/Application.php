@@ -95,7 +95,7 @@ class Application extends Model
                         'must_role' => $mustRole,
                     ];
                 } else {
-                    $mustRole = [5, 3, 6];
+                    $mustRole = [0, 5, 3, 6];
                     return [
                         'status'    => 'Menunggu Review Direktur Permohonan Pencairan Dana Operasional',
                         'class'     => 'bg-warning text-dark',
@@ -115,7 +115,7 @@ class Application extends Model
                         'must_role' => $mustRole,
                     ];
                 } else {
-                    $mustRole = [0, 3];
+                    $mustRole = [0, 3, 5, 6];
                     return [
                         'status'    => 'Menunggu Review Wakil Direktur 2 Pencairan Dana Operasional',
                         'class'     => 'bg-warning text-dark',

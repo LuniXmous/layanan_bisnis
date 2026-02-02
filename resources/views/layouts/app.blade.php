@@ -39,7 +39,6 @@
     border-color: #0f5757 !important;
     }
 
-    /* Sidebar Styles - DEFAULT TERBUKA UNTUK DESKTOP */
     .sidebar-wrapper {
         width: var(--sidebar-width);
         height: 100vh;
@@ -55,7 +54,6 @@
         transform: translateX(0);
     }
 
-    /* === Active Sidebar Item Styling === */
     .sidebar-item.active > .sidebar-link,
     .sidebar-item.active > .sidebar-link i,
     .sidebar-item.active > .sidebar-link span {
@@ -71,6 +69,74 @@
     .sidebar-link:hover {
         color: #018797 !important;
         background-color: rgba(1, 135, 151, 0.05) !important;
+    }
+
+    .sbx-menu {
+        list-style: none;
+        padding: 6px 0;
+        margin: 0;
+        background: #f2f2f2;
+    }
+
+    /* collapse handling */
+    .sbx-menu.collapse:not(.show) {
+        display: none;
+    }
+
+    /* .sbx-menu.collapse.show {
+        display: block;
+        animation: sbxSlideDown 0.25s ease;
+    } */
+
+    /* link inside dropdown */
+    .sbx-link {
+        display: block;
+        padding: 8px 20px;
+        font-size: 14px;
+        color: #000;
+        text-decoration: none;
+    }
+
+    .sbx-link:hover {
+        background: #e0e0e0;
+    }
+
+    .sbx-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between; /* ⬅ dorong arrow ke kanan */
+        width: 100%;
+    }
+
+    /* icon + text di kiri tetap rapi */
+    .sbx-toggle i {
+        margin-right: 1px;
+    }
+
+    /* arrow di kanan */
+    .sbx-toggle::after {
+        content: "▾";
+        font-size: 18px;
+        margin-left: auto; /* ⬅ pastikan di ujung kanan */
+        transition: transform 0.3s ease;
+    }
+
+    /* rotate saat open */
+    .sbx-toggle[aria-expanded="true"]::after {
+        transform: rotate(180deg);
+    }
+
+
+    /* animation */
+    @keyframes sbxSlideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-6px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
 
@@ -367,39 +433,48 @@
                                     <span>Dashboard</span>
                                 </a>
                             </li>
-                            <li class="sidebar-item dropdown 
-                                {{ Request::route()->action['as'] == 'application.index' ? 'active' : null }}">
-                                <a href="#" class="sidebar-link dropdown-toggle" id="pengajuanDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            @php
+                                $pengajuanActive = in_array(Request::get('type'), [
+                                    'pengajuanadmin',
+                                    'menunggu',
+                                    'tolak',
+                                    'selesai'
+                                ]);
+                            @endphp
+                            <li class="sidebar-item sbx-item {{ $pengajuanActive ? 'active' : '' }}">
+                                <a href="#"
+                                class="sidebar-link sbx-toggle" data-bs-toggle="collapse" data-bs-target="#sbxAdminPengajuan" aria-expanded="{{ $pengajuanActive ? 'true' : 'false' }}">
                                     <i class="fas fa-file-alt"></i>
                                     <span>Pengajuan</span>
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="pengajuanDropdown">
-                                    <li>
-                                        <a href="{{ route('application.index') }}" class="dropdown-item">
+                                <ul class="sbx-menu collapse" id="sbxAdminPengajuan">
+                                    <li class="sidebar-item {{ Request::get('type') === 'pengajuanadmin' ? 'active' : null }}">
+                                        <a class="sbx-link" href="{{ route('application.index', ['type' => 'pengajuanadmin']) }}" class="sidebar-link">
                                         <i class="fa-solid fa-border-all"></i>
-                                            Semua Pengajuan
+                                            Pengajuan Surat
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="{{ route('application.index', ['type' => 'pengajuanadmin']) }}" class="dropdown-item">
-                                        <i class="fa-solid fa-clock"></i>
-                                            Menunggu Review
+                                    <li class="sidebar-item {{ Request::get('type') === 'menunggu' ? 'active' : null }}">
+                                        <a class="sbx-link" href="{{ route('application.index', ['type' => 'menunggu']) }}" class="sidebar-link">
+                                            <i class="fa-solid fa-clock"></i>
+                                            Menunggu Review admin   
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="{{ route('application.index', ['approve_status' => '0', 'status' => '1,2,3']) }}" class="dropdown-item">
-                                        <i class="fa-solid fa-circle-xmark"></i>
-                                            Perlu Perbaikan
+                                    <li class="sidebar-item {{ Request::get('type') === 'tolak' ? 'active' : null }}">
+                                        <a class="sbx-link" href="{{ route('application.index', ['type' => 'tolak']) }}" class="sidebar-link">
+                                            <i class="fa-solid fa-clock"></i>
+                                            Pengajuan di Tolak
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="{{ route('application.index', ['approve_status' => [3,5], 'status' => [1,2,3]]) }}" class="dropdown-item">
-                                            <i class="fa-solid fa-circle-check"></i>
-                                            Review Selesai
+                                    <li class="sidebar-item {{ Request::get('type') === 'selesai' ? 'active' : null }}">
+                                        <a class="sbx-link" href="{{ route('application.index', ['type' => 'selesai']) }}" class="sidebar-link">
+                                            <i class="fa-solid fa-clock"></i>
+                                            Pengajuan Selesai
                                         </a>
-                                    </li>
+                                    </li>       
                                 </ul>
                             </li>
+
                             <li class="sidebar-item 
                                 {{ Request::route()->action['as'] == 'application.report' ? 'active' : null }}">
                                 <a href="{{ route('application.report') }}" class="sidebar-link">
@@ -574,8 +649,8 @@
             });
         }
         
-        // Mencegah dropdown menutup sidebar
-        const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+         // Mencegah dropdown menutup sidebar
+        const dropdownToggles = document.querySelectorAll('.sbx-toggle, .dropdown-toggle');
         dropdownToggles.forEach(toggle => {
             toggle.addEventListener('click', function(e) {
                 e.stopPropagation();
@@ -583,8 +658,18 @@
         });
         
         // Tutup sidebar saat item menu biasa diklik di mobile/tablet
-        const sidebarLinks = document.querySelectorAll('.sidebar-link:not(.dropdown-toggle)');
+        const sidebarLinks = document.querySelectorAll('.sidebar-link:not(.sbx-toggle):not(.dropdown-toggle)');
         sidebarLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                if (isMobileDevice()) {
+                    closeSidebar();
+                }
+            });
+        });
+        
+        // Tutup sidebar saat submenu dalam dropdown diklik di mobile
+        const submenuLinks = document.querySelectorAll('.sbx-link');
+        submenuLinks.forEach(link => {
             link.addEventListener('click', function() {
                 if (isMobileDevice()) {
                     closeSidebar();

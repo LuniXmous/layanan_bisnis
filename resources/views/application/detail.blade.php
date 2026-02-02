@@ -47,6 +47,19 @@
     margin-bottom: 4%;
 }
 
+.card-title .badge {
+    display: inline-block;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    max-width: 100%;
+    line-height: 1.4 !important;
+    padding: 0.5rem 0.75rem !important;
+    text-align: center;
+    font-size: 0.875rem;
+    min-height: fit-content;
+}
 /* Desktop - Default styling sudah ada di blade */
 
 /* Tablet (768px ke bawah) */
@@ -68,6 +81,12 @@
     .card-title .fw-bold {
         font-size: 0.9rem !important; 
     }
+
+    .card-title .badge {
+        font-size: 0.75rem !important;
+        padding: 0.4rem 0.6rem !important;
+        max-width: calc(100% - 20px);
+    } 
 }
 
 /* Mobile (576px ke bawah) */
@@ -118,13 +137,22 @@
         padding: 15px 10px !important;
     }
 
-    .card-title .fw-bold {
-        font-size: 0.9rem !important; 
+    .card-title {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
     }
 
-    .badge{
-        font-size: 11px !important;
-        width: 330px !important;
+    .card-title .fw-bold {
+        font-size: 0.85rem !important; 
+    }
+
+    .card-title .badge {
+        font-size: 0.65rem !important;
+        padding: 0.35rem 0.5rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        line-height: 1.3 !important;
     }
 
     .card-body span,
@@ -160,13 +188,15 @@
     }
 
     .card-title .fw-bold {
-        font-size: 0.9rem !important; 
+        font-size: 0.8rem !important; 
     }
 
-    .badge{
-        font-size: 10px !important;
-        width: 280px !important;
-        margin-top: 3px;
+    .card-title .badge {
+        font-size: 0.6rem !important;
+        padding: 0.3rem 0.45rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        line-height: 1.25 !important;
     }
 
     .btn {
@@ -191,16 +221,20 @@
         font-size: 0.3rem;
     }
 
+    .card-title {
+        gap: 3px;
+    }
+
     .card-title .fw-bold {
-        font-size: 0.9rem !important; 
+        font-size: 0.75rem !important; 
     }
 
     .card-title .badge {
-        font-size: 0.5rem !important;
+        font-size: 0.55rem !important;
         padding: 0.25rem 0.4rem !important; 
-        margin-top: 3px;
-        width: 230px !important;
-        margin-top: 2px;
+        width: 100% !important;
+        max-width: 100% !important;
+        line-height: 1.2 !important;
     }
 
     .btn {

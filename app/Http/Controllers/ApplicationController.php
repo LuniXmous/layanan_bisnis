@@ -105,11 +105,26 @@ class ApplicationController extends Controller
                 $type = $request->input('type');
                 $applications->orderBy('updated_at', 'desc');
                 if ($type === 'pengajuanadmin') {
-                    $applications->where(function ($query) {
-                        $query->where('status', 1)->whereIn('approve_status', [1])
-                            ->orWhere('status', '>', 1 )->whereIn('approve_status', [1]);
-                    });
-                }
+                    $applications->whereIn('status', [1, 2, 3])
+                        ->whereIn('approve_status', [1, 2, 3, 4, 5]);
+                    } elseif ($type === 'menunggu') {
+                        $applications->whereIn('status', [1, 2, 3])
+                        ->where('approve_status', 1);
+                    } elseif ($type === 'tolak') {
+                        $applications->whereIn('status', [1, 2, 3])
+                        ->where('approve_status', 0);
+                    } elseif ($type === 'selesai') {
+                        $applications->where(function ($query) {
+                            $query->where(function ($q) {
+                                $q->whereIn('status', [1, 2])
+                                ->where('approve_status', 5);
+                            })
+                            ->orWhere(function ($q) {
+                                $q->where('status', 3)
+                                ->where('approve_status', 3);
+                            });
+                        });
+                    }
             } else if (Auth::user()->role->id == 1) {
                 $applications->where('user_id', Auth::user()->id)
                         ->orderBy('updated_at', 'desc');
