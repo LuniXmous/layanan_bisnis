@@ -92,44 +92,79 @@
 /* Mobile (576px ke bawah) */
 @media (max-width: 576px) {
     /* Layout vertikal untuk mobile */
-    .status-container {
+    .status-timeline {
         flex-direction: column !important;
-        align-items: center !important;
+        align-items: stretch !important;
+        padding: 0;
+        position: relative;
     }
     
     .status-item {
         width: 100% !important;
-        text-align: center !important;
-        margin-bottom: 15px;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: flex-start;
+        position: relative;
+        padding-left: 0;
     }
     
-    /* Icon lebih kecil */
+    /* Icon positioning di kiri */
     .status-icon {
         width: 35px !important;
         height: 35px !important;
+        flex-shrink: 0;
+        z-index: 2;
+        margin-right: 12px;
     }
     
     .status-icon i {
         font-size: 16px !important;
     }
     
-    /* Text lebih kecil */
-    .status-title{
-        font-size: 0.5rem !important;
-        margin-top: 6px !important;
+    /* Kolom kiri - Title (lebih lebar) */
+    .status-title,
+    .status-title-alt {
+        font-size: 0.75rem !important;
+        margin-top: 0 !important;
+        text-align: left !important;
+        font-weight: 600;
+        margin-bottom: 0;
+        flex: 1 1 60%;
+        min-width: 0;
+        line-height: 1.3;
+        padding-right: 10px;
     }
 
-    .status-title-alt{
-        font-size: 0.3rem !important;
-        margin-top: 6px !important;
+    /* Kolom kanan - Info */
+    .status-info {
+        font-size: 0.65rem !important;
+        text-align: right !important;
+        color: #6c757d;
+        flex: 0 0 auto;
+        max-width: 40%;
+        line-height: 1.3;
     }
 
-    .status-line{
-        height: 1px;
+    /* Garis horizontal hilangkan */
+    .status-line {
+        display: none !important;
     }
-
-    .status-info{
-        font-size: 0.4rem;
+    
+    /* Garis vertikal di tengah icon */
+    .status-item::after {
+        content: '';
+        position: absolute;
+        left: 17px;
+        top: 35px;
+        bottom: -25px;
+        width: 2px;
+        background-color: #018797;
+        z-index: 1;
+    }
+    
+    /* Hilangkan garis untuk item terakhir */
+    .status-item:last-child::after {
+        display: none;
     }
 
     /* Padding card body */
@@ -163,28 +198,44 @@
         font-size: 0.6rem !important;
     }
 
-   .btn {
-        padding: 0.25rem 0.5rem !important; /* kecilkan padding */
-        font-size: 0.5rem !important;        /* kecilkan teks */
-        border-radius: 4px !important;       /* opsional: sudut lebih halus */
+    .btn {
+        padding: 0.25rem 0.5rem !important;
+        font-size: 0.5rem !important;
+        border-radius: 4px !important;
     }
 
-    /* Jika tombol pakai ikon, kecilkan juga ikonnya */
     .btn i {
         font-size: 0.8rem !important;
     }
-
 }
 
 /* Mobile kecil (400px ke bawah) */
 @media (max-width: 400px) {
     .status-icon {
-        width: 20px !important;
-        height: 20px !important;
+        width: 30px !important;
+        height: 30px !important;
+        margin-right: 10px;
     }
     
     .status-icon i {
-        font-size: 11px !important;
+        font-size: 14px !important;
+    }
+    
+    .status-item::after {
+        left: 14px;
+        top: 30px;
+        bottom: -20px;
+    }
+
+    .status-title,
+    .status-title-alt {
+        font-size: 0.7rem !important;
+        flex: 1 1 55%;
+    }
+
+    .status-info {
+        font-size: 0.6rem !important;
+        max-width: 45%;
     }
 
     .card-title .fw-bold {
@@ -194,31 +245,39 @@
     .card-title .badge {
         font-size: 0.6rem !important;
         padding: 0.3rem 0.45rem !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        line-height: 1.25 !important;
     }
 
     .btn {
-        padding: 0.25rem 0.5rem !important; /* kecilkan padding */
-        font-size: 0.4rem !important;        /* kecilkan teks */
-        border-radius: 4px !important;       /* opsional: sudut lebih halus */
-    }
-
-    /* Jika tombol pakai ikon, kecilkan juga ikonnya */
-    .btn i {
-        font-size: 0.8rem !important;
+        font-size: 0.4rem !important;
     }
 }
 
 @media (max-width: 340px) {
-    
-    .status-icon i {
-        font-size: 9px !important;
+    .status-icon {
+        width: 25px !important;
+        height: 25px !important;
+        margin-right: 8px;
     }
     
-    .status-info{
-        font-size: 0.3rem;
+    .status-icon i {
+        font-size: 12px !important;
+    }
+    
+    .status-item::after {
+        left: 12px;
+        top: 25px;
+        bottom: -18px;
+    }
+
+    .status-title,
+    .status-title-alt {
+        font-size: 0.65rem !important;
+        flex: 1 1 50%;
+    }
+
+    .status-info {
+        font-size: 0.55rem !important;
+        max-width: 50%;
     }
 
     .card-title {
@@ -231,21 +290,11 @@
 
     .card-title .badge {
         font-size: 0.55rem !important;
-        padding: 0.25rem 0.4rem !important; 
-        width: 100% !important;
-        max-width: 100% !important;
-        line-height: 1.2 !important;
+        padding: 0.25rem 0.4rem !important;
     }
 
     .btn {
-        padding: 0.25rem 0.5rem !important; /* kecilkan padding */
-        font-size: 0.3rem !important;        /* kecilkan teks */
-        border-radius: 4px !important;       /* opsional: sudut lebih halus */
-    }
-
-    /* Jika tombol pakai ikon, kecilkan juga ikonnya */
-    .btn i {
-        font-size: 0.8rem !important;
+        font-size: 0.3rem !important;
     }
 }
 </style>
